@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Curso de Formação MAPEAR</title>
+  <meta name="description" content="Curso de Formação MAPEAR: Fundamentos de Pensamento Computacional, ferramentas digitais e atividades desplugadas, planejamento com mediação ativa e robótica educacional, avaliação de competências e compartilhamento de práticas." />
+  <link rel="icon" type="image/png" href="/MAPEARFavicon.png">
+  <link rel="stylesheet" href="./styles.css">
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #121936;
+      --muted: #aab3d1;
+      --text: #eaf0ff;
+      --brand: #7c9cff;
+      --brand-2: #22c55e;
+      --accent: #f59e0b;
+      --danger: #ef4444;
+      --radius-xl: 18px;
+      --radius-lg: 14px;
+      --radius-md: 10px;
+      --shadow-1: 0 10px 30px rgba(0,0,0,.25);
+      --shadow-2: 0 12px 50px rgba(124,156,255,.2);
+      --code-bg: #0f1530;
+      --hero-offset: 140px;
+    }
+    * { box-sizing: border-box }
+    html, body { height: 100% }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica Neue, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      background: radial-gradient(1200px 800px at 70% -10%, rgba(124,156,255,.2), transparent 60%),
+                  radial-gradient(800px 600px at 10% 110%, rgba(34,197,94,.12), transparent 60%),
+                  var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+    }
+    a { color: var(--brand); text-decoration: none }
+    a:hover { text-decoration: underline }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 28px 28px 28px }
+    header.hero { display: none }
+    .badge { display: inline-block; padding: 6px 12px; border-radius: 999px; background: rgba(124,156,255,.18); color: #dbe5ff; font-weight: 600; letter-spacing: .3px }
+    h1 { font-size: clamp(28px, 4vw, 44px); margin: 10px 0 8px }
+    .sub { color: var(--muted); max-width: 70ch }
+    .cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 18px }
+    .btn {
+      border: 0; cursor: pointer; padding: 12px 16px; border-radius: 12px;
+      font-weight: 700; letter-spacing: .2px; color: #0b1225;
+      background: linear-gradient(180deg, #c8d6ff, #95adff);
+      box-shadow: 0 8px 20px rgba(124,156,255,.35);
+    }
+    .btn.secondary { background: linear-gradient(180deg, #baf1cc, #7fe39f); box-shadow: 0 8px 20px rgba(34,197,94,.35) }
+    .btn.ghost { background: transparent; color: var(--text); border: 1px solid rgba(255,255,255,.12) }
+    .grid { display: grid; gap: 16px }
+    .grid.cols-3 { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)) }
+    .card {
+      background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.00));
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      box-shadow: var(--shadow-1);
+    }
+    h2 { font-size: clamp(20px, 2.6vw, 30px); margin: 0 0 8px }
+    h3 { margin: 0 0 8px }
+    .muted { color: var(--muted) }
+    .kpi { display:flex; align-items:center; gap:12px; padding: 10px 12px; border:1px dashed rgba(255,255,255,.12); border-radius: 12px }
+    .kpi strong { font-size: 18px }
+    .pill { padding: 4px 10px; border-radius: 999px; border:1px solid rgba(255,255,255,.1); background: rgba(255,255,255,.04); font-size: 12px }
+    /* Accordion */
+    details { border: 1px solid rgba(255,255,255,.1); border-radius: 14px; padding: 12px 14px; background: rgba(255,255,255,.02) }
+    details + details { margin-top: 10px }
+    summary { cursor: pointer; font-weight: 700; list-style: none }
+    summary::-webkit-details-marker { display: none }
+    .unit { display:grid; gap:10px; grid-template-columns: 1fr; }
+    .unit dl { margin: 0; display:grid; grid-template-columns: 140px 1fr; gap: 8px; align-items: start }
+    .unit dt { color: var(--muted) }
+    .unit dd { margin: 0 }
+    .stack { display: grid; gap: 10px }
+    .two { display:grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)) }
+    .two > * { min-width: 0 }
+    .notice { padding: 12px 14px; border-left: 4px solid var(--brand); background: rgba(124,156,255,.08); border-radius: 10px }
+    .rubric { width: 100%; border-collapse: collapse; overflow: hidden; border-radius: 12px }
+    .rubric th, .rubric td { border: 1px solid rgba(255,255,255,.08); padding: 10px; vertical-align: top }
+    .rubric thead th { background: rgba(255,255,255,.06) }
+    .table-wrap { overflow: auto; border-radius: 12px }
+    .rubric { min-width: 720px }
+    .footer { color: var(--muted); font-size: 14px; text-align: center; padding: 24px 12px }
+    /* Navegação rápida */
+    .quick-nav { display:flex; gap:8px; flex-wrap:wrap; overflow:auto; padding: 8px 0 }
+    .quick-nav a { text-decoration:none }
+    .quick-nav .btn { white-space: nowrap }
+    /* Compensa cabeçalho fixo nas âncoras */
+    section[id], article[id], h2[id], h3[id] { scroll-margin-top: var(--hero-offset) }
+    .nav {
+      position: sticky; top: calc(var(--hero-offset) + 12px); background: #111827; backdrop-filter: none;
+      border:1px solid rgba(255,255,255,.08); border-radius: 14px; padding: 12px; box-shadow: var(--shadow-1)
+    }
+    .nav a { display:block; padding: 8px 10px; border-radius: 10px }
+    .nav a:hover { background: rgba(255,255,255,.06) }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 1, 1); white-space: nowrap; border: 0 }
+    .divider { height: 1px; background: linear-gradient(90deg, rgba(255,255,255,.04), rgba(255,255,255,.12) 40%, rgba(255,255,255,.04)); margin: 24px 0 }
+    @media print {
+      body { background: #fff; color: #000 }
+      header.hero { box-shadow: none; background: #f4f6ff; -webkit-print-color-adjust:exact; print-color-adjust: exact }
+      .nav { display:none }
+      a { color: #000 }
+      .btn { display:none }
+    }
+    /* Baralho Pedagógico */
+    .deck {
+      display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+    .card-deck {
+      background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.00));
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: var(--radius-lg);
+      padding: 14px;
+      box-shadow: var(--shadow-1);
+      display: grid; gap: 8px;
+    }
+    .card-deck svg { width: 100%; height: 110px; display: block }
+    .card-deck h4 { margin: 0; font-size: 16px }
+    .card-deck p { margin: 0; color: var(--muted); font-size: 14px }
+  </style>
+</head>
+<body id="topo">
+  <header class="app-header">
+    <div class="brand">
+      <div class="brand-row">
+        <img class="brand-icon" src="/MAPEARFavicon.png" alt="Logo MAPEAR">
+        <span class="brand-title">Curso de Formação MAPEAR</span>
+      </div>
+    </div>
+    <nav class="main-nav">
+      <a class="btn ghost" href="index.html#intro">Início</a>
+      <a class="btn ghost" href="conteudo.html">Conteúdo</a>
+      <a class="btn ghost" href="cursoMapear.html">Curso</a>
+      <a class="btn ghost" href="mapear.html#/">Jogos</a>
+    </nav>
+  </header>
+  <nav class="sub-nav" aria-label="Navegação do curso">
+    <a href="#topo">Topo</a>
+    <a href="#programa">Programa</a>
+    <a href="#mod1">Módulo 1</a>
+    <a href="#mod2">Módulo 2</a>
+    <a href="#mod3">Módulo 3</a>
+    <a href="#mod4">Módulo 4</a>
+    <a href="#mod5">Módulo 5</a>
+    <a href="#avaliacao">Matriz</a>
+    <a href="#cronograma">Cronograma</a>
+    <a href="#recursos">Recursos</a>
+    <a href="#baralho">Baralho</a>
+    <a href="#faq">FAQ</a>
+  </nav>
+
+  <div class="wrap">
+
+    <section class="card" aria-labelledby="titulo">
+      <span class="badge">Formação Docente • MAPEAR</span>
+      <h1 id="titulo">Curso de Formação MAPEAR</h1>
+      <h3>Presencial, híbrido ou EAD. Um percurso formativo para implementar o <strong>Pensamento Computacional (PC)</strong> na Educação Básica com mediação ativa e <strong>Robótica Educacional (RE)</strong>, combinando ferramentas digitais e atividades desplugadas, avaliação por competências e um banco colaborativo de práticas.</h3>
+      <div class="cta-row" role="group" aria-label="Ações da página">
+        <button class="btn" onclick="window.print()">Imprimir/Salvar em PDF</button>
+        <a class="btn secondary" href="./Artefatos.zip" download>Baixar Artefatos (ZIP)</a>
+      </div>
+    </section>
+
+    <section class="grid" aria-label="Visão geral">
+      <div class="grid cols-3">
+        <div class="card kpi"><strong>Carga horária</strong><span class="pill">30h • sugerido</span></div>
+        <div class="card kpi"><strong>Público-alvo</strong><span class="pill">Professores em Formação Inicial ou Continuada</span></div>
+        <div class="card kpi"><strong>Modalidades</strong><span class="pill">Presencial • Híbrido • EAD</span></div>
+      </div>
+      <div class="card">
+          <h2>Objetivos</h2>
+          <ul>
+            <li>Compreender fundamentos do PC e seus pilares (decomposição, padrões, abstração, algoritmos).</li>
+            <li>Planejar sequências e projetos com <em>mediação ativa</em> e momentos de <strong>RE</strong>.</li>
+            <li>Selecionar ferramentas digitais e propor atividades desplugadas alinhadas à BNCC.</li>
+            <li>Desenhar estratégias e instrumentos de avaliação por competências.</li>
+            <li>Construir e compartilhar um banco aberto de práticas MAPEAR.</li>
+          </ul>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <section id="programa" aria-labelledby="programa-t">
+      <h2 id="programa-t">Programa detalhado</h2>
+      <p class="muted">Cada módulo inclui objetivos de aprendizagem, conteúdos, atividades (presencial/EAD), RE (Robótica Educacional), avaliação formativa e recursos.</p>
+
+      <!-- Módulo 1 -->
+      <article id="mod1" class="stack">
+        <h3>✦ Módulo 1 — Fundamentos do PC na Educação Básica (6h)</h3>
+        <details open>
+          <summary>Unidade 1.1 • PC e BNCC: por que e para quê (2h)</summary>
+          <div class="unit">
+            <dl>
+              <dt>Objetivos</dt><dd>Relacionar PC à BNCC e a práticas interdisciplinares; diferenciar PC de programação.</dd>
+              <dt>Conteúdos</dt><dd>Conceitos; pilares do PC; transposição didática; exemplos em Línguas, Matemática, Ciências e Artes.</dd>
+              <dt>Atividades</dt><dd>
+                <ul>
+                  <li><strong>Presencial/EAD:</strong> Mapa mental colaborativo (Jamboard/Quadro) sobre usos do PC.</li>
+                  <li><strong>Desplugada:</strong> Classificação de problemas por decomposição com cartões.</li>
+                </ul>
+              </dd>
+              <dt>RE</dt><dd>Diário rápido: "Que evidências de PC já existem na minha prática?"</dd>
+              <dt>Avaliação</dt><dd>Checklist de compreensão + participação no mapa mental.</dd>
+              <dt>Recursos</dt><dd>Quadro físico/virtual, cartões, projetor, rubrica rápida.</dd>
+            </dl>
+          </div>
+        </details>
+        <details>
+          <summary>Unidade 1.2 • Pilares: decomposição, padrões, abstração, algoritmos (2h)</summary>
+          <div class="unit">
+            <dl>
+              <dt>Objetivos</dt><dd>Aplicar os quatro pilares em situações do cotidiano escolar.</dd>
+              <dt>Atividades</dt><dd>
+                <ul>
+                  <li><strong>Desplugada:</strong> Algoritmo de sanduíche (instruções ambíguas vs. precisas).</li>
+                  <li><strong>Digital:</strong> Fluxogramas simples (draw.io) para rotinas escolares.</li>
+                </ul>
+              </dd>
+              <dt>RE</dt><dd>Reflexão guiada: onde a precisão faz diferença no meu componente curricular?</dd>
+              <dt>Avaliação</dt><dd>Rubrica de uso dos pilares (iniciante → proficiente).</dd>
+            </dl>
+          </div>
+        </details>
+        <details>
+          <summary>Unidade 1.3 • Equidade e acessibilidade no PC (2h)</summary>
+          <div class="unit">
+            <dl>
+              <dt>Objetivos</dt><dd>Planejar experiências acessíveis e inclusivas.</dd>
+              <dt>Atividades</dt><dd>Checklist de acessibilidade; adaptação de atividade para baixa visão e TDAH.</dd>
+              <dt>RE</dt><dd>Matriz 2×2: impacto x esforço de adaptações.</dd>
+              <dt>Avaliação</dt><dd>Plano de ação individual com metas SMART.</dd>
+            </dl>
+          </div>
+        </details>
+        <div class="cta-row">
+          <a class="btn secondary" href="./Modulo_1.pdf" target="_blank" rel="noopener">Abrir módulo 1</a>
+        </div>
+      </article>
+
+      <!-- Módulo 2 -->
+      <article id="mod2" class="stack">
+        <h3>✦ Módulo 2 — Ferramentas Digitais e Atividades Desplugadas (8h)</h3>
+        <details open>
+          <summary>Unidade 2.1 • Ecossistema de ferramentas (2h)</summary>
+          <div class="unit">
+            <dl>
+              <dt>Objetivos</dt><dd>Selecionar ferramentas alinhadas a objetivos e infraestrutura da escola.</dd>
+              <dt>Conteúdos</dt><dd>Blocos (Scratch), texto (Python introdutório), microcontroladores (Micro:bit), planilhas, simuladores, IA generativa com uso responsável.</dd>
+              <dt>Atividades</dt><dd>Roteiro de curadoria: critérios, alternativas offline/baixa banda.</dd>
+              <dt>RE</dt><dd>Canvas de decisão (custo, acessibilidade, curva de aprendizagem).</dd>
+            </dl>
+          </div>
+        </details>
+        <details>
+          <summary>Unidade 2.2 • Atividades desplugadas de PC (3h)</summary>
+          <div class="unit">
+            <dl>
+              <dt>Objetivos</dt><dd>Conduzir dinâmicas desplugadas para desenvolver raciocínio algorítmico.</dd>
+              <dt>Atividades</dt><dd>Percurso em grade, cartas "Se/Então", debug humano, sorting network com cordas.</dd>
+              <dt>RE</dt><dd>Roda de conversa sobre transferência para leitura, escrita e matemática.</dd>
+            </dl>
+          </div>
+        </details>
+        <details>
+          <summary>Unidade 2.3 • Trilhas digitais guiadas (3h)</summary>
+          <div class="unit">
+            <dl>
+              <dt>Objetivos</dt><dd>Experimentar sequências curtas em Scratch/planilhas/Micro:bit.</dd>
+              <dt>Atividades</dt><dd>Mini-desafios por níveis; pares programadores; "stop & share".</dd>
+              <dt>RE</dt><dd>Robótica Educacional: o que manter, adaptar, eliminar.</dd>
+            </dl>
+          </div>
+        </details>
+        <div class="cta-row">
+          <a class="btn secondary" href="./Modulo_2.pdf" target="_blank" rel="noopener">Abrir módulo 2</a>
+        </div>
+      </article>
+
+      <!-- Módulo 3 -->
+      <article id="mod3" class="stack">
+        <h3>✦ Módulo 3 — Planejamento de Projetos com Mediação Ativa e Robótica Educacional (8h)</h3>
+        <details open>
+          <summary>Unidade 3.1 • MAPEAR um projeto (2h)</summary>
+          <div class="unit">
+            <dl>
+              <dt>Objetivos</dt><dd>Aplicar a metodologia MAPEAR para desenhar projetos interdisciplinares.</dd>
+              <dt>Conteúdos</dt><dd>Problema-motriz; perguntas orientadoras; critérios de sucesso; produto público.</dd>
+              <dt>Atividades</dt><dd>Canvas do projeto; definição de evidências de aprendizagem por competência.</dd>
+            </dl>
+          </div>
+        </details>
+        <details>
+          <summary>Unidade 3.2 • Mediação ativa e protocolos de sala (3h)</summary>
+          <div class="unit">
+            <dl>
+              <dt>Objetivos</dt><dd>Conduzir protocolos: pense-compartilhe, galerias, crítica amigável, check-ins.</dd>
+              <dt>Atividades</dt><dd>Simulações de facilitação; plano de mediação por etapa.</dd>
+              <dt>RE</dt><dd>Após cada simulação, registrar "o que observei, o que faria diferente".</dd>
+            </dl>
+          </div>
+        </details>
+        <details>
+          <summary>Unidade 3.3 • RE — Robótica Educacional (3h)</summary>
+          <div class="unit">
+            <dl>
+              <dt>Objetivos</dt><dd>Planejar, montar e testar protótipos robóticos simples.</dd>
+              <dt>Atividades</dt><dd>Aplicar princípios de segurança elétrica e mecânica. Desenvolver habilidades de resolução de problemas por meio de depuração (debugging) e iteração</dd>
+              <dt>Produtos</dt><dd>Protótipo funcional (carrinho/robô experimental) com esquema de ligação e lista de componentes.</dd>
+            </dl>
+          </div>
+        </details>
+        <div class="cta-row">
+          <a class="btn secondary" href="./Modulo_3.pdf" target="_blank" rel="noopener">Abrir módulo 3</a>
+        </div>
+      </article>
+
+      <!-- Módulo 4 -->
+      <article id="mod4" class="stack">
+        <h3>✦ Módulo 4 — Estratégias de Avaliação de Competências Computacionais (6h)</h3>
+        <details open>
+          <summary>Unidade 4.1 • Matriz de competências e progressão (2h)</summary>
+          <div class="unit">
+            <dl>
+              <dt>Objetivos</dt><dd>Construir uma matriz por níveis (iniciante, básico, intermediário, proficiente).</dd>
+              <dt>Atividades</dt><dd>Mapeamento de evidências por pilar do PC; alinhamento a objetivos.</dd>
+            </dl>
+          </div>
+        </details>
+        <details>
+          <summary>Unidade 4.2 • Instrumentos e rubricas (2h)</summary>
+          <div class="unit">
+            <dl>
+              <dt>Objetivos</dt><dd>Elaborar rubricas claras e tarefas autênticas.</dd>
+              <dt>Atividades</dt><dd>Construção de rubrica; validação por pares; critérios de acessibilidade.</dd>
+            </dl>
+          </div>
+        </details>
+        <details>
+          <summary>Unidade 4.3 • Feedback e autoavaliação (2h)</summary>
+          <div class="unit">
+            <dl>
+              <dt>Objetivos</dt><dd>Implementar ciclos de feedback formativo e autoavaliação.</dd>
+              <dt>Atividades</dt><dd>Quadro de feedback "Eu observei / Sugiro / Pergunto"; checklists de qualidade.</dd>
+            </dl>
+          </div>
+        </details>
+        <div class="cta-row">
+          <a class="btn secondary" href="./Modulo_4.pdf" target="_blank" rel="noopener">Abrir módulo 4</a>
+        </div>
+      </article>
+
+      <!-- Módulo 5 -->
+      <article id="mod5" class="stack">
+        <h3>✦ Módulo 5 — Compartilhamento de experiências e banco de práticas (2h)</h3>
+        <details open>
+          <summary>Unidade 5.1 • Showcase e Banco de Práticas (2h)</summary>
+          <div class="unit">
+            <dl>
+              <dt>Objetivos</dt><dd>Documentar, publicar e licenciar práticas no repositório MAPEAR.</dd>
+              <dt>Atividades</dt><dd>PechaKucha/galeria; ficha-padrão (contexto, objetivos, passo a passo, RE, avaliação, anexos).</dd>
+              <dt>Produtos</dt><dd>Prática publicada + plano de replicação em outra turma/área.</dd>
+            </dl>
+          </div>
+        </details>
+        <div class="cta-row">
+          <a class="btn secondary" href="./Modulo_5.pdf" target="_blank" rel="noopener">Abrir módulo 5</a>
+        </div>
+      </article>
+    </section>
+
+    <div class="divider"></div>
+
+    <section id="avaliacao" aria-labelledby="av-t">
+      <h2 id="av-t">Matriz de competências (exemplo)</h2>
+      <div class="notice">Use e adapte conforme seu contexto. Inclui critérios transversais: colaboração, comunicação, ética digital e acessibilidade.</div>
+      <div class="stack">
+        <div class="card">
+          <div class="table-wrap">
+            <table class="rubric" aria-label="Matriz de competências de PC">
+            <thead>
+              <tr><th>Competência</th><th>Iniciante</th><th>Básico</th><th>Intermediário</th><th>Proficiente</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Decomposição</td>
+                <td>Reconhece tarefas grandes.</td>
+                <td>Separa em 2–3 partes simples.</td>
+                <td>Estrutura etapas com dependências.</td>
+                <td>Refatora e otimiza o plano.</td>
+              </tr>
+              <tr>
+                <td>Padrões</td>
+                <td>Identifica semelhanças simples.</td>
+                <td>Classifica exemplos recorrentes.</td>
+                <td>Generaliza para novas situações.</td>
+                <td>Cria modelos reutilizáveis.</td>
+              </tr>
+              <tr>
+                <td>Abstração</td>
+                <td>Diferencia dados essenciais e supérfluos.</td>
+                <td>Cria representações básicas (tabela/diagrama).</td>
+                <td>Escolhe abstrações adequadas ao público.</td>
+                <td>Transita entre níveis de abstração.</td>
+              </tr>
+              <tr>
+                <td>Algoritmos</td>
+                <td>Segue sequências simples.</td>
+                <td>Escreve instruções claras.</td>
+                <td>Usa estruturas condicionais/repetição.</td>
+                <td>Refina com testes e depuração.</td>
+              </tr>
+              <tr>
+                <td>Generalização</td>
+                <td>Aplica solução apenas no exemplo visto.</td>
+                <td>Adapta regra simples a casos parecidos com apoio.</td>
+                <td>Identifica variáveis e limites; transfere a novos contextos com pequenas adaptações.</td>
+                <td>Formula princípios e modelos reutilizáveis que cobrem variações e exceções.</td>
+              </tr>
+              <tr>
+                <td>Robótica</td>
+                <td>Reconhece sensores/atuadores; monta kit seguindo guia; cumpre regras de segurança.</td>
+                <td>Programa reações simples (if/else) com um sensor/atuador; calibra limiares.</td>
+                <td>Integra múltiplos sensores; usa PWM e funções; depura via monitor serial; melhora chassi.</td>
+                <td>Projeta sistema completo com feedback (PID simples), gestão de energia, testes e documentação.</td>
+              </tr>
+            </tbody>
+            </table>
+          </div>
+        </div>
+        
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <section id="cronograma" aria-labelledby="crono-t">    
+      <div class="two">
+        <div class="card">
+          <h3>Cronograma sugerido (30h)</h3>
+          <ol>
+            <li><strong>Encontro 1 (4h):</strong> Módulo 1.1 e 1.2</li>
+            <li><strong>Encontro 2 (2h):</strong> Módulo 1.3</li>
+            <li><strong>Encontro 3 (4h):</strong> Módulo 2.1</li>
+            <li><strong>Encontro 4 (4h):</strong> Módulo 2.2</li>
+            <li><strong>Encontro 5 (4h):</strong> Módulo 2.3</li>
+            <li><strong>Encontro 6 (4h):</strong> Módulo 3.1 e 3.2</li>
+            <li><strong>Encontro 7 (4h):</strong> Módulo 3.3</li>
+            <li><strong>Encontro 8 (4h):</strong> Módulo 4.1, 4.2 e 4.3 + Showcase (Módulo 5)</li>
+          </ol>
+        </div>
+        <div class="card">
+           <h3>Rubrica para projetos MAPEAR (resumo)</h3>
+          <ul>
+            <li><strong>Clareza do problema-motriz</strong>: relevante, contextualizado, interdisciplinar.</li>
+            <li><strong>Evidências de PC</strong>: presença explícita dos quatro pilares.</li>
+            <li><strong>Acessibilidade</strong>: adaptações planejadas; linguagem inclusiva.</li>
+            <li><strong>Mediação ativa</strong>: protocolos e check-ins definidos.</li>
+            <li><strong>RE</strong>: momentos de metacognição antes/durante/depois.</li>
+            <li><strong>Produto público</strong>: utilidade, clareza e documentação.</li>
+            <li><strong>Feedback</strong>: ciclos e critérios transparentes.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="two" style="margin-top:12px">
+        <div class="card">
+          <h3>Adaptação Híbrida/EAD</h3>
+          <ul>
+            <li>Vídeos curtos assíncronos (10–15min) por unidade.</li>
+            <li>Fóruns com protocolos RE e feedback por pares.</li>
+            <li>Sessões síncronas focadas em prática e dúvidas.</li>
+            <li>Entregas modulares com rubricas transparentes.</li>
+            <li>Alternativas <em>low-tech</em> e desplugadas em todas as etapas.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Infra mínima</h3>
+          <ul>
+            <li>Para presencial: sala com projeção e espaço para dinâmicas.</li>
+            <li>Para EAD: plataforma de videoconferência + repositório (Drive/Git/AVA).</li>
+            <li>1 dispositivo por dupla (ou estações rotativas).</li>
+            <li>Materiais simples: cartões, fita, cordas, post-its.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <section id="recursos" aria-labelledby="recursos-t">
+      <h2 id="recursos-t">Recursos e modelos prontos</h2>
+      <div class="two">
+        <div class="card">
+          <h3>Modelos editáveis</h3>
+          <ul>
+            <li>Canvas de projeto MAPEAR</li>
+            <li>Roteiro de RE (antes/durante/depois)</li>
+            <li>Rubrica de PC (padrão)</li>
+            <li>Checklist de acessibilidade didática</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Protocolos de mediação</h3>
+          <ul>
+            <li>Pense–Par–Compartilhe</li>
+            <li>Crítica amigável (Como um amigo)</li>
+            <li>Galeria com feedback pontual</li>
+            <li>Stand-up de aprendizagem (check-in de 2 minutos)</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <section id="baralho" aria-labelledby="baralho-t">
+      <h2 id="baralho-t">Baralho Pedagógico</h2>
+      <div class="cta-row">
+        <button class="btn secondary" id="download-deck">Baixar baralho (PDF para impressão)</button>
+      </div>
+      <div class="deck" role="list">
+        <div class="card-deck" role="listitem">
+          <h4>Orientação</h4>
+          <svg viewBox="0 0 160 110" aria-hidden="true">
+            <line x1="10" y1="90" x2="140" y2="90" stroke="#eaf0ff" stroke-width="3" />
+            <polygon points="140,90 130,85 130,95" fill="#eaf0ff"/>
+            <line x1="20" y1="100" x2="20" y2="20" stroke="#eaf0ff" stroke-width="3" />
+            <polygon points="20,20 15,30 25,30" fill="#eaf0ff"/>
+            <text x="95" y="105" font-size="10" fill="#aab3d1">Você está aqui</text>
+          </svg>
+          <p>Forneça uma pista ou caminho inicial para orientar os alunos.</p>
+        </div>
+
+        <div class="card-deck" role="listitem">
+          <h4>Motivação</h4>
+          <svg viewBox="0 0 160 110" aria-hidden="true">
+            <circle cx="80" cy="55" r="38" fill="#f59e0b33" stroke="#f59e0b" stroke-width="2" />
+            <circle cx="68" cy="47" r="4" fill="#0b1020" />
+            <circle cx="92" cy="47" r="4" fill="#0b1020" />
+            <path d="M62 65 Q80 78 98 65" fill="none" stroke="#0b1020" stroke-width="3" stroke-linecap="round" />
+          </svg>
+          <p>Incentive os estudantes a persistirem diante de desafios.</p>
+        </div>
+
+        <div class="card-deck" role="listitem">
+          <h4>Colaboração Forçada</h4>
+          <svg viewBox="0 0 160 110" aria-hidden="true">
+            <circle cx="60" cy="55" r="26" fill="none" stroke="#eaf0ff" stroke-width="2" />
+            <circle cx="100" cy="55" r="26" fill="none" stroke="#eaf0ff" stroke-width="2" />
+            <circle cx="80" cy="35" r="26" fill="none" stroke="#eaf0ff" stroke-width="2" />
+          </svg>
+          <p>Membros da equipe devem trabalhar juntos</p>
+        </div>
+
+        <div class="card-deck" role="listitem">
+          <h4>Dica Estratégica</h4>
+          <svg viewBox="0 0 160 110" aria-hidden="true">
+            <polygon points="50,80 80,30 110,80" fill="none" stroke="#eaf0ff" stroke-width="2" />
+            <line x1="70" y1="62" x2="90" y2="62" stroke="#eaf0ff" stroke-width="3" />
+          </svg>
+          <p>Ofereça uma dica que poupe tempo, sem entregar a solução.</p>
+        </div>
+
+        <div class="card-deck" role="listitem">
+          <h4>Reflexão</h4>
+          <svg viewBox="0 0 160 110" aria-hidden="true">
+            <ellipse cx="70" cy="55" rx="40" ry="24" fill="none" stroke="#eaf0ff" stroke-width="2" />
+            <text x="60" y="60" font-size="16" fill="#eaf0ff">…</text>
+            <path d="M112 58 C130 48, 142 38, 148 28" fill="none" stroke="#eaf0ff" stroke-width="3" marker-end="" />
+            <polygon points="148,28 144,35 152,33" fill="#eaf0ff" />
+          </svg>
+          <p>Peça que os alunos parem e reflitam sobre sua estratégia.</p>
+        </div>
+
+        <div class="card-deck" role="listitem">
+          <h4>Erro Produtivo</h4>
+          <svg viewBox="0 0 160 110" aria-hidden="true">
+            <line x1="50" y1="40" x2="110" y2="100" stroke="#eaf0ff" stroke-width="3" />
+            <line x1="110" y1="40" x2="50" y2="100" stroke="#eaf0ff" stroke-width="3" />
+            <text x="72" y="30" font-size="16" fill="#aab3d1">?</text>
+          </svg>
+          <p>Valorize os erros como oportunidade de aprendizado.</p>
+        </div>
+
+        <div class="card-deck" role="listitem">
+          <h4>Exploração Livre</h4>
+          <svg viewBox="0 0 160 110" aria-hidden="true">
+            <rect x="40" y="30" width="80" height="50" fill="none" stroke="#eaf0ff" stroke-dasharray="6 6" stroke-width="2" />
+            <text x="75" y="60" font-size="18" fill="#eaf0ff">?</text>
+          </svg>
+          <p>Permita que os alunos experimentem sem regras.</p>
+        </div>
+
+        <div class="card-deck" role="listitem">
+          <h4>Rotatividade</h4>
+          <svg viewBox="0 0 160 110" aria-hidden="true">
+            <path d="M60 90 A35 35 0 1 1 95 55" fill="none" stroke="#eaf0ff" stroke-width="3" />
+            <polygon points="95,55 85,55 90,65" fill="#eaf0ff" />
+            <text x="20" y="60" font-size="16" fill="#eaf0ff">⇌</text>
+          </svg>
+          <p>Troque papéis entre os membros da equipe.</p>
+        </div>
+
+        <!-- Pensamento Computacional -->
+        <div class="card-deck" role="listitem">
+          <h4>Abstração</h4>
+          <svg viewBox="0 0 160 110" aria-hidden="true">
+            <circle cx="55" cy="60" r="22" fill="none" stroke="#eaf0ff" stroke-width="2" />
+            <line x1="78" y1="60" x2="120" y2="60" stroke="#eaf0ff" stroke-width="2" />
+            <text x="125" y="62" font-size="16" fill="#eaf0ff">…</text>
+          </svg>
+          <p>Simplifique o problema, ignorando detalhes irrelevantes.</p>
+        </div>
+
+        <div class="card-deck" role="listitem">
+          <h4>Padrões</h4>
+          <svg viewBox="0 0 160 110" aria-hidden="true">
+            <circle cx="50" cy="60" r="14" fill="none" stroke="#eaf0ff" stroke-width="2" />
+            <circle cx="80" cy="60" r="14" fill="none" stroke="#eaf0ff" stroke-width="2" />
+            <circle cx="110" cy="60" r="14" fill="none" stroke="#eaf0ff" stroke-width="2" />
+          </svg>
+          <p>Encontre repetições e semelhanças para resolver mais rápido.</p>
+        </div>
+
+        <div class="card-deck" role="listitem">
+          <h4>Algoritmo</h4>
+          <svg viewBox="0 0 160 110" aria-hidden="true">
+            <line x1="30" y1="60" x2="70" y2="60" stroke="#eaf0ff" stroke-width="3" />
+            <polygon points="70,60 60,55 60,65" fill="#eaf0ff" />
+            <line x1="80" y1="60" x2="120" y2="60" stroke="#eaf0ff" stroke-width="3" />
+            <polygon points="120,60 110,55 110,65" fill="#eaf0ff" />
+          </svg>
+          <p>Crie uma sequência de passos lógicos para alcançar o objetivo.</p>
+        </div>
+
+        <div class="card-deck" role="listitem">
+          <h4>Generalização</h4>
+          <svg viewBox="0 0 160 110" aria-hidden="true">
+            <rect x="30" y="40" width="28" height="20" fill="none" stroke="#eaf0ff" />
+            <rect x="68" y="40" width="28" height="20" fill="none" stroke="#eaf0ff" />
+            <rect x="106" y="40" width="28" height="20" fill="none" stroke="#eaf0ff" />
+            <text x="76" y="90" font-size="16" fill="#eaf0ff">…</text>
+          </svg>
+          <p>Use a mesma lógica em diferentes situações.</p>
+        </div>
+
+        <div class="card-deck" role="listitem">
+          <h4>Decomposição</h4>
+          <svg viewBox="0 0 160 110" aria-hidden="true">
+            <rect x="35" y="35" width="90" height="50" fill="none" stroke="#eaf0ff" />
+            <line x1="35" y1="60" x2="125" y2="60" stroke="#eaf0ff" stroke-dasharray="6 6" />
+            <line x1="80" y1="35" x2="80" y2="85" stroke="#eaf0ff" stroke-dasharray="6 6" />
+          </svg>
+          <p>Divida problemas grandes em partes menores.</p>
+        </div>
+
+        <div class="card-deck" role="listitem">
+          <h4>Depuração</h4>
+          <svg viewBox="0 0 160 110" aria-hidden="true">
+            <circle cx="70" cy="60" r="22" fill="none" stroke="#eaf0ff" stroke-width="2" />
+            <text x="64" y="64" font-size="16" fill="#eaf0ff">?</text>
+            <path d="M100 60 A28 28 0 1 1 72 32" fill="none" stroke="#ef4444" stroke-width="3" />
+          </svg>
+          <p>Identifique e corrija erros no raciocínio ou código.</p>
+        </div>
+
+        <div class="card-deck" role="listitem">
+          <h4>Sequência Lógica</h4>
+          <svg viewBox="0 0 160 110" aria-hidden="true">
+            <rect x="40" y="42" width="24" height="24" fill="none" stroke="#eaf0ff" />
+            <rect x="70" y="42" width="24" height="24" fill="none" stroke="#eaf0ff" />
+            <rect x="100" y="42" width="24" height="24" fill="none" stroke="#eaf0ff" />
+          </svg>
+          <p>Siga uma ordem clara de ações para alcançar o objetivo.</p>
+        </div>
+
+        <div class="card-deck" role="listitem">
+          <h4>Pensamento Crítico</h4>
+          <svg viewBox="0 0 160 110" aria-hidden="true">
+            <polygon points="80,30 110,60 80,90 50,60" fill="none" stroke="#eaf0ff" stroke-width="2" />
+            <text x="75" y="65" font-size="16" fill="#eaf0ff">X</text>
+          </svg>
+          <p>Avalie alternativas e escolha a melhor solução.</p>
+        </div>
+
+        <!-- Robótica Educacional -->
+        <div class="card-deck" role="listitem">
+          <h4>Sensores</h4>
+          <svg viewBox="0 0 160 110" aria-hidden="true">
+            <circle cx="55" cy="60" r="10" fill="none" stroke="#eaf0ff" />
+            <circle cx="85" cy="60" r="10" fill="none" stroke="#eaf0ff" />
+            <line x1="105" y1="60" x2="135" y2="60" stroke="#eaf0ff" stroke-width="2" />
+            <polygon points="135,60 125,55 125,65" fill="#eaf0ff" />
+          </svg>
+          <p>Detecte informações do ambiente (luz, distância, som).</p>
+        </div>
+
+        <div class="card-deck" role="listitem">
+          <h4>Atuadores</h4>
+          <svg viewBox="0 0 160 110" aria-hidden="true">
+            <circle cx="80" cy="60" r="26" fill="none" stroke="#eaf0ff" />
+            <line x1="80" y1="60" x2="110" y2="30" stroke="#eaf0ff" stroke-width="2" />
+            <line x1="80" y1="60" x2="50" y2="30" stroke="#eaf0ff" stroke-width="2" />
+          </svg>
+          <p>Produza ações: motores, LEDs, braços robóticos.</p>
+        </div>
+
+        <div class="card-deck" role="listitem">
+          <h4>Engrenagens</h4>
+          <svg viewBox="0 0 160 110" aria-hidden="true">
+            <g stroke="#eaf0ff">
+              <circle cx="80" cy="60" r="14" fill="none" />
+              <g>
+                <line x1="80" y1="28" x2="80" y2="44" />
+                <line x1="80" y1="76" x2="80" y2="92" />
+                <line x1="48" y1="60" x2="64" y2="60" />
+                <line x1="96" y1="60" x2="112" y2="60" />
+                <line x1="60" y1="40" x2="70" y2="50" />
+                <line x1="90" y1="70" x2="100" y2="80" />
+                <line x1="60" y1="80" x2="70" y2="70" />
+                <line x1="90" y1="50" x2="100" y2="40" />
+              </g>
+            </g>
+          </svg>
+          <p>Partes mecânicas podem multiplicar força e movimento.</p>
+        </div>
+
+        <div class="card-deck" role="listitem">
+          <h4>Programação de Robôs</h4>
+          <svg viewBox="0 0 160 110" aria-hidden="true">
+            <rect x="30" y="40" width="40" height="26" fill="none" stroke="#eaf0ff" />
+            <text x="45" y="57" font-size="12" fill="#eaf0ff">IF</text>
+            <rect x="90" y="40" width="40" height="26" fill="none" stroke="#eaf0ff" />
+            <text x="103" y="57" font-size="12" fill="#eaf0ff">DO</text>
+            <line x1="70" y1="53" x2="90" y2="53" stroke="#eaf0ff" stroke-width="2" />
+            <polygon points="90,53 82,49 82,57" fill="#eaf0ff" />
+          </svg>
+          <p>Crie comandos que dizem ao robô como agir.</p>
+        </div>
+
+        <div class="card-deck" role="listitem">
+          <h4>Modularização</h4>
+          <svg viewBox="0 0 160 110" aria-hidden="true">
+            <rect x="35" y="40" width="30" height="24" fill="none" stroke="#eaf0ff" />
+            <rect x="70" y="40" width="30" height="24" fill="none" stroke="#eaf0ff" />
+            <rect x="105" y="40" width="30" height="24" fill="none" stroke="#eaf0ff" />
+          </svg>
+          <p>Monte projetos dividindo em módulos reutilizáveis.</p>
+        </div>
+
+        <div class="card-deck" role="listitem">
+          <h4>Controle e Feedback</h4>
+          <svg viewBox="0 0 160 110" aria-hidden="true">
+            <line x1="30" y1="60" x2="120" y2="60" stroke="#eaf0ff" stroke-width="2" />
+            <line x1="120" y1="60" x2="120" y2="30" stroke="#eaf0ff" stroke-width="2" />
+            <line x1="120" y1="30" x2="30" y2="30" stroke="#eaf0ff" stroke-width="2" />
+            <line x1="30" y1="30" x2="30" y2="60" stroke="#eaf0ff" stroke-width="2" />
+            <polygon points="30,60 38,56 38,64" fill="#eaf0ff" />
+          </svg>
+          <p>Robôs ajustam suas ações de acordo com os resultados.</p>
+        </div>
+
+        <div class="card-deck" role="listitem">
+          <h4>Colaboração</h4>
+          <svg viewBox="0 0 160 110" aria-hidden="true">
+            <circle cx="60" cy="55" r="24" fill="none" stroke="#eaf0ff" />
+            <circle cx="100" cy="55" r="24" fill="none" stroke="#eaf0ff" />
+            <circle cx="80" cy="35" r="24" fill="none" stroke="#eaf0ff" />
+          </svg>
+          <p>Trabalhe em equipe para criar soluções mais criativas.</p>
+        </div>
+
+        <div class="card-deck" role="listitem">
+          <h4>Criatividade</h4>
+          <svg viewBox="0 0 160 110" aria-hidden="true">
+            <polygon points="60,80 80,40 100,80" fill="none" stroke="#eaf0ff" stroke-width="2" />
+            <line x1="70" y1="62" x2="90" y2="62" stroke="#eaf0ff" stroke-width="3" />
+          </svg>
+          <p>Inove combinando ideias e criando projetos originais.</p>
+        </div>
+
+        <div class="card-deck" role="listitem">
+          <h4>Sensor Ultrassônico</h4>
+          <svg viewBox="0 0 160 110" aria-hidden="true">
+            <rect x="40" y="40" width="70" height="28" fill="none" stroke="#eaf0ff" />
+            <circle cx="58" cy="54" r="8" fill="none" stroke="#eaf0ff" />
+            <circle cx="90" cy="54" r="8" fill="none" stroke="#eaf0ff" />
+            <line x1="112" y1="54" x2="140" y2="48" stroke="#eaf0ff" />
+            <line x1="112" y1="54" x2="140" y2="60" stroke="#eaf0ff" />
+          </svg>
+          <p>Mede distância por eco. Útil para desviar de obstáculos e mapear o ambiente.</p>
+        </div>
+
+        <div class="card-deck" role="listitem">
+          <h4>Sensor de Linha</h4>
+          <svg viewBox="0 0 160 110" aria-hidden="true">
+            <rect x="35" y="40" width="90" height="28" fill="none" stroke="#eaf0ff" />
+            <rect x="55" y="48" width="12" height="12" fill="#eaf0ff" />
+            <rect x="85" y="48" width="12" height="12" fill="#eaf0ff" />
+            <line x1="30" y1="78" x2="130" y2="78" stroke="#eaf0ff" stroke-dasharray="6 6" />
+            <line x1="61" y1="78" x2="61" y2="92" stroke="#eaf0ff" />
+            <line x1="91" y1="78" x2="91" y2="92" stroke="#eaf0ff" />
+          </svg>
+          <p>Detecta contraste claro/escuro para seguir trilhas. Base para seguidores de linha.</p>
+        </div>
+
+        <div class="card-deck" role="listitem">
+          <h4>Motor DC</h4>
+          <svg viewBox="0 0 160 110" aria-hidden="true">
+            <circle cx="50" cy="60" r="14" fill="none" stroke="#eaf0ff" />
+            <rect x="64" y="50" width="56" height="20" fill="none" stroke="#eaf0ff" />
+            <path d="M58 34 A20 20 0 1 0 58 86" fill="none" stroke="#eaf0ff" stroke-width="3" />
+          </svg>
+          <p>Gira continuamente. Controle de velocidade via PWM e sentido via ponte H.</p>
+        </div>
+
+        <div class="card-deck" role="listitem">
+          <h4>Servo Motor</h4>
+          <svg viewBox="0 0 160 110" aria-hidden="true">
+            <rect x="45" y="48" width="70" height="34" fill="none" stroke="#eaf0ff" />
+            <line x1="80" y1="48" x2="80" y2="30" stroke="#eaf0ff" stroke-width="3" />
+            <line x1="60" y1="30" x2="100" y2="30" stroke="#eaf0ff" stroke-width="3" />
+            <path d="M80 30 A20 20 0 0 1 65 22" fill="none" stroke="#eaf0ff" stroke-width="2" />
+          </svg>
+          <p>Controle de posição angular. Ideal para braços, garras e direções precisas.</p>
+        </div>
+
+        <div class="card-deck" role="listitem">
+          <h4>Ponte H</h4>
+          <svg viewBox="0 0 160 110" aria-hidden="true">
+            <rect x="40" y="38" width="80" height="34" fill="none" stroke="#eaf0ff" />
+            <circle cx="80" cy="30" r="6" fill="none" stroke="#eaf0ff" />
+            <circle cx="80" cy="88" r="6" fill="none" stroke="#eaf0ff" />
+            <line x1="40" y1="55" x2="20" y2="55" stroke="#eaf0ff" />
+            <line x1="120" y1="55" x2="140" y2="55" stroke="#eaf0ff" />
+            <line x1="80" y1="36" x2="80" y2="38" stroke="#eaf0ff" />
+            <line x1="80" y1="72" x2="80" y2="74" stroke="#eaf0ff" />
+          </svg>
+          <p>Controla sentido de rotação do motor invertendo polaridade (frente/ré).</p>
+        </div>
+
+        <div class="card-deck" role="listitem">
+          <h4>PWM</h4>
+          <svg viewBox="0 0 160 110" aria-hidden="true">
+            <line x1="20" y1="80" x2="140" y2="80" stroke="#eaf0ff" />
+            <path d="M20 80 V50 H44 V80 M60 80 V50 H84 V80 M100 80 V50 H124 V80" fill="none" stroke="#eaf0ff" stroke-width="2" />
+            <text x="70" y="95" font-size="10" fill="#aab3d1">largura do pulso</text>
+          </svg>
+          <p>Modulação por largura de pulso para controlar potência: velocidade e brilho.</p>
+        </div>
+
+        <div class="card-deck" role="listitem">
+          <h4>PID Simples</h4>
+          <svg viewBox="0 0 200 110" aria-hidden="true">
+            <circle cx="40" cy="60" r="12" fill="none" stroke="#eaf0ff" />
+            <text x="36" y="64" font-size="12" fill="#eaf0ff">e</text>
+            <line x1="52" y1="60" x2="84" y2="60" stroke="#eaf0ff" />
+            <rect x="84" y="44" width="60" height="32" fill="none" stroke="#eaf0ff" />
+            <text x="98" y="64" font-size="12" fill="#eaf0ff">P + I + D</text>
+            <line x1="144" y1="60" x2="172" y2="60" stroke="#eaf0ff" />
+            <text x="176" y="64" font-size="12" fill="#eaf0ff">u</text>
+            <line x1="160" y1="58" x2="84" y2="58" stroke="#eaf0ff" stroke-dasharray="6 6" />
+          </svg>
+          <p>Controle com proporcional, integral e derivativo para correções mais estáveis.</p>
+        </div>
+
+        <div class="card-deck" role="listitem">
+          <h4>Chassi e Transmissão</h4>
+          <svg viewBox="0 0 200 110" aria-hidden="true">
+            <rect x="50" y="44" width="100" height="28" fill="none" stroke="#eaf0ff" />
+            <circle cx="70" cy="80" r="10" fill="none" stroke="#eaf0ff" />
+            <circle cx="130" cy="80" r="10" fill="none" stroke="#eaf0ff" />
+            <line x1="100" y1="44" x2="100" y2="24" stroke="#eaf0ff" stroke-dasharray="6 6" />
+            <line x1="88" y1="24" x2="112" y2="24" stroke="#eaf0ff" />
+          </svg>
+          <p>Estrutura mecânica, rodas e eixos. Pensa-se em peso, atrito e estabilidade.</p>
+        </div>
+
+        <div class="card-deck" role="listitem">
+          <h4>Energia e Bateria</h4>
+          <svg viewBox="0 0 200 110" aria-hidden="true">
+            <rect x="60" y="44" width="80" height="28" fill="none" stroke="#eaf0ff" />
+            <line x1="66" y1="58" x2="90" y2="58" stroke="#eaf0ff" />
+            <line x1="78" y1="52" x2="78" y2="64" stroke="#eaf0ff" />
+            <line x1="110" y1="58" x2="134" y2="58" stroke="#eaf0ff" />
+            <line x1="122" y1="54" x2="122" y2="62" stroke="#eaf0ff" />
+            <text x="95" y="90" font-size="12" fill="#aab3d1">5–9 V</text>
+          </svg>
+          <p>Gestão de energia, autonomia e segurança. Dimensione tensão e corrente.</p>
+        </div>
+
+        <div class="card-deck" role="listitem">
+          <h4>Comunicação Serial/Bluetooth</h4>
+          <svg viewBox="0 0 200 110" aria-hidden="true">
+            <rect x="40" y="46" width="50" height="24" fill="none" stroke="#eaf0ff" />
+            <text x="60" y="62" font-size="10" fill="#eaf0ff" text-anchor="middle">TX</text>
+            <rect x="110" y="46" width="50" height="24" fill="none" stroke="#eaf0ff" />
+            <text x="135" y="62" font-size="10" fill="#eaf0ff" text-anchor="middle">RX</text>
+            <line x1="90" y1="52" x2="110" y2="52" stroke="#eaf0ff" />
+            <line x1="90" y1="58" x2="110" y2="58" stroke="#eaf0ff" />
+            <line x1="90" y1="64" x2="110" y2="64" stroke="#eaf0ff" />
+          </svg>
+          <p>Troca de dados entre placas e celular. Útil para telemetria e comandos.</p>
+        </div>
+
+        <div class="card-deck" role="listitem">
+          <h4>Modularização (Funções)</h4>
+          <svg viewBox="0 0 200 110" aria-hidden="true">
+            <rect x="40" y="40" width="70" height="24" fill="none" stroke="#eaf0ff" />
+            <text x="75" y="56" font-size="10" fill="#eaf0ff" text-anchor="middle">lerSensor()</text>
+            <rect x="40" y="76" width="70" height="24" fill="none" stroke="#eaf0ff" />
+            <text x="75" y="92" font-size="10" fill="#eaf0ff" text-anchor="middle">atuarMotor()</text>
+            <path d="M110 52 H150 V88 H110" fill="none" stroke="#eaf0ff" />
+            <polygon points="110,88 118,84 118,92" fill="#eaf0ff" />
+          </svg>
+          <p>Separe tarefas em funções reutilizáveis para simplificar e testar melhor.</p>
+        </div>
+
+        <div class="card-deck" role="listitem">
+          <h4>Teste e Depuração</h4>
+          <svg viewBox="0 0 200 110" aria-hidden="true">
+            <rect x="40" y="34" width="120" height="60" fill="none" stroke="#eaf0ff" />
+            <line x1="50" y1="46" x2="150" y2="46" stroke="#eaf0ff" />
+            <line x1="60" y1="58" x2="150" y2="58" stroke="#eaf0ff" />
+            <line x1="70" y1="70" x2="150" y2="70" stroke="#eaf0ff" />
+            <circle cx="70" cy="70" r="4" fill="#ef4444" />
+            <line x1="70" y1="74" x2="70" y2="88" stroke="#ef4444" />
+          </svg>
+          <p>Use monitor serial, casos de teste e logs para achar e corrigir erros.</p>
+        </div>
+
+        <div class="card-deck" role="listitem">
+          <h4>Segurança</h4>
+          <svg viewBox="0 0 200 110" aria-hidden="true">
+            <polygon points="80,30 120,30 120,70 100,90 80,70" fill="none" stroke="#eaf0ff" />
+            <polygon points="95,50 105,50 100,60" fill="none" stroke="#eaf0ff" />
+          </svg>
+          <p>Proteja olhos e mãos, isole fios, verifique curto-circuitos e aquecimento.</p>
+        </div>
+
+        <div class="card-deck" role="listitem">
+          <h4>Documentação</h4>
+          <svg viewBox="0 0 200 110" aria-hidden="true">
+            <rect x="70" y="28" width="60" height="80" fill="none" stroke="#eaf0ff" />
+            <line x1="78" y1="46" x2="122" y2="46" stroke="#eaf0ff" />
+            <line x1="78" y1="58" x2="122" y2="58" stroke="#eaf0ff" />
+            <line x1="78" y1="70" x2="122" y2="70" stroke="#eaf0ff" />
+            <line x1="78" y1="82" x2="110" y2="82" stroke="#eaf0ff" />
+          </svg>
+          <p>Registre versões, esquemas e decisões. Facilita colaboração e manutenção.</p>
+        </div>
+
+        <div class="card-deck" role="listitem">
+          <h4>Protoboard e Fiação</h4>
+          <svg viewBox="0 0 200 110" aria-hidden="true">
+            <rect x="50" y="34" width="120" height="60" fill="none" stroke="#eaf0ff" />
+            <g stroke="#eaf0ff">
+              <line x1="60" y1="44" x2="60" y2="84" />
+              <line x1="66" y1="44" x2="66" y2="84" />
+              <line x1="72" y1="44" x2="72" y2="84" />
+              <line x1="78" y1="44" x2="78" y2="84" />
+              <line x1="84" y1="44" x2="84" y2="84" />
+              <line x1="90" y1="44" x2="90" y2="84" />
+              <line x1="96" y1="44" x2="96" y2="84" />
+              <line x1="102" y1="44" x2="102" y2="84" />
+            </g>
+            <line x1="172" y1="64" x2="150" y2="64" stroke="#eaf0ff" />
+            <polygon points="150,64 158,60 158,68" fill="#eaf0ff" />
+          </svg>
+          <p>Monte circuitos sem solda, organize fios e alimente corretamente os trilhos.</p>
+        </div>
+
+        <div class="card-deck" role="listitem">
+          <h4>Peças 3D e Reciclagem</h4>
+          <svg viewBox="0 0 200 110" aria-hidden="true">
+            <rect x="40" y="52" width="60" height="28" fill="none" stroke="#eaf0ff" />
+            <rect x="110" y="52" width="60" height="28" fill="none" stroke="#eaf0ff" stroke-dasharray="6 6" />
+            <line x1="70" y1="52" x2="70" y2="32" stroke="#eaf0ff" />
+            <polygon points="60,32 80,32 70,18" fill="none" stroke="#eaf0ff" />
+          </svg>
+          <p>Estruture com impressora 3D ou materiais recicláveis: leve, forte e barato.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <section id="faq" aria-labelledby="faq-t">
+      <h2 id="faq-t">FAQ</h2>
+      <details>
+        <summary>O que é Robótica Educacional?</summary>
+        <p>A Robótica é uma área da tecnologia que reúne conhecimentos de Mecânica, Engenharia Elétrica, Eletrônica e Computação. Ela estuda e cria máquinas que conseguem se mover e executar tarefas sozinhas ou com pouca ajuda humana. Na prática, isso significa construir sistemas formados por peças mecânicas (como motores e engrenagens) e componentes eletrônicos (como sensores e placas de controle). Esses sistemas podem ser controlados por pessoas ou programados para funcionar de forma automática, realizando atividades de maneira rápida, precisa e eficiente.</p>
+      </details>
+      <details>
+        <summary>Preciso de laboratório de informática?</summary>
+        <p>Não. O curso valoriza estratégias <em>low-tech</em> e desplugadas, com uso de tecnologia quando disponível.</p>
+      </details>
+      <details>
+        <summary>Há certificação?</summary>
+        <p>Opcional, mediante cumprimento de carga horária mínima e entrega do projeto final com documentação no banco de práticas.</p>
+      </details>
+    </section>
+
+    <footer class="footer">
+      Arcabouço Pedagógico MAPEAR — Aprendizagem ativa, reflexiva e colaborativa
+    </footer>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js" defer></script>
+  <script defer>
+    (function(){
+      function fitInsideCell(pdf, imgData, cell){
+        const props = pdf.getImageProperties(imgData);
+        const imgW = props.width;
+        const imgH = props.height;
+        let w = cell.w;
+        let h = (imgH * w) / imgW;
+        if (h > cell.h) {
+          h = cell.h;
+          w = (imgW * h) / imgH;
+        }
+        const x = cell.x + (cell.w - w) / 2;
+        const y = cell.y + (cell.h - h) / 2;
+        return { x, y, w, h };
+      }
+
+      async function elementToDataUrl(el){
+        const rootStyles = getComputedStyle(document.documentElement);
+        const bgVar = (rootStyles.getPropertyValue('--bg') || '#0b1020').trim() || '#0b1020';
+        const baseCanvas = await html2canvas(el, {
+          backgroundColor: bgVar,
+          scale: 3,
+          useCORS: true,
+          allowTaint: true
+        });
+        return baseCanvas.toDataURL('image/png');
+      }
+
+      async function generateDeckPdf(){
+        const button = document.getElementById('download-deck');
+        if (!button) return;
+        button.disabled = true;
+        const originalText = button.textContent;
+        button.textContent = 'Gerando…';
+        try {
+          const deckCards = Array.from(document.querySelectorAll('#baralho .card-deck'));
+          if (deckCards.length === 0) throw new Error('Nenhuma carta encontrada.');
+
+          const { jsPDF } = window.jspdf || {};
+          if (!jsPDF) throw new Error('Biblioteca jsPDF não carregada.');
+          const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+          const pdfWidth = pdf.internal.pageSize.getWidth();
+          const pdfHeight = pdf.internal.pageSize.getHeight();
+          const margin = 10; // mm
+          const gap = 6; // mm entre células
+          const columns = 2;
+          const rows = 2;
+          const cellW = (pdfWidth - margin * 2 - gap) / columns;
+          const cellH = (pdfHeight - margin * 2 - gap) / rows;
+          const cells = [
+            { x: margin, y: margin, w: cellW, h: cellH },
+            { x: margin + cellW + gap, y: margin, w: cellW, h: cellH },
+            { x: margin, y: margin + cellH + gap, w: cellW, h: cellH },
+            { x: margin + cellW + gap, y: margin + cellH + gap, w: cellW, h: cellH }
+          ];
+          const headerText = 'BARALHO PEDAGÓGICO MAPEAR';
+          const headerH = 10; // espaço reservado no topo da carta (mm)
+
+          for (let i = 0; i < deckCards.length; i++) {
+            if (i > 0 && i % 4 === 0) pdf.addPage();
+            const card = deckCards[i];
+            await new Promise(r => requestAnimationFrame(r));
+            const dataUrl = await elementToDataUrl(card);
+            const cell = cells[i % 4];
+            pdf.setFillColor(11, 16, 32);
+            pdf.rect(cell.x, cell.y, cell.w, cell.h, 'F');
+            pdf.setTextColor(255, 255, 255);
+            pdf.setFont('helvetica', 'bold');
+            pdf.setFontSize(10);
+            pdf.text(headerText, cell.x + (cell.w / 2), cell.y + 6, { align: 'center' });
+            const imageCell = { x: cell.x, y: cell.y + headerH, w: cell.w, h: cell.h - headerH };
+            const rect = fitInsideCell(pdf, dataUrl, imageCell);
+            pdf.addImage(dataUrl, 'PNG', rect.x, rect.y, rect.w, rect.h);
+          }
+
+          pdf.save('Baralho_MAPEAR.pdf');
+        } catch (err) {
+          console.error(err);
+          alert('Não foi possível gerar o PDF do baralho. Tente novamente.');
+        } finally {
+          button.disabled = false;
+          button.textContent = originalText;
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', function(){
+        const button = document.getElementById('download-deck');
+        if (button) {
+          button.addEventListener('click', function(){
+            generateDeckPdf();
+          });
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
