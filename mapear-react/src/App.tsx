@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, NavLink, useLocation } from 'react-router-dom';
 import Header from './components/common/Header';
 import Footer from './components/common/Footer';
-import Home from './pages/Home';
 import Conteudo from './pages/Conteudo';
 import ProtectedRoute from './components/ProtectedRoute';
 import AuthModal from './components/auth/AuthModal';
@@ -58,7 +57,7 @@ function App() {
         <SubNav />
         <main className="app-container">
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<Conteudo />} />
             <Route element={<ProtectedRoute />}> 
               <Route path="/conteudo" element={<Conteudo />} />
               <Route path="/jogos/*" element={<Jogos />}>

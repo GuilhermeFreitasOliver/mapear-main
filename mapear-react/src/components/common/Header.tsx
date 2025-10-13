@@ -19,7 +19,6 @@ const Header = () => {
       </div>
       <nav className="main-nav">
         <Link className="btn ghost" to="/">Início</Link>
-        <Link className="btn ghost" to="/conteudo">Conteúdo</Link>
         <Link className="btn ghost" to="/curso">Curso</Link>
         <Link className="btn ghost" to="/jogos">Jogos</Link>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>

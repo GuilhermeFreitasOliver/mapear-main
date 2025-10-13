@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import Card from '../components/common/Card';
 
 const Conteudo = () => {
@@ -10,9 +11,9 @@ const Conteudo = () => {
           <img alt="Logo da Metodologia MAPEAR" src="https://carolsoko.github.io/mapear/MAPEAR.png" />
         </div>
         <div className="hero-actions">
-          <a className="button cta secondary" href={artefatosHref} download style={{ gridColumn: '1 / -1' }}>
-            Baixar Artefatos (ZIP)
-          </a>
+          <Link className="button cta secondary" to="/curso">Abrir Curso MAPEAR</Link>
+          <Link className="button cta primary" to="/jogos">Abrir Jogos MAPEAR</Link>
+          <a className="button cta purple" href={artefatosHref} download>Baixar Artefatos (ZIP)</a>
         </div>
         <p>
           O Arcabouço Pedagógico para o Ensino-Aprendizagem de Pensamento Computacional (MAPEAR) constitui uma proposta inovadora voltada ao ensino básico e à formação inicial e continuada de professores, com foco no desenvolvimento de competências associadas ao Pensamento Computacional (PC). Inspirada na metáfora de “traçar caminhos”, a proposta busca mapear o processo de aprendizagem por meio de ciclos de experimentação, investigação e reflexão, sempre conectados à prática pedagógica real.
