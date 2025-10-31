@@ -25,6 +25,12 @@ export default function AuthModal() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
+  function toMessage(err: unknown, fallback: string): string {
+    if (err instanceof Error && typeof err.message === 'string') return err.message;
+    if (typeof err === 'string') return err;
+    return fallback;
+  }
+
   useEffect(() => {
     const openHandler = () => setIsOpen(true);
     const closeHandler = () => setIsOpen(false);
@@ -65,8 +71,8 @@ export default function AuthModal() {
       await signInWithEmailAndPassword(auth, email.trim(), password);
       resetForm();
       setIsOpen(false);
-    } catch (err: any) {
-      setError(err?.message ?? 'Falha ao entrar. Tente novamente.');
+    } catch (err: unknown) {
+      setError(toMessage(err, 'Falha ao entrar. Tente novamente.'));
     } finally {
       setLoading(false);
     }
@@ -89,8 +95,8 @@ export default function AuthModal() {
       }
        resetForm();
        setIsOpen(false);
-     } catch (err: any) {
-       setError(err?.message ?? 'Falha no login com Google.');
+     } catch (err: unknown) {
+       setError(toMessage(err, 'Falha no login com Google.'));
      } finally {
        setLoading(false);
      }
@@ -119,8 +125,8 @@ export default function AuthModal() {
        resetForm();
        setIsOpen(false);
        setView('login');
-     } catch (err: any) {
-       setError(err?.message ?? 'Falha ao registrar. Tente novamente.');
+     } catch (err: unknown) {
+       setError(toMessage(err, 'Falha ao registrar. Tente novamente.'));
      } finally {
        setLoading(false);
      }

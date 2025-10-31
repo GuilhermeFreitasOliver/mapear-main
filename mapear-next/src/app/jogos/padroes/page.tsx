@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { useStorage } from '@/context/StorageContext';
+import type { GameState, GameEvent, Pillar } from '@/context/StorageContext';
 import { mountTip, TipLevel } from '@/lib/tipEngine';
 import Link from 'next/link'
 
@@ -73,13 +74,16 @@ type CurrentPhaseData =
   | { kind: 'sequence'; sequence: Array<number | string>; options: Array<number | string>; correct: number | string }
   | { kind: 'scenario'; situacao: string; pergunta: string; options: string[]; correct: string };
 
-function computeInitialStep(state: any, gameKey: string, totalPhases: number) {
-  const events = state?.events || [];
-  const last = events
-    .filter((e: any) => e.type === 'minigame_step' && (e.payload as any)?.key === gameKey)
-    .sort((a: any, b: any) => (b.payload?.step || 0) - (a.payload?.step || 0))[0];
+type MinigameStepPayload = { key: Pillar; step: number; correct?: boolean };
 
-  let initialStep = last ? ((last.payload?.step || 0) + 1) : 1;
+function computeInitialStep(state: GameState | undefined, gameKey: Pillar, totalPhases: number) {
+  const events: GameEvent[] = state?.events || [];
+  const last = events
+    .filter((e: GameEvent) => e.type === 'minigame_step' && (e.payload as MinigameStepPayload)?.key === gameKey)
+    .sort((a: GameEvent, b: GameEvent) => ((b.payload as MinigameStepPayload)?.step || 0) - ((a.payload as MinigameStepPayload)?.step || 0))[0];
+
+  const lastStep = last ? ((last.payload as MinigameStepPayload)?.step ?? 0) : 0;
+  let initialStep = last ? (lastStep + 1) : 1;
 
   if (state?.progress?.[gameKey]?.completed) {
     initialStep = 1;

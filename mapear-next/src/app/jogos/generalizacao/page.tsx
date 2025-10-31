@@ -3,6 +3,7 @@
 import { useMemo, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useStorage } from '@/context/StorageContext';
+import type { GameState, GameEvent, Pillar } from '@/context/StorageContext';
 import { mountTip, TipLevel } from '@/lib/tipEngine'
 
 type PhaseSet = { set: (string|number)[]; rule: string; correct: (sel: (string|number)[]) => boolean; };
@@ -20,12 +21,14 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-function computeInitialStep(state: any, key: string, maxStep: number) {
+type MinigameStepPayload = { key: Pillar; step: number; correct?: boolean };
+
+function computeInitialStep(state: GameState | undefined, key: Pillar, maxStep: number) {
   const completed = state?.progress?.[key]?.completed;
   if (completed) return maxStep;
   const steps = (state?.events || [])
-    .filter((e: any) => e.type === 'minigame_step' && (e.payload as any)?.key === key && (e.payload as any)?.correct)
-    .map((e: any) => (e.payload as any)?.step);
+    .filter((e: GameEvent) => e.type === 'minigame_step' && (e.payload as MinigameStepPayload)?.key === key && (e.payload as MinigameStepPayload)?.correct)
+    .map((e: GameEvent) => (e.payload as MinigameStepPayload)?.step);
   const last = steps.length ? Math.max(...steps) : 0;
   return Math.min(maxStep, last + 1);
 }
