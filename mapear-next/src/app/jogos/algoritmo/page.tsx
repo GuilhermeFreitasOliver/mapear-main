@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useStorage } from '@/context/StorageContext';
-import { mountTip, defaultPromptsFor, TipLevel } from '@/lib/tipEngine';
+import { mountTip, TipLevel } from '@/lib/tipEngine';
 
 type PhaseLabirinto = {
   expected: string[];
@@ -25,7 +25,9 @@ function isScenarioPhase(p: Phase): p is PhaseScenario {
   return (p as PhaseScenario).opcoes !== undefined;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function computeInitialStep(state: any, gameKey: string, totalPhases: number) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const events: any[] = state?.events || [];
   const last = events
     .filter((e) => e.type === 'minigame_step' && e.payload?.key === gameKey)

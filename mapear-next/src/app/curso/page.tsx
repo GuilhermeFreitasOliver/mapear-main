@@ -1,5 +1,4 @@
 "use client";
-import Link from "next/link";
 
 export default function CursoPage() {
   const handlePrint = () => {
@@ -85,7 +84,7 @@ export default function CursoPage() {
                       <li><strong>Desplugada:</strong> Classificação de problemas por decomposição com cartões.</li>
                     </ul>
                   </dd>
-                  <dt>RE</dt><dd>Diário rápido: "Que evidências de PC já existem na minha prática?"</dd>
+                  <dt>RE</dt><dd>Diário rápido: &quot;Que evidências de PC já existem na minha prática?&quot;</dd>
                   <dt>Avaliação</dt><dd>Checklist de compreensão + participação no mapa mental.</dd>
                   <dt>Recursos</dt><dd>Quadro físico/virtual, cartões, projetor, rubrica rápida.</dd>
                 </dl>
@@ -142,7 +141,7 @@ export default function CursoPage() {
               <div className="unit">
                 <dl>
                   <dt>Objetivos</dt><dd>Conduzir dinâmicas desplugadas para desenvolver raciocínio algorítmico.</dd>
-                  <dt>Atividades</dt><dd>Percurso em grade, cartas "Se/Então", debug humano, sorting network com cordas.</dd>
+                  <dt>Atividades</dt><dd>Percurso em grade, cartas &quot;Se/Então&quot;, debug humano, sorting network com cordas.</dd>
                   <dt>RE</dt><dd>Roda de conversa sobre transferência para leitura, escrita e matemática.</dd>
                 </dl>
               </div>
@@ -152,7 +151,7 @@ export default function CursoPage() {
               <div className="unit">
                 <dl>
                   <dt>Objetivos</dt><dd>Experimentar sequências curtas em Scratch/planilhas/Micro:bit.</dd>
-                  <dt>Atividades</dt><dd>Mini-desafios por níveis; pares programadores; "stop & share".</dd>
+                  <dt>Atividades</dt><dd>Mini-desafios por níveis; pares programadores; &quot;stop & share&quot;.</dd>
                   <dt>RE</dt><dd>Robótica Educacional: o que manter, adaptar, eliminar.</dd>
                 </dl>
               </div>
@@ -181,7 +180,7 @@ export default function CursoPage() {
                 <dl>
                   <dt>Objetivos</dt><dd>Conduzir protocolos: pense-compartilhe, galerias, crítica amigável, check-ins.</dd>
                   <dt>Atividades</dt><dd>Simulações de facilitação; plano de mediação por etapa.</dd>
-                  <dt>RE</dt><dd>Após cada simulação, registrar "o que observei, o que faria diferente".</dd>
+                  <dt>RE</dt><dd>Após cada simulação, registrar &quot;o que observei, o que faria diferente&quot;.</dd>
                 </dl>
               </div>
             </details>
@@ -226,7 +225,7 @@ export default function CursoPage() {
               <div className="unit">
                 <dl>
                   <dt>Objetivos</dt><dd>Implementar ciclos de feedback formativo e autoavaliação.</dd>
-                  <dt>Atividades</dt><dd>Quadro de feedback "Eu observei / Sugiro / Pergunto"; checklists de qualidade.</dd>
+                  <dt>Atividades</dt><dd>Quadro de feedback &quot;Eu observei / Sugiro / Pergunto&quot;; checklists de qualidade.</dd>
                 </dl>
               </div>
             </details>

@@ -328,8 +328,11 @@ export default function AbstracaoPage() {
       const state = storage.getCurrentState()
       if (state && state.events) {
         const lastEvent = [...state.events]
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           .filter((e: any) => e.type === 'minigame_step' && e.payload?.key === gameKey)
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           .sort((a: any, b: any) => (b.payload?.step || 0) - (a.payload?.step || 0))[0]
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         let initialStep = lastEvent ? ((lastEvent.payload as any)?.step || 0) + 1 : 1
         if (state.progress?.[gameKey]?.completed) {
           initialStep = 1
