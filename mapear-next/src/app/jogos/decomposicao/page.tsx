@@ -3,6 +3,7 @@
 import { useMemo, useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useStorage } from '@/context/StorageContext'
+import type { GameEvent } from '@/context/StorageContext'
 import { mountTip, TipLevel } from '@/lib/tipEngine'
 import { Fragment } from 'react';
 
@@ -429,7 +430,6 @@ export default function DecomposicaoPage() {
     // Garante que o storage já foi carregado
     if (storage) {
       const state = storage.getCurrentState()
-      // @ts-ignore
       const gameProgress = state.progress[gameKey]
 
       if (gameProgress) {
@@ -443,19 +443,21 @@ export default function DecomposicaoPage() {
 
         // 2. Se não foi concluído, encontra o último passo correto
         // Usa os eventos persistidos no estado (StorageContext)
-        // @ts-ignore
-        const allEvents = state.events || []
+        const allEvents = state.events
         
         // Filtra todos os eventos para achar os de "minigame_step"
         // que sejam deste jogo (gameKey) e que foram corretos (correct: true)
         const correctSteps = allEvents
-          .filter(
-            (e: any) =>
+          .filter((e: GameEvent) => {
+            const p = e.payload as { key?: string; correct?: boolean; step?: number } | undefined
+            return (
               e.type === 'minigame_step' &&
-              e.payload?.key === gameKey &&
-              e.payload?.correct === true
-          )
-          .map((e: any) => e.payload.step as number) // Pega apenas o número do passo
+              p?.key === gameKey &&
+              p?.correct === true &&
+              typeof p?.step === 'number'
+            )
+          })
+          .map((e: GameEvent) => (e.payload as { step: number }).step)
 
         if (correctSteps.length > 0) {
           // Encontra o maior passo completado
@@ -473,7 +475,6 @@ export default function DecomposicaoPage() {
         // Se correctSteps.length === 0, ele vai manter o useState(1), que está correto.
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [storage, gameKey, phases.length])
 
   useEffect(() => {
