@@ -135,29 +135,13 @@ export default function AuthModal() {
   if (!isOpen) return null;
 
   return (
-    <div
-      style={{
-        position: 'fixed',
-        zIndex: 10000,
-        left: 0,
-        top: 0,
-        width: '100%',
-        height: '100%',
-        overflow: 'auto',
-        backgroundColor: 'rgba(0,0,0,0.6)',
-      }}
-      role="dialog"
-      aria-modal="true"
-    >
-      <div
-        className="card"
-        style={{ margin: '10% auto', width: '90%', maxWidth: 400, position: 'relative', backgroundColor: 'var(--panel)' }}
-      >
+    <div className="fixed inset-0 z-[10000] overflow-auto bg-black/60" role="dialog" aria-modal="true">
+      <div className="relative mx-auto my-[10%] w-[90%] max-w-[400px] rounded-xl border border-slate-400/15 bg-[linear-gradient(180deg,rgba(16,24,39,0.8),rgba(16,24,39,0.6))] shadow-xl p-4">
         <button
           type="button"
           aria-label="Fechar"
           onClick={() => setIsOpen(false)}
-          style={{ position: 'absolute', top: 10, right: 15, background: 'none', border: 'none', fontSize: 24, color: 'var(--muted)', cursor: 'pointer' }}
+          className="absolute top-2.5 right-3 bg-transparent border-0 text-2xl text-gray-400 cursor-pointer hover:text-gray-300"
         >
           &times;
         </button>
@@ -165,21 +149,21 @@ export default function AuthModal() {
         {view === 'login' ? (
           <div>
             <h2>Entrar</h2>
-            <p className="muted">Acesse sua conta para continuar.</p>
+            <p className="text-gray-400">Acesse sua conta para continuar.</p>
             <form onSubmit={handleLogin}>
-              <label htmlFor="login-email">Email</label>
-              <input id="login-email" type="email" className="input" required value={email} onChange={(e) => setEmail(e.target.value)} />
-              <label htmlFor="login-password" style={{ marginTop: 10 }}>Senha</label>
-              <input id="login-password" type="password" className="input" required value={password} onChange={(e) => setPassword(e.target.value)} />
-              <button type="submit" className="btn primary" style={{ width: '100%', marginTop: 16 }} disabled={loading}>
+              <label htmlFor="login-email" className="block text-xs text-gray-400 mt-2">Email</label>
+              <input id="login-email" type="email" className="w-full px-3 py-2 rounded-md border border-slate-500/50 bg-[#0b1220] text-gray-100" required value={email} onChange={(e) => setEmail(e.target.value)} />
+              <label htmlFor="login-password" className="block text-xs text-gray-400 mt-2.5">Senha</label>
+              <input id="login-password" type="password" className="w-full px-3 py-2 rounded-md border border-slate-500/50 bg-[#0b1220] text-gray-100" required value={password} onChange={(e) => setPassword(e.target.value)} />
+              <button type="submit" className="w-full mt-4 inline-flex items-center justify-center gap-2 font-extrabold tracking-wide px-4 py-3 rounded-xl text-white shadow-xl transition-transform hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-3 focus-visible:outline-blue-500/45 bg-[linear-gradient(135deg,#16a34a,#22c55e_50%,#10b981)]" disabled={loading}>
                 {loading ? 'Entrando...' : 'Entrar'}
               </button>
             </form>
-            <div style={{ textAlign: 'center', margin: '16px 0', color: 'var(--muted)' }}>ou</div>
-            <button type="button" className="btn secondary" style={{ width: '100%' }} disabled={loading} onClick={handleGoogleLogin}>
+            <div className="text-center my-4 text-gray-400">ou</div>
+            <button type="button" className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-semibold text-white border border-white/20 hover:bg-blue-500/10" disabled={loading} onClick={handleGoogleLogin}>
               Entrar com Google
             </button>
-            <p style={{ textAlign: 'center', marginTop: 16 }}>
+            <p className="text-center mt-4">
               Não tem uma conta?{' '}
               <a href="#" onClick={(e) => { e.preventDefault(); setView('register'); setError(''); }}>
                 Registre-se
@@ -189,21 +173,21 @@ export default function AuthModal() {
         ) : (
           <div>
             <h2>Criar Conta</h2>
-            <p className="muted">Preencha os campos para criar seu perfil.</p>
+            <p className="text-gray-400">Preencha os campos para criar seu perfil.</p>
             <form onSubmit={handleRegister}>
-              <label htmlFor="register-name">Nome</label>
-              <input id="register-name" type="text" className="input" required value={name} onChange={(e) => setName(e.target.value)} />
-              <label htmlFor="register-age" style={{ marginTop: 10 }}>Idade</label>
-              <input id="register-age" type="number" className="input" value={age || ''} onChange={(e) => setAge(e.target.value ? Number(e.target.value) : '')} />
-              <label htmlFor="register-email" style={{ marginTop: 10 }}>Email</label>
-              <input id="register-email" type="email" className="input" required value={email} onChange={(e) => setEmail(e.target.value)} />
-              <label htmlFor="register-password" style={{ marginTop: 10 }}>Senha (mínimo 6 caracteres)</label>
-              <input id="register-password" type="password" className="input" required value={password} onChange={(e) => setPassword(e.target.value)} />
-              <button type="submit" className="btn primary" style={{ width: '100%', marginTop: 16 }} disabled={loading}>
+              <label htmlFor="register-name" className="block text-xs text-gray-400 mt-2">Nome</label>
+              <input id="register-name" type="text" className="w-full px-3 py-2 rounded-md border border-slate-500/50 bg-[#0b1220] text-gray-100" required value={name} onChange={(e) => setName(e.target.value)} />
+              <label htmlFor="register-age" className="block text-xs text-gray-400 mt-2.5">Idade</label>
+              <input id="register-age" type="number" className="w-full px-3 py-2 rounded-md border border-slate-500/50 bg-[#0b1220] text-gray-100" value={age || ''} onChange={(e) => setAge(e.target.value ? Number(e.target.value) : '')} />
+              <label htmlFor="register-email" className="block text-xs text-gray-400 mt-2.5">Email</label>
+              <input id="register-email" type="email" className="w-full px-3 py-2 rounded-md border border-slate-500/50 bg-[#0b1220] text-gray-100" required value={email} onChange={(e) => setEmail(e.target.value)} />
+              <label htmlFor="register-password" className="block text-xs text-gray-400 mt-2.5">Senha (mínimo 6 caracteres)</label>
+              <input id="register-password" type="password" className="w-full px-3 py-2 rounded-md border border-slate-500/50 bg-[#0b1220] text-gray-100" required value={password} onChange={(e) => setPassword(e.target.value)} />
+              <button type="submit" className="w-full mt-4 inline-flex items-center justify-center gap-2 font-extrabold tracking-wide px-4 py-3 rounded-xl text-white shadow-xl transition-transform hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-3 focus-visible:outline-blue-500/45 bg-[linear-gradient(135deg,#16a34a,#22c55e_50%,#10b981)]" disabled={loading}>
                 {loading ? 'Registrando...' : 'Registrar'}
               </button>
             </form>
-            <p style={{ textAlign: 'center', marginTop: 16 }}>
+            <p className="text-center mt-4">
               Já tem uma conta?{' '}
               <a href="#" onClick={(e) => { e.preventDefault(); setView('login'); setError(''); }}>
                 Faça o login
@@ -212,7 +196,7 @@ export default function AuthModal() {
           </div>
         )}
 
-        {error && <p style={{ color: 'var(--danger)', textAlign: 'center', marginTop: 10 }}>{error}</p>}
+        {error && <p className="text-red-500 text-center mt-2">{error}</p>}
       </div>
     </div>
   );

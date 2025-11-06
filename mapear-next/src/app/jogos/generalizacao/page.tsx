@@ -76,6 +76,7 @@ export default function GeneralizacaoPage() {
   const [corrects, setCorrects] = useState(0)
   const [selection, setSelection] = useState<Set<string|number>>(new Set());
   const [feedback, setFeedback] = useState('')
+  const [feedbackType, setFeedbackType] = useState<'success' | 'error' | ''>('')
   const [reflection, setReflection] = useState('')
   const [finished, setFinished] = useState(false)
   const [tipText, setTipText] = useState('')
@@ -108,23 +109,27 @@ export default function GeneralizacaoPage() {
   
     if (ok) {
       setCorrects((c) => c + 1)
-      await storage.record('minigame_step', { key: gameKey, step, correct: true })
       if (step < phases.length) {
         setFeedback('Certo! Próxima fase...')
-        setTimeout(() => {
-          setStep((s) => s + 1)
+        setFeedbackType('success')
+        setTimeout(async () => {
+          await storage.record('minigame_step', { key: gameKey, step, correct: true })
           setSelection(new Set())
           setFeedback('')
-        }, 1200)
+          setFeedbackType('')
+        }, 1500)
       } else {
+        await storage.record('minigame_step', { key: gameKey, step, correct: true })
         await storage.complete(gameKey)
         await storage.record('minigame_result', { key: gameKey, attempts, corrects, correct: true })
         setFeedback('Concluído! Você validou as generalizações.')
+        setFeedbackType('success')
         setFinished(true)
       }
     } else {
       await storage.record('minigame_try', { key: gameKey, step })
       setFeedback(isScenario(current) ? 'Ajuste sua escolha com base nas evidências do cenário.' : 'Reveja: todos os itens devem seguir as regras escolhidas.')
+      setFeedbackType('error')
       const t = mountTip({ pillar: gameKey, level: 'Scaffold' })
       setTipLevel(t.level)
       setTipText(t.tip)
@@ -134,16 +139,17 @@ export default function GeneralizacaoPage() {
   const handleSaveReflection = async () => {
     await storage.reflect(gameKey, reflection.trim());
     setFeedback('Reflexão salva.');
+    setFeedbackType('success');
   };
 
   return (
-    <section className="card">
-      <h1>Generalize+</h1>
-      <div className="muted">Fase {step} de {phases.length}</div>
+    <section className="rounded-xl border border-white/10 bg-[#0b1220] p-6 shadow-xl shadow-black/40">
+      <h1 className="text-2xl font-semibold">Generalize+</h1>
+      <div className="text-gray-400">Fase {step} de {phases.length}</div>
       <div>
         {isScenario(current) ? (
           <>
-            <p className="muted">{current.situacao}</p>
+            <p className="text-gray-400">{current.situacao}</p>
             <p><strong>{current.pergunta}</strong></p>
           </>
         ) : (
@@ -153,37 +159,68 @@ export default function GeneralizacaoPage() {
           </>
         )}
       </div>
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 8 }}>
+      <div className="flex flex-wrap gap-2 mt-2">
         {values.map(v => {
           const active = selection.has(v);
           return (
-            <button key={String(v)} className={active ? 'button active' : 'button'} onClick={() => toggle(v)}>
+            <button
+              key={String(v)}
+              className={active
+                ? 'px-3 py-2 rounded-lg border border-green-500/40 bg-green-600/20 text-white'
+                : 'px-3 py-2 rounded-lg border border-white/20 text-white hover:bg-blue-500/10 transition'}
+              onClick={() => toggle(v)}
+            >
               {String(v)}
             </button>
           );
         })}
       </div>
-      <div style={{ display: 'flex', gap: 10, marginTop: 10 }}>
-        <button className="button" onClick={handleCheck}>Verificar</button>
+      <div className="flex gap-2 mt-2">
+        <button
+          className="inline-flex items-center justify-center px-3 py-2 rounded-lg border border-white/20 text-white hover:bg-blue-500/10 transition"
+          onClick={handleCheck}
+        >
+          Verificar
+        </button>
       </div>
-      <div className="muted" style={{ marginTop: 10 }}>{feedback}</div>
-      <div className="tip" style={{ marginTop: 12 }}>
+      <div className={`mt-2 ${feedbackType === 'success' ? 'text-green-500' : feedbackType === 'error' ? 'text-red-500' : 'text-gray-400'}`}>{feedback}</div>
+      <div className="mt-3 rounded-lg border-l-4 border-blue-500/60 bg-blue-500/10 p-3">
         <div>
           {isScenario(current) && current.dica && (
-            <div style={{ marginBottom: 6 }}>{current.dica}</div>
+            <div className="mb-1.5">{current.dica}</div>
           )}
           <div>
-            <div className="badge">{tipLevel}</div>
-            <div>{tipText}</div>
+            <span className="inline-block text-xs font-semibold bg-blue-500 text-white rounded px-2 py-0.5 mr-2">{tipLevel}</span>
+            <span className="text-gray-200">{tipText}</span>
           </div>
         </div>
       </div>
-      <div style={{ marginTop: 14 }}>
-        <label htmlFor="gen-reflexao">Reflexão (MAPEAR):</label>
-        <textarea id="gen-reflexao" className="input" rows={3} placeholder="Qual lógica permanece igual ao mudar o cenário?" value={reflection} onChange={e => setReflection(e.target.value)} />
-        <div style={{ display: 'flex', gap: 10, marginTop: 10 }}>
-          <button className="button secondary" onClick={handleSaveReflection} disabled={!finished}>Salvar reflexão</button>
-          {finished && <Link className="button" href="/jogos/robotica">Próximo: Robótica</Link>}
+      <div className="mt-4">
+        <label htmlFor="gen-reflexao" className="block font-medium text-gray-200">Reflexão (MAPEAR):</label>
+        <textarea
+          id="gen-reflexao"
+          className="mt-2 w-full px-3 py-2 rounded-lg border border-white/20 bg-[#0b1220] text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          rows={3}
+          placeholder="Qual lógica permanece igual ao mudar o cenário?"
+          value={reflection}
+          onChange={e => setReflection(e.target.value)}
+        />
+        <div className="flex gap-2 mt-2">
+          <button
+            className="inline-flex items-center justify-center px-3 py-2 rounded-lg border border-white/20 text-white hover:bg-blue-500/10 transition disabled:opacity-50 disabled:cursor-not-allowed"
+            onClick={handleSaveReflection}
+            disabled={!finished}
+          >
+            Salvar reflexão
+          </button>
+          {finished && (
+            <Link
+              className="inline-flex items-center justify-center px-3 py-2 rounded-lg font-semibold text-white bg-gradient-to-r from-green-600 to-emerald-500 hover:from-green-500 hover:to-emerald-400 transition"
+              href="/jogos/robotica"
+            >
+              Próximo: Robótica
+            </Link>
+          )}
         </div>
       </div>
     </section>

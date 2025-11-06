@@ -1,8 +1,9 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useStorage } from '@/context/StorageContext';
+import type { Pillar, GameEvent, GameState } from '@/context/StorageContext';
 
 interface Phase {
   situacao: string;
@@ -14,6 +15,23 @@ interface Phase {
 
 function shuffle<T>(arr: T[]): T[] {
   return [...arr].sort(() => Math.random() - 0.5);
+}
+
+type MinigameStepPayload = { key: Pillar; step: number; correct?: boolean };
+
+function computeInitialStep(state: GameState | undefined, key: Pillar, maxStep: number) {
+  const completed = state?.progress?.[key]?.completed;
+  if (completed) return maxStep;
+  const steps = (state?.events || [])
+    .filter(
+      (e: GameEvent) =>
+        e.type === 'minigame_step' &&
+        (e.payload as MinigameStepPayload)?.key === key &&
+        (e.payload as MinigameStepPayload)?.correct
+    )
+    .map((e: GameEvent) => (e.payload as MinigameStepPayload)?.step);
+  const last = steps.length ? Math.max(...steps) : 0;
+  return Math.min(maxStep, last + 1);
 }
 
 const phases: Phase[] = [
@@ -220,39 +238,51 @@ const phases: Phase[] = [
 
 export default function RoboticaPage() {
   const { state, attempt, record, score, complete, achieve, reflect, getCurrentState } = useStorage();
-  const [step, setStep] = useState(1);
+  const gameKey = 'robotica' as const;
+  const [step, setStep] = useState<number>(() => computeInitialStep(state, gameKey, phases.length));
   const [feedback, setFeedback] = useState('');
+  const [feedbackType, setFeedbackType] = useState<'success' | 'error' | ''>('');
   const [finished, setFinished] = useState(false);
   const [reflection, setReflection] = useState('');
 
   const current = phases[step - 1];
   const options = useMemo(() => shuffle(current.opcoes), [step]);
 
+  useEffect(() => {
+    // Atualiza passo inicial quando eventos/progresso mudam
+    setStep(() => computeInitialStep(state, gameKey, phases.length));
+    setFinished(!!state?.progress?.[gameKey]?.completed);
+  }, [state?.events, state?.progress?.[gameKey]?.completed, phases.length]);
+
   const handlePick = async (opt: string) => {
     if (finished) return;
-    await attempt('robotica');
+    await attempt(gameKey);
     const correta = current.correta;
     if (opt === correta) {
       setFeedback('Correto! Próxima fase...');
-      await record('minigame_step', { key: 'robotica', step, correct: true });
+      setFeedbackType('success');
       if (step < phases.length) {
-        setTimeout(() => {
-          setStep((s) => s + 1);
+        setTimeout(async () => {
+          await record('minigame_step', { key: gameKey, step, correct: true });
           setFeedback('');
+          setFeedbackType('');
         }, 700);
       } else {
         // Finalização
+        await record('minigame_step', { key: gameKey, step, correct: true });
         const finalState = getCurrentState();
-        const totalAttempts = finalState.progress.robotica.attempts || 1;
-        const computedScore = Math.max(0, Math.min(10, Math.round((10 * phases.length) / Math.max(totalAttempts, 1))))
-        await score('robotica', computedScore);
-        await complete('robotica');
+        const totalAttempts = finalState.progress[gameKey].attempts || 1;
+        const computedScore = Math.max(0, Math.min(10, Math.round((10 * phases.length) / Math.max(totalAttempts, 1))));
+        await score(gameKey, computedScore);
+        await complete(gameKey);
         await achieve('Conectou sensores e atuadores em desafios de robótica');
         setFeedback('Concluído! Você completou todas as fases.');
+        setFeedbackType('success');
         setFinished(true);
       }
     } else {
-      setFeedback(`Ainda não. Dica: ${current.dica || ''}`);
+      setFeedback('Resposta incorreta.');
+      setFeedbackType('error');
       // Poderíamos alternar níveis de tip (Hint/Scaffold) aqui se houver engine
     }
   };
@@ -261,38 +291,71 @@ export default function RoboticaPage() {
     if (!finished) return;
     await reflect('robotica', reflection.trim());
     setFeedback('Reflexão salva.');
+    setFeedbackType('success');
   };
 
   return (
-    <section className="card">
-      <h1>Robótica Educacional</h1>
-      <div className="muted">Fase {step} de {phases.length}</div>
+    <section className="rounded-xl border border-slate-400/15 bg-[linear-gradient(180deg,rgba(30,41,59,0.5),rgba(2,6,23,0.6))] p-4 sm:p-6 text-white shadow-md">
+      <h1 className="text-2xl font-bold">Robótica Educacional</h1>
+      <div className="text-gray-400">Fase {step} de {phases.length}</div>
 
-      <p className="muted">{current.situacao}</p>
-      <p><strong>{current.pergunta}</strong></p>
+      <p className="text-gray-400">{current.situacao}</p>
+      <p className="mt-1"><strong>{current.pergunta}</strong></p>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+      <div className="mt-2 flex flex-col gap-2">
         {options.map((opt) => (
-          <button key={opt} className="button" onClick={() => handlePick(opt)}>{opt}</button>
+          <button
+            key={opt}
+            className="inline-flex items-center justify-center rounded-lg px-3 py-2 text-sm font-semibold text-white border border-white/20 hover:bg-blue-500/10"
+            onClick={() => handlePick(opt)}
+          >
+            {opt}
+          </button>
         ))}
       </div>
 
-      <div className="muted" style={{ marginTop: 10 }}>{feedback}</div>
-      <div className="tip" style={{ marginTop: 12 }}><div>{current.dica || ''}</div></div>
+      <div
+        className={`mt-2 ${
+          feedbackType === 'success'
+            ? 'text-green-500'
+            : feedbackType === 'error'
+            ? 'text-red-500'
+            : 'text-gray-400'
+        }`}
+      >
+        {feedback}
+      </div>
+      <div className="mt-3 flex items-start gap-2 rounded-lg border-l-4 border-blue-500/60 bg-blue-500/10 p-3">
+        <span className="inline-block rounded bg-blue-600 px-2 py-0.5 text-xs font-semibold text-white">Dica</span>
+        <span>{current.dica || ''}</span>
+      </div>
 
-      <div style={{ marginTop: 14 }}>
+      <div className="mt-4">
         <label htmlFor="robotica-reflexao">Reflexão (MAPEAR):</label>
         <textarea
           id="robotica-reflexao"
-          className="input"
+          className="mt-2 w-full rounded-md border border-white/20 bg-gray-900/40 px-3 py-2 text-white placeholder-gray-400"
           rows={3}
           placeholder="Como sua decisão usa sensores e atuadores?"
           value={reflection}
           onChange={(e) => setReflection(e.target.value)}
         />
-        <div style={{ display: 'flex', gap: 10, marginTop: 10 }}>
-          <button className="button secondary" onClick={handleSaveReflection} disabled={!finished}>Salvar reflexão</button>
-          {finished && <Link className="button" href="/jogos">Ir para Início</Link>}
+        <div className="mt-3 flex gap-3">
+          <button
+            className="inline-flex items-center justify-center rounded-lg px-3 py-2 text-sm font-semibold text-white border border-white/20 hover:bg-blue-500/10 disabled:opacity-60 disabled:cursor-not-allowed"
+            onClick={handleSaveReflection}
+            disabled={!finished}
+          >
+            Salvar reflexão
+          </button>
+          {finished && (
+            <Link
+              className="inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-semibold text-white shadow-md bg-[linear-gradient(135deg,#16a34a,#22c55e_50%,#10b981)] hover:brightness-110"
+              href="/jogos"
+            >
+              Ir para Início
+            </Link>
+          )}
         </div>
       </div>
     </section>

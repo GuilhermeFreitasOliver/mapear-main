@@ -4,6 +4,7 @@ import { useMemo, useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useStorage } from '@/context/StorageContext'
 import { mountTip, TipLevel } from '@/lib/tipEngine'
+import { Fragment } from 'react';
 
 interface PhasePassos {
   tipo: 'passos'
@@ -32,6 +33,7 @@ function shuffle<T>(arr: T[]): T[] {
 export default function DecomposicaoPage() {
   const gameKey = 'decomposicao' as const
   const storage = useStorage()
+  const SUCCESS_ADVANCE_DELAY = 2000 // ms de atraso ao acertar antes de avançar
 
   const phases: Phase[] = useMemo(
     () => [
@@ -416,10 +418,63 @@ export default function DecomposicaoPage() {
   const [attempts, setAttempts] = useState(0)
   const [corrects, setCorrects] = useState(0)
   const [feedback, setFeedback] = useState('')
+  const [feedbackTone, setFeedbackTone] = useState<'success' | 'error' | 'info'>('info')
   const [reflection, setReflection] = useState('')
   const [finished, setFinished] = useState(false)
   const [tipText, setTipText] = useState('')
   const [tipLevel, setTipLevel] = useState<TipLevel>('Hint')
+  const [processing, setProcessing] = useState(false)
+
+  useEffect(() => {
+    // Garante que o storage já foi carregado
+    if (storage) {
+      const state = storage.getCurrentState()
+      // @ts-ignore
+      const gameProgress = state.progress[gameKey]
+
+      if (gameProgress) {
+        // 1. Verifica se o jogo já foi concluído
+        if (gameProgress.completed) {
+          setFinished(true)
+          setStep(phases.length) // Coloca na última fase
+          setFeedback('Você já concluiu este desafio!')
+          return // Para a execução
+        }
+
+        // 2. Se não foi concluído, encontra o último passo correto
+        // Usa os eventos persistidos no estado (StorageContext)
+        // @ts-ignore
+        const allEvents = state.events || []
+        
+        // Filtra todos os eventos para achar os de "minigame_step"
+        // que sejam deste jogo (gameKey) e que foram corretos (correct: true)
+        const correctSteps = allEvents
+          .filter(
+            (e: any) =>
+              e.type === 'minigame_step' &&
+              e.payload?.key === gameKey &&
+              e.payload?.correct === true
+          )
+          .map((e: any) => e.payload.step as number) // Pega apenas o número do passo
+
+        if (correctSteps.length > 0) {
+          // Encontra o maior passo completado
+          const lastCompletedStep = Math.max(...correctSteps)
+          
+          if (lastCompletedStep < phases.length) {
+            // Começa o jogo no passo SEGUINTE ao último completado
+            setStep(lastCompletedStep + 1)
+          } else {
+            // Caso raro: completou todos os passos mas não marcou como "completed"
+            setFinished(true)
+            setStep(phases.length)
+          }
+        }
+        // Se correctSteps.length === 0, ele vai manter o useState(1), que está correto.
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [storage, gameKey, phases.length])
 
   useEffect(() => {
     const tip = mountTip({ pillar: gameKey, level: 'Hint' })
@@ -442,12 +497,23 @@ export default function DecomposicaoPage() {
   }, [step])
   const [currentPlaced, setCurrentPlaced] = useState<Record<string, string[]>>(initialPlaced)
 
+  // Ids já alocados em alguma categoria (usado para ocultar da lista "Itens")
+  const placedIds = useMemo(() => {
+    const s = new Set<string>()
+    Object.keys(current.esperado || {}).forEach((cat) => {
+      (currentPlaced[cat] || []).forEach((id) => s.add(id))
+    })
+    return s
+  }, [currentPlaced, current])
+
   // Reiniciar estado da fase
   const resetPhaseState = () => {
     setCurrentSelection([])
     setSelectedItem(null)
     setCurrentPlaced(initialPlaced)
     setFeedback('')
+    setFeedbackTone('info')
+    setProcessing(false)
   }
 
   const handleClickPasso = (p: string) => {
@@ -458,18 +524,41 @@ export default function DecomposicaoPage() {
     setSelectedItem(id)
   }
 
+  // Descobre em qual categoria o item já está colocado
+  const findItemCat = (id: string): string | null => {
+    const catsKeys = Object.keys(currentPlaced || {})
+    for (const c of catsKeys) {
+      if ((currentPlaced[c] || []).includes(id)) return c
+    }
+    return null
+  }
+
   const handlePlaceOnCat = (cat: string) => {
     if (!selectedItem || current.tipo !== 'categorias') return
     const id = selectedItem
-    const already = (currentPlaced[cat] || []).includes(id)
-    if (already) return
-    setCurrentPlaced((prev) => ({ ...prev, [cat]: [...(prev[cat] || []), id] }))
+    const currentCat = findItemCat(id)
+    if (currentCat === cat) {
+      // Já está nesta categoria; nada a fazer
+      return
+    }
+    setCurrentPlaced((prev) => {
+      const next = { ...prev }
+      // Se o item já está em outra categoria, remove de lá
+      if (currentCat && next[currentCat]) {
+        next[currentCat] = next[currentCat].filter((x) => x !== id)
+      }
+      // Adiciona na nova categoria
+      next[cat] = [...(next[cat] || []), id]
+      return next
+    })
     setSelectedItem(null)
   }
 
   const cats = current.tipo === 'categorias' ? Object.keys(current.esperado) : []
 
   const handleCheck = async () => {
+    if (processing) return
+    setProcessing(true)
     setAttempts((a) => a + 1)
     await storage.attempt(gameKey)
 
@@ -488,31 +577,43 @@ export default function DecomposicaoPage() {
 
     if (ok) {
       setCorrects((c) => c + 1)
-      await storage.record('minigame_step', { key: gameKey, step, correct: true })
       if (step < phases.length) {
+        setFeedbackTone('success')
         setFeedback('Certo! Próxima fase...')
-        setTimeout(() => {
-          setStep((s) => s + 1)
+        // Aguarda o delay e só então grava o evento e deixa o efeito avançar
+        setTimeout(async () => {
+          await storage.record('minigame_step', { key: gameKey, step, correct: true })
           resetPhaseState()
-        }, 1200)
+          setProcessing(false)
+        }, SUCCESS_ADVANCE_DELAY)
       } else {
-        const finalState = storage.getCurrentState()
-        const totalAttempts = finalState.progress[gameKey].attempts
-        const score = Math.max(0, Math.min(10, Math.round((10 * phases.length) / Math.max(totalAttempts, 1))))
-        await storage.score(gameKey, score)
-        await storage.complete(gameKey)
-        await storage.achieve('Decompôs problemas em partes manejáveis')
-        await storage.record('minigame_result', { key: gameKey, attempts, corrects, correct: true })
+        // Última fase: conclui após o delay
+        setFeedbackTone('success')
         setFeedback('Concluído! Você decompôs vários desafios.')
-        setFinished(true)
+        setTimeout(async () => {
+          await storage.record('minigame_step', { key: gameKey, step, correct: true })
+          const finalState = storage.getCurrentState()
+          const totalAttempts = finalState.progress[gameKey].attempts
+          const score = Math.max(0, Math.min(10, Math.round((10 * phases.length) / Math.max(totalAttempts, 1))))
+          await storage.score(gameKey, score)
+          await storage.complete(gameKey)
+          await storage.achieve('Decompôs problemas em partes manejáveis')
+          await storage.record('minigame_result', { key: gameKey, attempts, corrects, correct: true })
+          setFinished(true)
+          setProcessing(false)
+        }, SUCCESS_ADVANCE_DELAY)
       }
     } else {
       await storage.record('minigame_try', { key: gameKey, step })
+      setFeedbackTone('error')
       setFeedback('Ainda não. Reiniciando a fase...')
       const tip = mountTip({ pillar: gameKey, level: 'Scaffold' })
       setTipLevel(tip.level)
       setTipText(tip.tip)
-      setTimeout(() => resetPhaseState(), 1000)
+      setTimeout(() => {
+        resetPhaseState()
+        setProcessing(false)
+      }, 1000)
     }
   }
 
@@ -522,26 +623,71 @@ export default function DecomposicaoPage() {
   }
 
   return (
-    <section className="card">
-      <h1>Decomposição</h1>
-      <div className="muted">Fase {step} de {phases.length}</div>
-      <p>{current.instrucao}</p>
+    <section className="rounded-xl border border-white/10 bg-[#0b1220] p-6 shadow-xl shadow-black/40">
+      <h1 className="text-2xl font-semibold">Decomposição</h1>
+      <div className="text-gray-400">Fase {step} de {phases.length}</div>
+      <p className="mt-1">{current.instrucao}</p>
 
       {/* Área para passos */}
       {current.tipo === 'passos' && (
         <div>
-          <div className="muted" style={{ marginBottom: 8 }}>{current.titulo}</div>
-          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-            {shuffle(current.passos).map((p) => (
-              <button key={p} className="button" onClick={() => handleClickPasso(p)}>
-                {p}
-              </button>
-            ))}
+          <div className="text-gray-400 mb-2">{current.titulo}</div>
+          <div className="flex gap-2 flex-wrap">
+            {shuffle(current.passos).map((p) => {
+              const pos = currentSelection.indexOf(p) + 1
+              const isSelected = pos > 0
+              return (
+                <button
+                  key={p}
+                  className={
+                    isSelected
+                      ? 'inline-flex items-center justify-center px-3 py-2 rounded-lg border border-green-500/40 bg-green-600/20 text-white'
+                      : 'inline-flex items-center justify-center px-3 py-2 rounded-lg border border-white/20 text-white hover:bg-blue-500/10 transition'
+                  }
+                  onClick={() => handleClickPasso(p)}
+                  disabled={isSelected}
+                  aria-label={isSelected ? `${p} escolhido como ${pos}º` : `Escolher ${p}`}
+                >
+                  <span>{p}</span>
+                  {isSelected && (
+                    <span className="ml-2 inline-flex items-center justify-center text-xs font-medium px-1.5 py-0.5 rounded bg-green-500/30 text-white border border-green-500/40">
+                      {pos}º
+                    </span>
+                  )}
+                </button>
+              )
+            })}
           </div>
-          <div style={{ display: 'flex', gap: 6, marginTop: 8, flexWrap: 'wrap' }}>
-            {currentSelection.map((s, idx) => (
-              <span key={`${s}-${idx}`} className="kbd">{s}</span>
+
+          {/* Sequência selecionada com setas e placeholders */}
+          <div className="mt-3">
+            <div className="text-sm text-gray-400 mb-1">Sequência</div>
+            <div className="flex items-center flex-wrap gap-2">
+              {currentSelection.map((s, idx) => (
+                <>
+                  <span
+                    key={`sel-${s}-${idx}`}
+                    className="inline-block px-2 py-1 text-sm text-gray-200 bg-[#0b1220] rounded border border-white/20"
+                  >
+                    {idx + 1}º: {s}
+                  </span>
+                  {idx < (current.esperado?.length ?? 0) - 1 && (
+                    <span className="text-gray-500">→</span>
+                  )}
+                </>
+              ))}
+              {Array.from({
+                length: Math.max(0, (current.esperado?.length ?? 0) - currentSelection.length),
+              }).map((_, i) => (
+                <Fragment key={`ph-${i}`}>
+                    <span
+                        className="inline-block px-2 py-1 text-sm rounded border border-white/20 border-dashed text-gray-400"
+                    >
+                        {/* conteúdo do placeholder */}
+                    </span>
+                </Fragment>
             ))}
+            </div>
           </div>
         </div>
       )}
@@ -549,15 +695,17 @@ export default function DecomposicaoPage() {
       {/* Área para categorias */}
       {current.tipo === 'categorias' && (
         <div>
-          <div className="muted" style={{ marginBottom: 8 }}>{current.titulo}</div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 8 }}>
-            <div className="card">
-              <h3>Itens</h3>
-              <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-                {shuffle(current.itens).map((it) => (
+          <div className="text-gray-400 mb-2">{current.titulo}</div>
+          <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-4 items-start">
+            <div className="rounded-xl border border-white/10 bg-[#0b1220] p-4 sm:col-span-2 md:col-span-2">
+              <h3 className="font-semibold">Itens</h3>
+              <div className="flex gap-1.5 flex-wrap mt-1.5">
+                {shuffle(current.itens.filter((it) => !placedIds.has(it.id))).map((it) => (
                   <button
                     key={it.id}
-                    className={`button${selectedItem === it.id ? ' active' : ''}`}
+                    className={selectedItem === it.id
+                      ? 'px-3 py-2 rounded-lg border border-green-500/40 bg-green-600/20 text-white'
+                      : 'px-3 py-2 rounded-lg border border-white/20 text-white hover:bg-blue-500/10 transition'}
                     onClick={() => handleSelectItem(it.id)}
                   >
                     {it.label}
@@ -566,13 +714,30 @@ export default function DecomposicaoPage() {
               </div>
             </div>
             {cats.map((cat) => (
-              <div key={cat} className="card" style={{ cursor: 'pointer' }} onClick={() => handlePlaceOnCat(cat)}>
-                <h3>{cat.charAt(0).toUpperCase() + cat.slice(1)}</h3>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 6, minHeight: 20 }}>
+              <div
+                key={cat}
+                className="rounded-xl border border-white/10 bg-[#0b1220] p-4 cursor-pointer min-h-[140px] flex flex-col"
+                onClick={() => handlePlaceOnCat(cat)}
+              >
+                <h3 className="font-semibold">{cat.charAt(0).toUpperCase() + cat.slice(1)}</h3>
+                <div className="flex flex-wrap gap-2 mt-1.5 min-h-[64px]">
                   {(currentPlaced[cat] || []).map((id) => {
                     const label = current.itens.find((x) => x.id === id)?.label || id
+                    const isSelected = selectedItem === id
                     return (
-                      <span key={`${cat}-${id}`} className="kbd">{label}</span>
+                      <button
+                        key={`${cat}-${id}`}
+                        type="button"
+                        className={
+                          isSelected
+                            ? 'inline-block px-2 py-1 text-sm text-white rounded border border-green-500/40 bg-green-600/30'
+                            : 'inline-block px-2 py-1 text-sm text-gray-200 bg-[#0b1220] rounded border border-white/20 hover:bg-blue-500/10 transition'
+                        }
+                        onClick={() => setSelectedItem(id)}
+                        aria-label={isSelected ? `${label} selecionado para mover` : `Selecionar ${label} para mover`}
+                      >
+                        {label}
+                      </button>
                     )
                   })}
                 </div>
@@ -582,32 +747,60 @@ export default function DecomposicaoPage() {
         </div>
       )}
 
-      <div style={{ display: 'flex', gap: 10, marginTop: 10 }}>
-        <button className="button" onClick={handleCheck}>Verificar</button>
-        <button className="button secondary" onClick={resetPhaseState}>Refazer</button>
+      <div className="flex gap-2 mt-2">
+      <button
+          className="inline-flex items-center justify-center px-3 py-2 rounded-lg border border-white/20 text-white hover:bg-blue-500/10 transition disabled:opacity-50 disabled:cursor-not-allowed"
+          onClick={handleCheck}
+          disabled={processing}
+        >
+          Verificar
+        </button>
+        <button
+          className="inline-flex items-center justify-center px-3 py-2 rounded-lg border border-white/20 text-white hover:bg-blue-500/10 transition"
+          onClick={resetPhaseState}
+        >
+          Refazer
+        </button>
       </div>
-      <div className="muted" style={{ marginTop: 10 }}>{feedback}</div>
-      <div className="tip" style={{ marginTop: 12 }}>
+      <div className={
+        feedbackTone === 'success'
+          ? 'text-green-400 mt-2'
+          : feedbackTone === 'error'
+          ? 'text-red-400 mt-2'
+          : 'text-gray-400 mt-2'
+      }>{feedback}</div>
+      <div className="mt-3 rounded-lg border-l-4 border-blue-500/60 bg-blue-500/10 p-3">
         <div>
-          <div className="badge">{tipLevel}</div>
-          <div>{tipText}</div>
+          <span className="inline-block text-xs font-semibold bg-blue-500 text-white rounded px-2 py-0.5 mr-2">{tipLevel}</span>
+          <span className="text-gray-200">{tipText}</span>
         </div>
       </div>
 
-      <div style={{ marginTop: 14 }}>
-        <label htmlFor="dec-reflexao">Reflexão (MAPEAR):</label>
+      <div className="mt-4">
+        <label htmlFor="dec-reflexao" className="block font-medium text-gray-200">Reflexão (MAPEAR):</label>
         <textarea
           id="dec-reflexao"
-          className="input"
+          className="mt-2 w-full px-3 py-2 rounded-lg border border-white/20 bg-[#0b1220] text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
           rows={3}
           placeholder="Como você dividiu o problema? Por quê?"
           value={reflection}
           onChange={(e) => setReflection(e.target.value)}
         />
-        <div style={{ display: 'flex', gap: 10, marginTop: 10 }}>
-          <button className="button secondary" onClick={handleSaveReflection} disabled={!finished}>Salvar reflexão</button>
+        <div className="flex gap-2 mt-2">
+          <button
+            className="inline-flex items-center justify-center px-3 py-2 rounded-lg border border-white/20 text-white hover:bg-blue-500/10 transition disabled:opacity-50 disabled:cursor-not-allowed"
+            onClick={handleSaveReflection}
+            disabled={!finished}
+          >
+            Salvar reflexão
+          </button>
           {finished && (
-            <Link className="button" href="/jogos/algoritmo">Próximo: Algoritmos</Link>
+            <Link
+              className="inline-flex items-center justify-center px-3 py-2 rounded-lg font-semibold text-white bg-gradient-to-r from-green-600 to-emerald-500 hover:from-green-500 hover:to-emerald-400 transition"
+              href="/jogos/algoritmo"
+            >
+              Próximo: Algoritmos
+            </Link>
           )}
         </div>
       </div>

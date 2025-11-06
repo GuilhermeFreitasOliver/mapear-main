@@ -418,13 +418,13 @@ export default function AbstracaoPage() {
   }
 
   return (
-    <section className="card">
-      <h1>Abstração</h1>
-      <div className="muted">Fase {step} de {phases.length}</div>
+    <section className="rounded-xl border border-slate-400/15 bg-[linear-gradient(180deg,rgba(30,41,59,0.5),rgba(2,6,23,0.6))] p-4 sm:p-6 text-white shadow-md">
+      <h1 className="text-2xl font-bold">Abstração</h1>
+      <div className="text-gray-400">Fase {step} de {phases.length}</div>
       <p dangerouslySetInnerHTML={{ __html: current.prompt }} />
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 8 }}>
+      <div className="mt-2 flex flex-col gap-2">
         {shuffledItems.map((item) => (
-          <label key={item.id} style={{ display: 'flex', gap: 8 }}>
+          <label key={item.id} className="flex items-start gap-2">
             <input
               type="checkbox"
               checked={!!selected[item.id]}
@@ -434,38 +434,52 @@ export default function AbstracaoPage() {
           </label>
         ))}
       </div>
-      <div style={{ display: 'flex', gap: 10, marginTop: 10 }}>
-        <button className="button" onClick={handleCheck}>Verificar</button>
-        <button className="button secondary" onClick={handleClear}>Limpar</button>
+      <div className="mt-3 flex gap-3">
+        <button
+          className="inline-flex items-center justify-center rounded-lg px-3 py-2 text-sm font-semibold text-white border border-white/20 hover:bg-blue-500/10"
+          onClick={handleCheck}
+        >
+          Verificar
+        </button>
+        <button
+          className="inline-flex items-center justify-center rounded-lg px-3 py-2 text-sm font-semibold text-white border border-white/20 hover:bg-slate-500/10"
+          onClick={handleClear}
+        >
+          Limpar
+        </button>
       </div>
       <div
-        className={feedbackKind === 'success' ? '' : 'muted'}
-        style={{ marginTop: 10, color: feedbackKind === 'success' ? '#15913a' : undefined }}
+        className={`mt-3 ${feedbackKind === 'success' ? 'text-green-500' : feedbackKind === 'error' ? 'text-yellow-400' : 'text-gray-400'}`}
       >
         {feedback}
       </div>
-      <div className="tip" style={{ marginTop: 12 }}>
-        <div>
-          <div className="badge">{tipLevel}</div>
-          <div>{tipText}</div>
-        </div>
+      <div className="mt-3 flex items-start gap-2 rounded-lg border-l-4 border-blue-500/60 bg-blue-500/10 p-3">
+        <span className="inline-block rounded bg-blue-600 px-2 py-0.5 text-xs font-semibold text-white">{tipLevel}</span>
+        <span>{tipText}</span>
       </div>
-      <div style={{ marginTop: 14 }}>
+      <div className="mt-4">
         <label htmlFor="ab-reflexao">Reflexão (MAPEAR):</label>
         <textarea
           id="ab-reflexao"
-          className="input"
+          className="mt-2 w-full rounded-md border border-white/20 bg-gray-900/40 px-3 py-2 text-white placeholder-gray-400"
           rows={3}
           placeholder="Quais dados descartou e por quê?"
           value={reflection}
           onChange={(e) => setReflection(e.target.value)}
         />
-        <div style={{ display: 'flex', gap: 10, marginTop: 10 }}>
-          <button className="button secondary" onClick={handleSaveReflection} disabled={!finished}>
+        <div className="mt-3 flex gap-3">
+          <button
+            className="inline-flex items-center justify-center rounded-lg px-3 py-2 text-sm font-semibold text-white border border-white/20 hover:bg-blue-500/10 disabled:opacity-60 disabled:cursor-not-allowed"
+            onClick={handleSaveReflection}
+            disabled={!finished}
+          >
             Salvar reflexão
           </button>
           {finished && (
-            <Link className="button" href="/jogos/decomposicao">
+            <Link
+              className="inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-semibold text-white shadow-md bg-[linear-gradient(135deg,#06b6d4,#22d3ee_50%,#0ea5e9)] hover:brightness-110"
+              href="/jogos/decomposicao"
+            >
               Próximo: Decomposição
             </Link>
           )}

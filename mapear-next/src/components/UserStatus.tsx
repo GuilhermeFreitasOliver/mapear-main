@@ -6,13 +6,13 @@ export default function UserStatus({ onOpenAuthModal }: { onOpenAuthModal?: () =
   const { user, userProfile, loading, signOut } = useAuth();
 
   if (loading) {
-    return <span className="muted">Carregando...</span>;
+    return <span className="text-gray-400">Carregando...</span>;
   }
 
   if (!user) {
     return (
       <button
-        className="btn ghost"
+        className="inline-flex items-center justify-center gap-2 px-3 py-2 rounded-lg font-semibold text-white border border-white/20 hover:bg-blue-500/10"
         type="button"
         onClick={() => {
           if (onOpenAuthModal) {
@@ -28,9 +28,9 @@ export default function UserStatus({ onOpenAuthModal }: { onOpenAuthModal?: () =
   }
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-      <span className="muted">Olá, {userProfile?.name || user.email}</span>
-      <button className="btn ghost" type="button" onClick={signOut}>
+    <div className="flex items-center gap-2">
+      <span className="text-gray-400">Olá, {userProfile?.name || user.email}</span>
+      <button className="inline-flex items-center justify-center gap-2 px-3 py-2 rounded-lg font-semibold text-white border border-white/20 hover:bg-blue-500/10" type="button" onClick={signOut}>
         Sair
       </button>
     </div>

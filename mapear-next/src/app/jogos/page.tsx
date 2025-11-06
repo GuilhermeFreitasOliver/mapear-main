@@ -6,24 +6,35 @@ import { useStorage } from '@/context/StorageContext';
 export default function JogosHome() {
   const { state: stats } = useStorage();
 
-  const statusLabel = (completed: boolean, attempts: number) => {
-    if (completed) return '✔️ Concluído';
-    if (attempts > 0) return 'Em andamento';
+  const isPlaying = (key: 'padroes' | 'abstracao' | 'decomposicao' | 'algoritmo' | 'generalizacao' | 'robotica') => {
+    return Array.isArray(stats.events)
+      ? stats.events.some(
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          (e: any) =>
+            (e.type === 'minigame_step' || e.type === 'minigame_try') && e.payload?.key === key
+        )
+      : false;
+  };
+
+  const statusLabelByKey = (key: 'padroes' | 'abstracao' | 'decomposicao' | 'algoritmo' | 'generalizacao' | 'robotica') => {
+    const entry = stats.progress[key];
+    if (entry?.completed) return '✔️ Concluído';
+    if ((entry?.attempts || 0) > 0 || isPlaying(key)) return 'Em andamento';
     return 'Não realizado';
   };
 
   return (
-    <section className="grid cols-2">
-      <div className="card">
-        <h1>Bem-vindo(a) aos Jogos MAPEAR</h1>
-        <p>
+    <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="rounded-xl border border-slate-400/15 bg-[linear-gradient(180deg,rgba(16,24,39,0.8),rgba(16,24,39,0.6))] shadow-md p-4 sm:p-6 text-white">
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Bem-vindo(a) aos Jogos MAPEAR</h1>
+        <p className="mt-2">
           Sua jornada de aprendizado sobre Pensamento Computacional começa aqui. Escolha um dos
           minijogos no menu para começar ou continuar de onde parou.
         </p>
-        <div className="tip" style={{ marginTop: 10 }}>
+        <div className="mt-3 rounded-lg border-l-4 border-blue-500/60 bg-blue-500/10 p-3">
           <div>
-            <div className="badge">Mentores virtuais</div>
-            <div>
+            <div className="inline-block text-xs font-semibold bg-blue-500 text-white rounded px-2 py-0.5">Mentores virtuais</div>
+            <div className="mt-2">
               <b>Mentores virtuais:</b>
               <br />- Abstração: Ver além dos detalhes.
               <br />- Padrões: Encontrar regularidades.
@@ -36,58 +47,52 @@ export default function JogosHome() {
         </div>
       </div>
 
-      <div className="card">
-        <h2>Sua jornada</h2>
-        <p className="muted">Acompanhe seu progresso em cada pilar:</p>
-        <ul className="list">
+      <div className="rounded-xl border border-slate-400/15 bg-[linear-gradient(180deg,rgba(16,24,39,0.8),rgba(16,24,39,0.6))] shadow-md p-4 sm:p-6 text-white">
+        <h2 className="text-2xl sm:text-3xl font-semibold text-blue-400">Sua Jornada</h2>
+        <p className="text-gray-400 mt-2">Acompanhe seu progresso em cada pilar:</p>
+        <ul className="space-y-2 mt-2">
           <li>
             Detective de Padrões:{' '}
             <strong>
-              {statusLabel(stats.progress.padroes.completed, stats.progress.padroes.attempts)}
+              {statusLabelByKey('padroes')}
             </strong>
           </li>
           <li>
             Abstração:{' '}
             <strong>
-              {statusLabel(stats.progress.abstracao.completed, stats.progress.abstracao.attempts)}
+              {statusLabelByKey('abstracao')}
             </strong>
           </li>
           <li>
             Decomposição:{' '}
             <strong>
-              {statusLabel(
-                stats.progress.decomposicao.completed,
-                stats.progress.decomposicao.attempts
-              )}
+              {statusLabelByKey('decomposicao')}
             </strong>
           </li>
           <li>
             Algoritmos:{' '}
             <strong>
-              {statusLabel(stats.progress.algoritmo.completed, stats.progress.algoritmo.attempts)}
+              {statusLabelByKey('algoritmo')}
             </strong>
           </li>
           <li>
             Generalize+:{' '}
             <strong>
-              {statusLabel(
-                stats.progress.generalizacao.completed,
-                stats.progress.generalizacao.attempts
-              )}
+              {statusLabelByKey('generalizacao')}
             </strong>
           </li>
           <li>
             Robótica:{' '}
             <strong>
-              {statusLabel(stats.progress.robotica.completed, stats.progress.robotica.attempts)}
+              {statusLabelByKey('robotica')}
             </strong>
           </li>
         </ul>
-        <div style={{ marginTop: 16, display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-          <Link className="button" href="/jogos/padroes">
+        <div className="mt-4 flex gap-2 flex-wrap">
+          <Link className="inline-flex items-center justify-center gap-2 px-3 py-2 rounded-lg font-semibold text-white border border-white/20 hover:bg-blue-500/10" href="/jogos/padroes">
             Continuar Jornada
           </Link>
-          <Link className="button secondary" href="/jogos/relatorios">
+          <Link className="inline-flex items-center justify-center gap-2 px-3 py-2 rounded-lg font-semibold text-white border border-white/20 hover:bg-blue-500/10" href="/jogos/relatorios">
             Ver Relatórios
           </Link>
         </div>

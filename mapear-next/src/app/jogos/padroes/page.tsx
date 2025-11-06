@@ -194,53 +194,57 @@ export default function PadroesPage() {
   const currentDica = 'sequence' in currentPhase ? undefined : currentPhase.dica;
 
   return (
-    <section className="card">
-      <h1>Detective de Padrões</h1>
-      <div className="muted" style={{ marginBottom: 6 }}>{phaseLabel}</div>
-      <p>{instruction}</p>
+    <section className="rounded-xl border border-white/10 bg-[#0b1220] p-6 shadow-xl shadow-black/40">
+      <h1 className="text-2xl font-semibold">Detective de Padrões</h1>
+      <div className="text-gray-400 mb-1">{phaseLabel}</div>
+      <p className="mt-1">{instruction}</p>
 
       {currentPhaseData && currentPhaseData.kind === 'sequence' && (
-        <div style={{ fontSize: 18, margin: '8px 0' }}>
+        <div className="text-lg my-2">
           {currentPhaseData.sequence.join(', ')}, <strong>?</strong>
         </div>
       )}
 
       {currentPhaseData && currentPhaseData.kind === 'scenario' && (
-        <div style={{ margin: '8px 0' }}>
-          <p className="muted">{currentPhaseData.situacao}</p>
+        <div className="my-2">
+          <p className="text-gray-400">{currentPhaseData.situacao}</p>
           <p><strong>{currentPhaseData.pergunta}</strong></p>
         </div>
       )}
 
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, marginTop: 8 }}>
+      <div className="flex flex-wrap gap-2 mt-2">
         {currentPhaseData?.options.map((opt, idx) => (
-          <button key={idx} className="button" onClick={() => handleOptionClick(opt)}>
+          <button
+            key={idx}
+            className="inline-flex items-center justify-center px-3 py-2 rounded-lg border border-white/20 text-white hover:bg-blue-500/10 transition"
+            onClick={() => handleOptionClick(opt)}
+          >
             {String(opt)}
           </button>
         ))}
       </div>
 
-      <div className="muted" style={{ marginTop: 10, color: feedbackVariant === 'success' ? '#16a34a' : feedbackVariant === 'error' ? '#dc2626' : undefined, fontWeight: feedbackVariant === 'success' ? 600 : undefined }}>{feedback}</div>
-      <div className="tip" style={{ marginTop: 12 }}>
+      <div className={`mt-2 ${feedbackVariant === 'success' ? 'text-green-500 font-semibold' : feedbackVariant === 'error' ? 'text-red-500' : 'text-gray-400'}`}>{feedback}</div>
+      <div className="mt-3 rounded-lg border-l-4 border-blue-500/60 bg-blue-500/10 p-3">
         <div>
-          <div className="badge">{tipLevel}</div>
-          <div>{tipText}</div>
+          <span className="inline-block text-xs font-semibold bg-blue-500 text-white rounded px-2 py-0.5 mr-2">{tipLevel}</span>
+          <span className="text-gray-200">{tipText}</span>
         </div>
       </div>
 
-      <div style={{ marginTop: 14 }}>
-        <label htmlFor="padroes-reflexao">Reflexão (MAPEAR):</label>
+      <div className="mt-4">
+        <label htmlFor="padroes-reflexao" className="block font-medium text-gray-200">Reflexão (MAPEAR):</label>
         <textarea
           id="padroes-reflexao"
-          className="input"
+          className="mt-2 w-full px-3 py-2 rounded-lg border border-white/20 bg-[#0b1220] text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
           rows={3}
           placeholder="Como identificou o padrão? O que ignorou?"
           value={reflection}
           onChange={(e) => setReflection(e.target.value)}
         />
-        <div style={{ display: 'flex', gap: 10, marginTop: 10 }}>
+        <div className="flex gap-2 mt-2">
           <button
-            className="button secondary"
+            className="inline-flex items-center justify-center px-3 py-2 rounded-lg border border-white/20 text-white hover:bg-blue-500/10 transition disabled:opacity-50 disabled:cursor-not-allowed"
             disabled={!finished}
             onClick={() => {
               reflect(gameKey, reflection.trim());
@@ -250,7 +254,10 @@ export default function PadroesPage() {
             Salvar reflexão
           </button>
           {finished && (
-            <Link className="button" href="/jogos/abstracao">
+            <Link
+              className="inline-flex items-center justify-center px-3 py-2 rounded-lg font-semibold text-white bg-gradient-to-r from-green-600 to-emerald-500 hover:from-green-500 hover:to-emerald-400 transition"
+              href="/jogos/abstracao"
+            >
               Próximo: Abstração
             </Link>
           )}
