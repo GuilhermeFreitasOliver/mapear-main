@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Conteudo() {
   return (
@@ -11,10 +12,13 @@ export default function Conteudo() {
           Arcabouço Pedagógico MAPEAR — Pensamento Computacional
         </h1>
         <div className="mt-4 flex justify-center">
-          <img
+          <Image
             alt="Logo da Metodologia MAPEAR"
             src="/MAPEAR.png"
+            width={512}
+            height={256}
             className="h-56 sm:h-64 object-contain rounded-lg border border-slate-400/30 shadow-lg"
+            priority
           />
         </div>
         <div className="mt-6 grid gap-4 sm:grid-cols-3">
@@ -110,7 +114,7 @@ export default function Conteudo() {
       >
         <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Protocolo MAPEAR</h1>
         <div className="mt-4 flex justify-center">
-          <img alt="Protocolo" src="/protocoloMAPEAR.png" className="max-w-full rounded-lg border border-slate-400/30 shadow-lg" />
+          <Image alt="Protocolo" src="/protocoloMAPEAR.png" width={1024} height={640} className="max-w-full rounded-lg border border-slate-400/30 shadow-lg" />
         </div>
       </section>
 

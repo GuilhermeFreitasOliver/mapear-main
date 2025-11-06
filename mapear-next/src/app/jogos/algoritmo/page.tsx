@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useStorage } from '@/context/StorageContext';
 import { mountTip, TipLevel } from '@/lib/tipEngine';
@@ -305,9 +306,11 @@ export default function AlgoritmoPage() {
       {!isScenario && (
         <div className="mt-3 flex justify-center">
           {imgSrc && (
-            <img
+            <Image
               src={imgSrc}
               alt="Representação do desafio"
+              width={420}
+              height={420}
               className="max-w-[420px] w-full h-auto rounded-lg border border-slate-400/25"
             />
           )}

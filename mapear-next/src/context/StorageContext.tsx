@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, useContext, useEffect, useState, useCallback } from 'react';
 import { doc, getDoc, setDoc } from 'firebase/firestore/lite';
 import { db } from '@/lib/firebase';
 import { useAuth } from '@/context/AuthContext';
@@ -117,7 +117,7 @@ export function StorageProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const getState = async (): Promise<GameState> => {
+  const getState = useCallback(async (): Promise<GameState> => {
     try {
       if (!user) {
         if (typeof window !== 'undefined') {
@@ -146,7 +146,7 @@ export function StorageProvider({ children }: { children: React.ReactNode }) {
       // Fallback para o estado padrão
       return defaultState();
     }
-  };
+  }, [user]);
 
   useEffect(() => {
     let active = true;
@@ -159,7 +159,7 @@ export function StorageProvider({ children }: { children: React.ReactNode }) {
       active = false;
     };
     // Recarrega ao trocar usuário
-  }, [user?.uid]);
+  }, [getState, user?.uid]);
 
   const update = async (updater: (s: GameState) => GameState): Promise<GameState> => {
     const base = currentState || defaultState();

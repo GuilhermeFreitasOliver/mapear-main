@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Link from "next/link";
+import Image from "next/image";
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
 import { StorageProvider } from "@/context/StorageContext";
@@ -40,7 +41,7 @@ export default function RootLayout({
             <header className="fixed top-0 left-0 right-0 z-[9999] bg-gray-900 border-b border-white/10 shadow-2xl px-5 py-3 flex flex-wrap items-center justify-between gap-3">
               <div className="flex flex-col">
                 <div className="flex items-center gap-2">
-                  <img className="w-8 h-8 rounded-lg" src="/MAPEARFavicon.png" alt="Logo MAPEAR" />
+                  <Image className="w-8 h-8 rounded-lg" src="/MAPEARFavicon.png" alt="Logo MAPEAR" width={32} height={32} priority />
                   <span className="font-extrabold tracking-wide text-green-500">Arcabouço Pedagógico MAPEAR</span>
                 </div>
               </div>

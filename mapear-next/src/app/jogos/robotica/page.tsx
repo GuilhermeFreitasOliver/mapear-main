@@ -239,20 +239,22 @@ const phases: Phase[] = [
 export default function RoboticaPage() {
   const { state, attempt, record, score, complete, achieve, reflect, getCurrentState } = useStorage();
   const gameKey = 'robotica' as const;
-  const [step, setStep] = useState<number>(() => computeInitialStep(state, gameKey, phases.length));
+  const totalPhases = phases.length;
+  const completed = state?.progress?.[gameKey]?.completed;
+  const [step, setStep] = useState<number>(() => computeInitialStep(state, gameKey, totalPhases));
   const [feedback, setFeedback] = useState('');
   const [feedbackType, setFeedbackType] = useState<'success' | 'error' | ''>('');
   const [finished, setFinished] = useState(false);
   const [reflection, setReflection] = useState('');
 
   const current = phases[step - 1];
-  const options = useMemo(() => shuffle(current.opcoes), [step]);
+  const options = useMemo(() => shuffle(current.opcoes), [current]);
 
   useEffect(() => {
     // Atualiza passo inicial quando eventos/progresso mudam
-    setStep(() => computeInitialStep(state, gameKey, phases.length));
-    setFinished(!!state?.progress?.[gameKey]?.completed);
-  }, [state?.events, state?.progress?.[gameKey]?.completed, phases.length]);
+    setStep(() => computeInitialStep(state, gameKey, totalPhases));
+    setFinished(!!completed);
+  }, [state, completed, totalPhases]);
 
   const handlePick = async (opt: string) => {
     if (finished) return;
@@ -272,7 +274,7 @@ export default function RoboticaPage() {
         await record('minigame_step', { key: gameKey, step, correct: true });
         const finalState = getCurrentState();
         const totalAttempts = finalState.progress[gameKey].attempts || 1;
-        const computedScore = Math.max(0, Math.min(10, Math.round((10 * phases.length) / Math.max(totalAttempts, 1))));
+        const computedScore = Math.max(0, Math.min(10, Math.round((10 * totalPhases) / Math.max(totalAttempts, 1))));
         await score(gameKey, computedScore);
         await complete(gameKey);
         await achieve('Conectou sensores e atuadores em desafios de robótica');

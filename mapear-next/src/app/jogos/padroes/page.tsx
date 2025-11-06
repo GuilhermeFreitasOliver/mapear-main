@@ -96,10 +96,9 @@ function computeInitialStep(state: GameState | undefined, gameKey: Pillar, total
 export default function PadroesPage() {
   const { state, attempt, record, score, complete, reflect, getCurrentState } = useStorage();
   const gameKey = 'padroes' as const;
-
-  const [step, setStep] = useState<number>(() => computeInitialStep(state, gameKey, phases.length));
-  const [attemptsLocal, setAttemptsLocal] = useState(0);
-  const [correctsLocal, setCorrectsLocal] = useState(0);
+  const totalPhases = phases.length;
+  const completed = state?.progress?.[gameKey]?.completed;
+  const [step, setStep] = useState<number>(() => computeInitialStep(state, gameKey, totalPhases));
   const [feedback, setFeedback] = useState('');
   const [currentPhaseData, setCurrentPhaseData] = useState<CurrentPhaseData | null>(null);
   const [tipText, setTipText] = useState('');
@@ -109,8 +108,8 @@ export default function PadroesPage() {
   const [feedbackVariant, setFeedbackVariant] = useState<'default' | 'success' | 'error'>('default');
 
   useEffect(() => {
-    setStep(() => computeInitialStep(state, gameKey, phases.length));
-  }, [state?.events, phases.length]);
+    setStep(() => computeInitialStep(state, gameKey, totalPhases));
+  }, [state, completed, totalPhases]);
 
   // Carrega os dados da fase atual (lógica de renderPhase)
   useEffect(() => {
@@ -147,14 +146,12 @@ export default function PadroesPage() {
 
   // Handler para clique nas opções (substitui addEventListener)
   async function handleOptionClick(choice: string | number) {
-    setAttemptsLocal((a) => a + 1);
     await attempt(gameKey); // registra tentativa
   
     if (!currentPhaseData || finished) return;
     const isCorrect = choice === currentPhaseData.correct;
   
     if (isCorrect) {
-      setCorrectsLocal((c) => c + 1);
       await record('minigame_step', { key: gameKey, step, correct: true });
       if (step < phases.length) {
         setFeedback('Certo! Próxima fase...');
@@ -167,7 +164,7 @@ export default function PadroesPage() {
       } else {
         const final = getCurrentState();
         const totalAttempts = final.progress[gameKey]?.attempts || 1;
-        const computedScore = Math.max(0, Math.min(10, Math.round((10 * phases.length) / Math.max(totalAttempts, 1))));
+        const computedScore = Math.max(0, Math.min(10, Math.round((10 * totalPhases) / Math.max(totalAttempts, 1))));
         await score(gameKey, computedScore);
         await complete(gameKey);
         setFeedback('Concluído!');
@@ -190,8 +187,7 @@ export default function PadroesPage() {
     return currentPhaseData.kind === 'sequence' ? 'Complete a sequência:' : 'Identifique o padrão:';
   }, [currentPhaseData]);
 
-  const currentPhase = phases[step - 1];
-  const currentDica = 'sequence' in currentPhase ? undefined : currentPhase.dica;
+  // removed unused variable currentPhase
 
   return (
     <section className="rounded-xl border border-white/10 bg-[#0b1220] p-6 shadow-xl shadow-black/40">
