@@ -311,13 +311,13 @@ export default function CursoPage() {
           <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-blue-500/15 text-blue-200 border border-blue-400/25">
             Formação Docente • MAPEAR
           </span>
-          <h1 id="titulo" className="mt-2 text-2xl sm:text-3xl font-bold tracking-tight">
+          <h1 id="titulo" className="mt-2 text-xl sm:text-5xl font-bold tracking-tight">
             Curso de Formação MAPEAR
           </h1>
-          <h3 className="mt-2 text-slate-200">
+          <h3 className="mt-2 text-lg text-slate-200">
             Presencial, híbrido ou EAD. Um percurso formativo para implementar o
-            <strong> Pensamento Computacional (PC)</strong> na Educação Básica com
-            mediação ativa e <strong> Robótica Educacional (RE)</strong>, combinando
+            <strong className="text-green-400"> Pensamento Computacional (PC)</strong> na Educação Básica com
+            mediação ativa e <strong className="text-green-400"> Robótica Educacional (RE)</strong>, combinando
             ferramentas digitais e atividades desplugadas, avaliação por competências
             e um banco colaborativo de práticas.
           </h3>
@@ -343,19 +343,19 @@ export default function CursoPage() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div className="rounded-lg border border-slate-400/15 bg-white/5 p-4 text-white">
               <strong>Carga horária</strong>
-              <span className="ml-2 inline-flex items-center px-2 py-1 text-xs rounded-full border border-white/10 bg-white/5 text-white/80">30h • sugerido</span>
+              <span className="mt-2 block w-fit items-center px-2 py-1 text-xs rounded-full border border-white/10 bg-white/10 text-green-400/80">30h • Sugerido</span>
             </div>
             <div className="rounded-lg border border-slate-400/15 bg-white/5 p-4 text-white">
               <strong>Público-alvo</strong>
-              <span className="ml-2 inline-flex items-center px-2 py-1 text-xs rounded-full border border-white/10 bg-white/5 text-white/80">Professores em Formação Inicial ou Continuada</span>
+              <span className="mt-2 block w-fit items-center px-2 py-1 text-xs rounded-full border border-white/10 bg-white/10 text-green-400/80">Professores em Formação Inicial ou Continuada</span>
             </div>
             <div className="rounded-lg border border-slate-400/15 bg-white/5 p-4 text-white">
               <strong>Modalidades</strong>
-              <span className="ml-2 inline-flex items-center px-2 py-1 text-xs rounded-full border border-white/10 bg-white/5 text-white/80">Presencial • Híbrido • EAD</span>
+              <span className="mt-2 block w-fit items-center px-2 py-1 text-xs rounded-full border border-white/10 bg-white/10 text-green-400/80">Presencial • Híbrido • EAD</span>
             </div>
           </div>
           <div className="rounded-xl border border-slate-400/15 bg-[linear-gradient(180deg,rgba(16,24,39,0.8),rgba(16,24,39,0.6))] shadow-md p-4 sm:p-6 text-white">
-            <h2 className="text-xl sm:text-2xl font-semibold">Objetivos</h2>
+            <h2 className="text-xl sm:text-3xl font-semibold">Objetivos</h2>
             <ul className="mt-2 list-disc pl-5 space-y-1 text-slate-200">
               <li>Compreender fundamentos do PC e seus pilares (decomposição, padrões, abstração, algoritmos).</li>
               <li>Planejar sequências e projetos com <em>mediação ativa</em> e momentos de <strong>RE</strong>.</li>
@@ -370,7 +370,7 @@ export default function CursoPage() {
 
         {/* Programa detalhado (Accordion) */}
         <section id="programa" aria-labelledby="programa-t">
-          <h2 id="programa-t" className="text-xl sm:text-2xl font-semibold text-white">Programa detalhado</h2>
+          <h2 id="programa-t" className="text-xl sm:text-3xl font-semibold text-white">Programa detalhado</h2>
           <p className="text-gray-400">Cada módulo inclui objetivos de aprendizagem, conteúdos, atividades (presencial/EAD), RE (Robótica Educacional), avaliação formativa e recursos.</p>
 
           {courseData.map((m) => (
@@ -387,7 +387,7 @@ export default function CursoPage() {
 
         {/* Avaliação: Matriz de competências (Tabela moderna) */}
         <section id="avaliacao" aria-labelledby="av-t">
-          <h2 id="av-t" className="text-xl sm:text-2xl font-semibold text-white">Matriz de competências (exemplo)</h2>
+          <h2 id="av-t" className="text-xl sm:text-3xl font-semibold text-white">Matriz de competências (exemplo)</h2>
           <div className="mt-2 rounded-lg bg-yellow-500/10 border border-yellow-500/30 text-yellow-100 p-3">
             Use e adapte conforme seu contexto. Inclui critérios transversais: colaboração, comunicação, ética digital e acessibilidade.
           </div>
@@ -425,8 +425,8 @@ export default function CursoPage() {
         <section id="cronograma" aria-labelledby="crono-t">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="rounded-xl border border-slate-400/15 bg-[linear-gradient(180deg,rgba(16,24,39,0.8),rgba(16,24,39,0.6))] shadow-md p-4 sm:p-6 text-white">
-              <h3>Cronograma sugerido (30h)</h3>
-              <ol>
+              <h3 className="text-xl sm:text-2xl font-semibold text-green-400/80">Cronograma sugerido (30h)</h3>
+              <ol className="mt-2 list-decimal pl-5 space-y-1 text-white/90">
                 <li><strong>Encontro 1 (4h):</strong> Módulo 1.1 e 1.2</li>
                 <li><strong>Encontro 2 (2h):</strong> Módulo 1.3</li>
                 <li><strong>Encontro 3 (4h):</strong> Módulo 2.1</li>
@@ -438,8 +438,8 @@ export default function CursoPage() {
               </ol>
             </div>
             <div className="rounded-xl border border-slate-400/15 bg-[linear-gradient(180deg,rgba(16,24,39,0.8),rgba(16,24,39,0.6))] shadow-md p-4 sm:p-6 text-white">
-              <h3>Rubrica para projetos MAPEAR (resumo)</h3>
-              <ul>
+              <h3 className="text-xl sm:text-2xl font-semibold text-green-400/80">Rubrica para projetos MAPEAR (resumo)</h3>
+              <ul className="mt-2 list-disc pl-5 space-y-1 text-white/90">
                 <li><strong>Clareza do problema-motriz</strong>: relevante, contextualizado, interdisciplinar.</li>
                 <li><strong>Evidências de PC</strong>: presença explícita dos quatro pilares.</li>
                 <li><strong>Acessibilidade</strong>: adaptações planejadas; linguagem inclusiva.</li>
@@ -450,8 +450,8 @@ export default function CursoPage() {
               </ul>
             </div>
             <div className="rounded-xl border border-slate-400/15 bg-[linear-gradient(180deg,rgba(16,24,39,0.8),rgba(16,24,39,0.6))] shadow-md p-4 sm:p-6 text-white">
-              <h3>Adaptação Híbrida/EAD</h3>
-              <ul>
+              <h3 className="text-xl sm:text-2xl font-semibold text-green-400/80">Adaptação Híbrida/EAD</h3>
+              <ul className="mt-2 list-disc pl-5 space-y-1 text-white/90">
                 <li>Vídeos curtos assíncronos (10–15min) por unidade.</li>
                 <li>Fóruns com protocolos de reflexão e feedback por pares.</li>
                 <li>Sessões síncronas focadas em prática e dúvidas.</li>
@@ -460,8 +460,8 @@ export default function CursoPage() {
               </ul>
             </div>
             <div className="rounded-xl border border-slate-400/15 bg-[linear-gradient(180deg,rgba(16,24,39,0.8),rgba(16,24,39,0.6))] shadow-md p-4 sm:p-6 text-white">
-              <h3>Infra mínima</h3>
-              <ul>
+              <h3 className="text-xl sm:text-2xl font-semibold text-green-400/80">Infra mínima</h3>
+              <ul className="mt-2 list-disc pl-5 space-y-1 text-white/90">
                 <li>Para presencial: sala com projeção e espaço para dinâmicas.</li>
                 <li>Para EAD: plataforma de videoconferência + repositório (Drive/Git/AVA).</li>
                 <li>1 dispositivo por dupla (ou estações rotativas).</li>
@@ -475,11 +475,11 @@ export default function CursoPage() {
 
         {/* Recursos e modelos prontos */}
         <section id="recursos" aria-labelledby="recursos-t">
-          <h2 id="recursos-t" className="text-xl sm:text-2xl font-semibold text-white">Recursos e modelos prontos</h2>
+          <h2 id="recursos-t" className="text-xl sm:text-3xl font-semibold text-white">Recursos e modelos prontos</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
             <div className="rounded-xl border border-slate-400/15 bg-[linear-gradient(180deg,rgba(16,24,39,0.8),rgba(16,24,39,0.6))] shadow-md p-4 sm:p-6 text-white">
-              <h3>Modelos editáveis</h3>
-              <ul>
+              <h3 className="text-xl sm:text-2xl font-semibold text-green-400/80">Modelos editáveis</h3>
+              <ul className="mt-2 list-disc pl-5 space-y-1 text-white/90">
                 <li>Canvas de projeto MAPEAR</li>
                 <li>Roteiro de RE (antes/durante/depois)</li>
                 <li>Rubrica de PC (padrão)</li>
@@ -487,8 +487,8 @@ export default function CursoPage() {
               </ul>
             </div>
             <div className="rounded-xl border border-slate-400/15 bg-[linear-gradient(180deg,rgba(16,24,39,0.8),rgba(16,24,39,0.6))] shadow-md p-4 sm:p-6 text-white">
-              <h3>Protocolos de mediação</h3>
-              <ul>
+              <h3 className="text-xl sm:text-2xl font-semibold text-green-400/80">Protocolos de mediação</h3>
+              <ul className="mt-2 list-disc pl-5 space-y-1 text-white/90">
                 <li>Pense–Par–Compartilhe</li>
                 <li>Crítica amigável (Como um amigo)</li>
                 <li>Galeria com feedback pontual</li>
@@ -502,7 +502,7 @@ export default function CursoPage() {
 
         {/* Baralho Pedagógico (cards) */}
         <section id="baralho" aria-labelledby="baralho-t">
-          <h2 id="baralho-t" className="text-xl sm:text-2xl font-semibold text-white">Baralho Pedagógico</h2>
+          <h2 id="baralho-t" className="text-xl sm:text-3xl font-semibold text-white">Baralho Pedagógico</h2>
           <div className="mt-3 flex flex-wrap items-center gap-2">
             <a
               className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-semibold text-white border border-white/20 hover:bg-blue-500/10"
