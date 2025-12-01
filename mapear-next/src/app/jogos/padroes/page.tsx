@@ -86,7 +86,7 @@ function computeInitialStep(state: GameState | undefined, gameKey: Pillar, total
   let initialStep = last ? (lastStep + 1) : 1;
 
   if (state?.progress?.[gameKey]?.completed) {
-    initialStep = 1;
+    initialStep = totalPhases + 1;
   }
   if (initialStep > totalPhases) initialStep = totalPhases;
   if (initialStep < 1) initialStep = 1;
@@ -98,12 +98,12 @@ export default function PadroesPage() {
   const gameKey = 'padroes' as const;
   const totalPhases = phases.length;
   const completed = state?.progress?.[gameKey]?.completed;
+  const [finished, setFinished] = useState(completed);
   const [step, setStep] = useState<number>(() => computeInitialStep(state, gameKey, totalPhases));
   const [feedback, setFeedback] = useState('');
   const [currentPhaseData, setCurrentPhaseData] = useState<CurrentPhaseData | null>(null);
   const [tipText, setTipText] = useState('');
   const [tipLevel, setTipLevel] = useState<TipLevel>('Hint');
-  const [finished, setFinished] = useState(false);
   const [reflection, setReflection] = useState('');
   const [feedbackVariant, setFeedbackVariant] = useState<'default' | 'success' | 'error'>('default');
 
@@ -147,10 +147,10 @@ export default function PadroesPage() {
   // Handler para clique nas opções (substitui addEventListener)
   async function handleOptionClick(choice: string | number) {
     await attempt(gameKey); // registra tentativa
-  
+
     if (!currentPhaseData || finished) return;
     const isCorrect = choice === currentPhaseData.correct;
-  
+
     if (isCorrect) {
       await record('minigame_step', { key: gameKey, step, correct: true });
       if (step < phases.length) {
@@ -229,36 +229,57 @@ export default function PadroesPage() {
       </div>
 
       <div className="mt-4">
-        <label htmlFor="padroes-reflexao" className="block font-medium text-gray-200">Reflexão (MAPEAR):</label>
-        <textarea
-          id="padroes-reflexao"
-          className="mt-2 w-full px-3 py-2 rounded-lg border border-white/20 bg-[#0b1220] text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          rows={3}
-          placeholder="Como identificou o padrão? O que ignorou?"
-          value={reflection}
-          onChange={(e) => setReflection(e.target.value)}
-        />
-        <div className="flex gap-2 mt-2">
-          <button
-            className="inline-flex items-center justify-center px-3 py-2 rounded-lg border border-white/20 text-white hover:bg-blue-500/10 transition disabled:opacity-50 disabled:cursor-not-allowed"
-            disabled={!finished}
-            onClick={() => {
-              reflect(gameKey, reflection.trim());
-              setFeedback('Reflexão salva.');
-            }}
-          >
-            Salvar reflexão
-          </button>
-          {finished && (
-            <Link
-              className="inline-flex items-center justify-center px-3 py-2 rounded-lg font-semibold text-white bg-gradient-to-r from-green-600 to-emerald-500 hover:from-green-500 hover:to-emerald-400 transition"
-              href="/jogos/abstracao"
+        {/* Botão de Salvar Reflexão (mantém ele aqui caso queira salvar antes de sair) */}
+        {!finished && (
+          <div className="flex gap-2 mt-2">
+            <button
+              className="inline-flex items-center justify-center px-3 py-2 rounded-lg border border-white/20 text-white hover:bg-blue-500/10 transition"
+              onClick={() => {
+                reflect(gameKey, reflection.trim());
+                setFeedback('Reflexão salva.');
+              }}
             >
-              Próximo: Abstração
-            </Link>
-          )}
-        </div>
+              Salvar reflexão durante o jogo
+            </button>
+          </div>
+        )}
       </div>
+
+      {/* TELA DE VITÓRIA (OVERLAY) */}
+      {finished && (
+        <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#0b1020]/95 backdrop-blur-sm p-6 text-center animate-in fade-in duration-700">
+
+          {/* Ícone ou Emojis de celebração */}
+          <div className="text-6xl mb-6 animate-bounce">🎉 🏆 🧩</div>
+
+          <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">
+            Parabéns!
+          </h2>
+
+          <p className="text-lg md:text-xl text-gray-300 max-w-lg mb-8">
+            Você dominou o pilar de <strong className="text-green-400">Padrões</strong>!
+            <br />
+            Sua jornada de Pensamento Computacional continua.
+          </p>
+
+          {/* Botão de Ação Principal */}
+          <Link
+            href="/jogos/abstracao"
+            className="group relative inline-flex items-center justify-center px-8 py-4 font-bold text-white transition-all duration-200 bg-green-600 font-lg rounded-2xl hover:bg-green-500 hover:scale-105 focus:outline-none ring-offset-2 focus:ring-2 ring-green-400"
+          >
+            Seguir para a Próxima Fase
+            <svg className="w-5 h-5 ml-2 -mr-1 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+          </Link>
+
+          {/* Opção secundária discreta para voltar ao menu */}
+          <Link
+            href="/jogos"
+            className="mt-6 text-sm text-gray-500 hover:text-gray-300 underline decoration-gray-700 underline-offset-4"
+          >
+            Voltar ao menu principal
+          </Link>
+        </div>
+      )}
     </section>
   );
 }
