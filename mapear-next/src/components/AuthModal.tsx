@@ -21,7 +21,6 @@ export default function AuthModal() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
-  const [age, setAge] = useState<number | ''>('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -58,7 +57,6 @@ export default function AuthModal() {
     setEmail('');
     setPassword('');
     setName('');
-    setAge('');
     setError('');
     setLoading(false);
   }, []);
@@ -111,12 +109,11 @@ export default function AuthModal() {
       if (name) {
         await updateProfile(cred.user, { displayName: name });
       }
-      // Cria o perfil do usuário no Firestore com nome, idade e email
+      // Cria o perfil do usuário no Firestore com nome e email
       try {
         const { doc, setDoc } = await import('firebase/firestore/lite');
         await setDoc(doc(db, 'users', cred.user.uid), {
           name: name || cred.user.displayName || email.trim(),
-          age: typeof age === 'number' ? age : undefined,
           email: email.trim(),
         });
       } catch (profileErr) {
@@ -177,8 +174,6 @@ export default function AuthModal() {
             <form onSubmit={handleRegister}>
               <label htmlFor="register-name" className="block text-xs text-gray-400 mt-2">Nome</label>
               <input id="register-name" type="text" className="w-full px-3 py-2 rounded-md border border-slate-500/50 bg-[#0b1220] text-gray-100" required value={name} onChange={(e) => setName(e.target.value)} />
-              <label htmlFor="register-age" className="block text-xs text-gray-400 mt-2.5">Idade</label>
-              <input id="register-age" type="number" className="w-full px-3 py-2 rounded-md border border-slate-500/50 bg-[#0b1220] text-gray-100" value={age || ''} onChange={(e) => setAge(e.target.value ? Number(e.target.value) : '')} />
               <label htmlFor="register-email" className="block text-xs text-gray-400 mt-2.5">Email</label>
               <input id="register-email" type="email" className="w-full px-3 py-2 rounded-md border border-slate-500/50 bg-[#0b1220] text-gray-100" required value={email} onChange={(e) => setEmail(e.target.value)} />
               <label htmlFor="register-password" className="block text-xs text-gray-400 mt-2.5">Senha (mínimo 6 caracteres)</label>

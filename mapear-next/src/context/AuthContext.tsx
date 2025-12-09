@@ -10,7 +10,6 @@ import { auth, db } from '@/lib/firebase';
 // Definindo a interface para os dados do perfil (baseado em ui-auth.js)
 interface UserProfile {
   name: string;
-  age?: number;
   email: string;
 }
 

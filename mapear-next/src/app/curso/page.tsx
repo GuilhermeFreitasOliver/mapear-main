@@ -95,7 +95,7 @@ const courseData: CourseModule[] = [
                 <span>💡</span> Para Refletir
               </h4>
               <p className="text-slate-300 italic">
-                "Como você já utiliza a decomposição ao planejar suas aulas, mesmo sem chamar isso de Pensamento Computacional?"
+                &ldquo;Como você já utiliza a decomposição ao planejar suas aulas, mesmo sem chamar isso de Pensamento Computacional?&rdquo;
               </p>
             </div>
           </div>
@@ -260,8 +260,8 @@ function LessonModal({ unit, onClose, onComplete }: { unit: CourseUnit; onClose:
   }, []);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/90 backdrop-blur-sm p-4 sm:p-6 animate-in fade-in duration-200">
-      <div className="w-full max-w-5xl h-full max-h-[90vh] flex flex-col bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300">
+    <div className="fixed inset-0 z-[10000] flex items-start justify-center bg-slate-950/90 backdrop-blur-sm overflow-y-auto py-8 px-4 sm:px-6 animate-in fade-in duration-200">
+      <div className="w-full max-w-5xl max-h-[calc(100vh-4rem)] my-auto flex flex-col bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300">
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-slate-700 bg-slate-900/50">
           <h2 className="text-xl font-bold text-white truncate pr-4">{unit.title}</h2>
@@ -438,11 +438,11 @@ export default function CursoPage() {
   const overallProgress = totalLessons > 0 ? (completedLessons / totalLessons) * 100 : 0;
 
   const handleLessonClick = (moduleId: string, lessonId: string) => {
-    const module = courseData.find((m) => m.id === moduleId);
-    if (!module) return;
+    const courseModule = courseData.find((m) => m.id === moduleId);
+    if (!courseModule) return;
 
     const unitIndex = parseInt(lessonId.split('-unit-')[1]);
-    const unit = module.units[unitIndex];
+    const unit = courseModule.units[unitIndex];
     if (!unit) return;
 
     setActiveLesson(unit);
