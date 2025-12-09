@@ -251,13 +251,15 @@ const courseData: CourseModule[] = [
   },
 ];
 
-function LessonModal({ unit, onClose, onComplete }: { unit: CourseUnit; onClose: () => void; onComplete: () => void }) {
+function LessonModal({ unit, onClose, onComplete, lessonId, lessonProgress }: { unit: CourseUnit; onClose: () => void; onComplete: () => void; lessonId: string | null; lessonProgress: Record<string, CourseLessonStatus> }) {
   useEffect(() => {
     document.body.style.overflow = 'hidden';
     return () => {
       document.body.style.overflow = 'unset';
     };
   }, []);
+
+  const isCompleted = lessonId ? lessonProgress[lessonId] === 'completed' : false;
 
   return (
     <div className="fixed inset-0 z-[10000] flex items-start justify-center bg-slate-950/90 backdrop-blur-sm overflow-y-auto py-8 px-4 sm:px-6 animate-in fade-in duration-200">
@@ -295,16 +297,15 @@ function LessonModal({ unit, onClose, onComplete }: { unit: CourseUnit; onClose:
         {/* Footer */}
         <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-slate-700 bg-slate-900/50">
           <button
-            onClick={onClose}
-            className="px-4 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition-colors font-medium"
-          >
-            Cancelar
-          </button>
-          <button
             onClick={onComplete}
-            className="px-6 py-2 rounded-lg bg-green-600 hover:bg-green-500 text-white font-bold shadow-lg shadow-green-900/20 transition-all hover:scale-105 flex items-center gap-2"
+            disabled={isCompleted}
+            className={`px-6 py-2 rounded-lg font-bold shadow-lg transition-all flex items-center gap-2 ${
+              isCompleted
+                ? 'bg-slate-600 text-slate-400 cursor-not-allowed'
+                : 'bg-green-600 hover:bg-green-500 text-white shadow-green-900/20 hover:scale-105'
+            }`}
           >
-            <span>Concluir Aula</span>
+            <span>{isCompleted ? 'Aula Concluída' : 'Concluir Aula'}</span>
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
           </button>
         </div>
@@ -907,6 +908,8 @@ export default function CursoPage() {
       {activeLesson && (
         <LessonModal
           unit={activeLesson}
+          lessonId={activeLessonId}
+          lessonProgress={lessonProgress}
           onClose={() => {
             setActiveLesson(null);
             setActiveLessonId(null);
