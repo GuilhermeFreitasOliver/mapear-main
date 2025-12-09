@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useStorage } from '@/context/StorageContext';
+import ProtectedRoute from '@/components/ProtectedRoute';
 
 export default function JogosHome() {
   const { state: stats } = useStorage();
@@ -24,7 +25,8 @@ export default function JogosHome() {
   };
 
   return (
-    <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <ProtectedRoute>
+      <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div className="rounded-xl border border-slate-400/15 bg-[linear-gradient(180deg,rgba(16,24,39,0.8),rgba(16,24,39,0.6))] shadow-md p-4 sm:p-6 text-white">
         <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Bem-vindo(a) aos Jogos MAPEAR</h1>
         <p className="mt-2">
@@ -98,5 +100,6 @@ export default function JogosHome() {
         </div>
       </div>
     </section>
+    </ProtectedRoute>
   );
 }

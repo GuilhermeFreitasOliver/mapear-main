@@ -34,6 +34,7 @@ export interface GameState {
   scores: Scores;
   achievements: string[];
   events: GameEvent[];
+  courseProgress?: Record<string, 'not-started' | 'in-progress' | 'completed'>;
 }
 
 const LOCAL_KEY = 'mapear_state_v1_local';
@@ -65,6 +66,7 @@ const defaultState = (): GameState => ({
   },
   achievements: [],
   events: [],
+  courseProgress: {},
 });
 
 function mergeWithDefault(data: Partial<GameState> | undefined): GameState {
@@ -77,6 +79,7 @@ function mergeWithDefault(data: Partial<GameState> | undefined): GameState {
     scores: { ...def.scores, ...(data?.scores || {}) },
     achievements: Array.isArray(data?.achievements) ? data.achievements : def.achievements,
     events: Array.isArray(data?.events) ? data.events : def.events,
+    courseProgress: { ...def.courseProgress, ...(data?.courseProgress || {}) },
   } as GameState;
 }
 
@@ -91,6 +94,13 @@ interface StorageContextType {
   attempt: (key: Pillar) => Promise<GameState>;
   achieve: (text: string) => Promise<GameState>;
   reset: () => Promise<void>;
+  /**
+   * Updates the progress status of a specific course lesson.
+   * @param lessonId - The unique identifier of the lesson to update.
+   * @param status - The new status of the lesson ('not-started', 'in-progress', or 'completed').
+   * @returns A promise that resolves to the updated GameState.
+   */
+  updateCourseLesson: (lessonId: string, status: 'not-started' | 'in-progress' | 'completed') => Promise<GameState>;
 }
 
 const StorageContext = createContext<StorageContextType | undefined>(undefined);
@@ -212,6 +222,13 @@ export function StorageProvider({ children }: { children: React.ReactNode }) {
       return { ...s, achievements };
     });
 
+  const updateCourseLesson = (lessonId: string, status: 'not-started' | 'in-progress' | 'completed') =>
+    update((s) => {
+      const courseProgress = { ...(s.courseProgress || {}) };
+      courseProgress[lessonId] = status;
+      return { ...s, courseProgress };
+    });
+
   const reset = async () => {
     const fresh = defaultState();
     setCurrentState(fresh);
@@ -230,6 +247,7 @@ export function StorageProvider({ children }: { children: React.ReactNode }) {
     attempt,
     achieve,
     reset,
+    updateCourseLesson,
   };
 
   return <StorageContext.Provider value={value}>{children}</StorageContext.Provider>;

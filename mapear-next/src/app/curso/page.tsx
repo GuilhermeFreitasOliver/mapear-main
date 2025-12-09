@@ -1,10 +1,22 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import DeckCarousel from "../../components/DeckCarousel";
 import { deckData } from "./deckData";
+import CourseSidebar, { type CourseModule as SidebarModule, type CourseLesson, type CourseLessonStatus } from "../../components/CourseSidebar";
+import CourseProgressHeader from "../../components/CourseProgressHeader";
+import ProtectedRoute from "../../components/ProtectedRoute";
+import { useStorage } from "@/context/StorageContext";
 
 type CourseSection = { label: string; content: string | string[] };
-type CourseUnit = { title: string; sections: CourseSection[] };
+/**
+ * Represents a unit within a course module.
+ * @property {string} title - The title of the unit.
+ * @property {CourseSection[]} sections - The sections that make up the unit.
+ * @property {React.ReactNode} [modalContent] - Optional custom content to display in a modal for this unit.
+ *   If provided, this content will be rendered in a modal dialog when the unit is selected.
+ *   Use this property when the unit requires a custom modal presentation beyond the default behavior.
+ */
+type CourseUnit = { title: string; sections: CourseSection[]; modalContent?: React.ReactNode };
 type CourseModule = { id: string; title: string; hours: string; pdf: string; units: CourseUnit[] };
 
 
@@ -17,6 +29,77 @@ const courseData: CourseModule[] = [
     units: [
       {
         title: "Unidade 1.1 • PC e BNCC: por que e para quê (2h)",
+        modalContent: (
+          <div className="space-y-6">
+            <div className="relative w-full h-64 rounded-xl overflow-hidden mb-6">
+              <img
+                src="https://images.unsplash.com/photo-1501504905252-473c47e087f8?q=80&w=1974&auto=format&fit=crop"
+                alt="Sala de aula colaborativa"
+                className="object-cover w-full h-full"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent opacity-60"></div>
+              <h3 className="absolute bottom-4 left-4 text-3xl font-bold text-white shadow-black drop-shadow-lg">
+                Introdução ao Pensamento Computacional
+              </h3>
+            </div>
+
+            <p className="text-xl text-slate-300 leading-relaxed">
+              O Pensamento Computacional (PC) não é apenas sobre computadores. É uma habilidade fundamental de resolução de problemas que pode ser aplicada em qualquer disciplina, desde Artes até Matemática.
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
+              <div className="bg-slate-800/50 p-6 rounded-xl border border-slate-700">
+                <h4 className="text-green-400 font-bold text-lg mb-2">O que é?</h4>
+                <p className="text-slate-300">Uma abordagem para formular e resolver problemas de forma que um humano ou uma máquina possa executá-los eficazmente.</p>
+              </div>
+              <div className="bg-slate-800/50 p-6 rounded-xl border border-slate-700">
+                <h4 className="text-blue-400 font-bold text-lg mb-2">Por que na BNCC?</h4>
+                <p className="text-slate-300">A BNCC integra o PC como competência essencial para o mundo digital, promovendo criatividade, lógica e autonomia.</p>
+              </div>
+            </div>
+
+            <h3 className="text-2xl font-bold text-white mt-8 mb-4">Os 4 Pilares do PC</h3>
+            <ul className="space-y-4">
+              <li className="flex items-start gap-3">
+                <span className="bg-purple-500/20 text-purple-300 p-2 rounded-lg font-bold">1</span>
+                <div>
+                  <strong className="text-white block">Decomposição</strong>
+                  <span className="text-slate-400">Dividir problemas complexos em partes menores e gerenciáveis.</span>
+                </div>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="bg-pink-500/20 text-pink-300 p-2 rounded-lg font-bold">2</span>
+                <div>
+                  <strong className="text-white block">Reconhecimento de Padrões</strong>
+                  <span className="text-slate-400">Identificar tendências ou semelhanças que ajudam a resolver problemas.</span>
+                </div>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="bg-orange-500/20 text-orange-300 p-2 rounded-lg font-bold">3</span>
+                <div>
+                  <strong className="text-white block">Abstração</strong>
+                  <span className="text-slate-400">Focar no que é importante e ignorar detalhes irrelevantes.</span>
+                </div>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="bg-cyan-500/20 text-cyan-300 p-2 rounded-lg font-bold">4</span>
+                <div>
+                  <strong className="text-white block">Algoritmos</strong>
+                  <span className="text-slate-400">Criar um passo a passo para resolver o problema.</span>
+                </div>
+              </li>
+            </ul>
+
+            <div className="mt-10 p-6 bg-blue-900/20 border border-blue-500/30 rounded-xl">
+              <h4 className="flex items-center gap-2 text-blue-300 font-bold text-lg mb-2">
+                <span>💡</span> Para Refletir
+              </h4>
+              <p className="text-slate-300 italic">
+                "Como você já utiliza a decomposição ao planejar suas aulas, mesmo sem chamar isso de Pensamento Computacional?"
+              </p>
+            </div>
+          </div>
+        ),
         sections: [
           { label: "Objetivos", content: "Relacionar PC à BNCC e a práticas interdisciplinares; diferenciar PC de programação." },
           { label: "Conteúdos", content: "Conceitos; pilares do PC; transposição didática; exemplos em Línguas, Matemática, Ciências e Artes." },
@@ -168,6 +251,68 @@ const courseData: CourseModule[] = [
   },
 ];
 
+function LessonModal({ unit, onClose, onComplete }: { unit: CourseUnit; onClose: () => void; onComplete: () => void }) {
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, []);
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/90 backdrop-blur-sm p-4 sm:p-6 animate-in fade-in duration-200">
+      <div className="w-full max-w-5xl h-full max-h-[90vh] flex flex-col bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300">
+        {/* Header */}
+        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-700 bg-slate-900/50">
+          <h2 className="text-xl font-bold text-white truncate pr-4">{unit.title}</h2>
+          <button
+            onClick={onClose}
+            className="p-2 rounded-full hover:bg-slate-800 text-slate-400 hover:text-white transition-colors"
+            aria-label="Fechar"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+
+        {/* Content */}
+        <div className="flex-1 overflow-y-auto p-6 sm:p-10 bg-slate-900 scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-transparent">
+          <div className="prose prose-invert prose-lg max-w-none mx-auto">
+            {unit.modalContent ? unit.modalContent : (
+              <div className="flex flex-col items-center justify-center py-20 text-slate-500">
+                <div className="w-16 h-16 mb-4 rounded-full bg-slate-800 flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-slate-600"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><line x1="10" y1="9" x2="8" y2="9"></line></svg>
+                </div>
+                <p className="text-lg font-medium">Conteúdo da aula em desenvolvimento.</p>
+                <p className="text-sm mt-2 max-w-md text-center">O conteúdo detalhado desta aula ainda não foi carregado. Consulte o resumo abaixo.</p>
+                <div className="mt-8 w-full max-w-2xl text-left bg-slate-800/30 p-6 rounded-xl border border-slate-700/50">
+                  <DetailList sections={unit.sections} />
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-slate-700 bg-slate-900/50">
+          <button
+            onClick={onClose}
+            className="px-4 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition-colors font-medium"
+          >
+            Cancelar
+          </button>
+          <button
+            onClick={onComplete}
+            className="px-6 py-2 rounded-lg bg-green-600 hover:bg-green-500 text-white font-bold shadow-lg shadow-green-900/20 transition-all hover:scale-105 flex items-center gap-2"
+          >
+            <span>Concluir Aula</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function DetailList({ sections }: { sections: CourseSection[] }) {
   return (
     <div className="mt-2 rounded-xl border border-white/10 bg-white/5 p-3 text-slate-200">
@@ -197,10 +342,12 @@ function ModuleAccordion({
   module,
   isOpen,
   onToggle,
+  onOpenLesson,
 }: {
   module: CourseModule;
   isOpen: boolean;
   onToggle: () => void;
+  onOpenLesson: (unit: CourseUnit) => void;
 }) {
   return (
     <article id={module.id} className="mt-4">
@@ -219,21 +366,29 @@ function ModuleAccordion({
       <div
         className={`overflow-hidden transition-[max-height] duration-300 ${isOpen ? "max-h-[1000px]" : "max-h-0"}`}
       >
-        <div className="px-1">
+        <div className="px-1 pt-2 pb-4">
           {module.units.map((unit) => (
-            <div key={unit.title} className="mt-2">
-              <h4 className="text-white font-medium">{unit.title}</h4>
+            <div key={unit.title} className="mt-3 p-4 rounded-xl bg-white/5 border border-white/5 hover:border-white/10 transition-colors group">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-3">
+                <h4 className="text-lg font-semibold text-white group-hover:text-blue-200 transition-colors">{unit.title}</h4>
+                <button
+                  onClick={() => onOpenLesson(unit)}
+                  className="flex-shrink-0 inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold shadow-lg shadow-blue-900/20 transition-all hover:scale-105 active:scale-95"
+                >
+                  <span>▶</span> Iniciar Aula
+                </button>
+              </div>
               <DetailList sections={unit.sections} />
             </div>
           ))}
-          <div className="mt-2 flex flex-wrap items-center gap-2">
+          <div className="mt-4 flex flex-wrap items-center gap-2 pl-2">
             <a
-              className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-semibold text-white border border-white/20 hover:bg-blue-500/10"
+              className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-semibold text-white border border-white/20 hover:bg-blue-500/10 text-sm"
               href={module.pdf}
               target="_blank"
               rel="noopener"
             >
-              Abrir módulo
+              📄 Baixar PDF do Módulo
             </a>
           </div>
         </div>
@@ -247,7 +402,72 @@ export default function CursoPage() {
     if (typeof window !== "undefined") window.print();
   };
 
-  const [openModuleId, setOpenModuleId] = useState<string>("mod1"); // Módulo 1 aberto por padrão
+  const { state, updateCourseLesson } = useStorage();
+  const lessonProgress = state.courseProgress || {};
+
+  const [openModuleId, setOpenModuleId] = useState<string>("mod1");
+  const [activeLesson, setActiveLesson] = useState<CourseUnit | null>(null);
+  const [activeLessonId, setActiveLessonId] = useState<string | null>(null);
+
+  // Transform courseData to SidebarModule format for sidebar
+  const sidebarModules: SidebarModule[] = courseData.map((module) => {
+    const lessons: CourseLesson[] = module.units.map((unit, idx) => ({
+      id: `${module.id}-unit-${idx}`,
+      title: unit.title.split('•')[1]?.trim() || unit.title,
+      duration: unit.title.match(/\((\d+h)\)/)?.[1] || '2h',
+      status: lessonProgress[`${module.id}-unit-${idx}`] || 'not-started',
+    }));
+
+    const completedCount = lessons.filter((l) => l.status === 'completed').length;
+    const progress = lessons.length > 0 ? (completedCount / lessons.length) * 100 : 0;
+
+    return {
+      id: module.id,
+      title: module.title,
+      hours: module.hours,
+      lessons,
+      progress,
+    };
+  });
+
+  const totalLessons = sidebarModules.reduce((sum, m) => sum + m.lessons.length, 0);
+  const completedLessons = sidebarModules.reduce(
+    (sum, m) => sum + m.lessons.filter((l) => l.status === 'completed').length,
+    0
+  );
+  const overallProgress = totalLessons > 0 ? (completedLessons / totalLessons) * 100 : 0;
+
+  const handleLessonClick = (moduleId: string, lessonId: string) => {
+    const module = courseData.find((m) => m.id === moduleId);
+    if (!module) return;
+
+    const unitIndex = parseInt(lessonId.split('-unit-')[1]);
+    const unit = module.units[unitIndex];
+    if (!unit) return;
+
+    setActiveLesson(unit);
+    setActiveLessonId(lessonId);
+    setOpenModuleId(moduleId);
+
+    // Mark as in-progress if not started
+    if (!lessonProgress[lessonId] || lessonProgress[lessonId] === 'not-started') {
+      updateCourseLesson(lessonId, 'in-progress');
+    }
+  };
+
+  const handleLessonComplete = () => {
+    if (activeLessonId) {
+      updateCourseLesson(activeLessonId, 'completed');
+    }
+    setActiveLesson(null);
+    setActiveLessonId(null);
+  };
+
+  const currentModule = sidebarModules.find((m) => m.id === openModuleId);
+  const totalHours = courseData.reduce((sum, m) => sum + parseInt(m.hours), 0);
+  const completedHours = Math.round((completedLessons / totalLessons) * totalHours);
+  const remainingHours = totalHours - completedHours;
+
   const matrixData = [
     {
       title: "Decomposição",
@@ -306,8 +526,7 @@ export default function CursoPage() {
   ] as const;
 
   return (
-    <>
-
+    <ProtectedRoute>
       <div id="topo" className="space-y-6">
         {/* Cabeçalho do Curso */}
         <section
@@ -374,19 +593,159 @@ export default function CursoPage() {
 
         <hr className="my-6 border-t border-slate-400/20" />
 
-        {/* Programa detalhado (Accordion) */}
+        {/* Programa detalhado (Estilo Alura) */}
         <section id="programa" aria-labelledby="programa-t">
-          <h2 id="programa-t" className="text-xl sm:text-3xl font-semibold text-white">Programa detalhado</h2>
-          <p className="text-gray-400">Cada módulo inclui objetivos de aprendizagem, conteúdos, atividades (presencial/EAD), RE (Robótica Educacional), avaliação formativa e recursos.</p>
+          <h2 id="programa-t" className="text-xl sm:text-3xl font-semibold text-white mb-2">Programa detalhado</h2>
+          <p className="text-gray-400 mb-6">Cada módulo inclui objetivos de aprendizagem, conteúdos, atividades (presencial/EAD), RE (Robótica Educacional), avaliação formativa e recursos.</p>
 
-          {courseData.map((m) => (
-            <ModuleAccordion
-              key={m.id}
-              module={m}
-              isOpen={openModuleId === m.id}
-              onToggle={() => setOpenModuleId(openModuleId === m.id ? "" : m.id)}
+          <CourseProgressHeader
+            completedLessons={completedLessons}
+            totalLessons={totalLessons}
+            overallProgress={overallProgress}
+            estimatedTimeRemaining={`${remainingHours}h`}
+            currentModule={currentModule?.title || 'Módulo 1'}
+          />
+
+          <div className="grid lg:grid-cols-[320px_1fr] gap-6">
+            {/* Sidebar */}
+            <CourseSidebar
+              modules={sidebarModules}
+              activeModuleId={openModuleId}
+              activeLessonId={activeLessonId}
+              onModuleClick={setOpenModuleId}
+              onLessonClick={handleLessonClick}
+              overallProgress={overallProgress}
             />
-          ))}
+
+            {/* Main Content Area */}
+            <div className="space-y-4">
+              {courseData
+                .find((m) => m.id === openModuleId)
+                ?.units.map((unit, idx) => {
+                  const lessonId = `${openModuleId}-unit-${idx}`;
+                  const status = lessonProgress[lessonId] || 'not-started';
+
+                  return (
+                    <div
+                      key={lessonId}
+                      className="group bg-gradient-to-br from-slate-800/40 to-slate-900/40 border border-slate-700/50 rounded-xl p-5 hover:border-blue-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/10"
+                    >
+                      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                        {/* Left: Lesson Info */}
+                        <div className="flex items-start gap-4 flex-1">
+                          {/* Status Icon */}
+                          <div className="flex-shrink-0 mt-1">
+                            {status === 'completed' ? (
+                              <div className="w-12 h-12 rounded-full bg-green-500/20 border-2 border-green-400 flex items-center justify-center">
+                                <svg
+                                  className="w-6 h-6 text-green-400"
+                                  viewBox="0 0 24 24"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                >
+                                  <polyline points="20 6 9 17 4 12" strokeLinecap="round" strokeLinejoin="round" />
+                                </svg>
+                              </div>
+                            ) : status === 'in-progress' ? (
+                              <div className="w-12 h-12 rounded-full bg-blue-500/20 border-2 border-blue-400 flex items-center justify-center">
+                                <div className="w-3 h-3 rounded-full bg-blue-400 animate-pulse"></div>
+                              </div>
+                            ) : (
+                              <div className="w-12 h-12 rounded-full bg-slate-700/50 border-2 border-slate-600 flex items-center justify-center">
+                                <svg
+                                  className="w-6 h-6 text-slate-400"
+                                  viewBox="0 0 24 24"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                >
+                                  <polygon points="5 3 19 12 5 21 5 3" fill="currentColor" />
+                                </svg>
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Lesson Details */}
+                          <div className="flex-1 min-w-0">
+                            <h3 className="text-lg font-bold text-white mb-1 group-hover:text-blue-300 transition-colors">
+                              {unit.title}
+                            </h3>
+                            <div className="flex flex-wrap items-center gap-3 text-sm text-slate-400 mb-3">
+                              <span className="flex items-center gap-1">
+                                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                  <circle cx="12" cy="12" r="10" />
+                                  <polyline points="12 6 12 12 16 14" />
+                                </svg>
+                                {unit.title.match(/\((\d+h)\)/)?.[1] || '2h'}
+                              </span>
+                              {status === 'completed' && (
+                                <span className="px-2 py-0.5 bg-green-500/20 text-green-400 text-xs font-semibold rounded-full border border-green-400/30">
+                                  Concluída
+                                </span>
+                              )}
+                              {status === 'in-progress' && (
+                                <span className="px-2 py-0.5 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full border border-blue-400/30">
+                                  Em andamento
+                                </span>
+                              )}
+                            </div>
+                            <DetailList sections={unit.sections} />
+                          </div>
+                        </div>
+
+                        {/* Right: Action Button */}
+                        <div className="flex-shrink-0">
+                          <button
+                            onClick={() => handleLessonClick(openModuleId, lessonId)}
+                            className="w-full lg:w-auto px-6 py-3 rounded-lg bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-bold shadow-lg shadow-blue-900/30 transition-all duration-300 hover:scale-105 active:scale-95 flex items-center justify-center gap-2"
+                          >
+                            {status === 'completed' ? (
+                              <>
+                                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                                  <circle cx="12" cy="12" r="3" />
+                                </svg>
+                                Revisar
+                              </>
+                            ) : status === 'in-progress' ? (
+                              <>
+                                <span>▶</span>
+                                Continuar
+                              </>
+                            ) : (
+                              <>
+                                <span>▶</span>
+                                Iniciar Aula
+                              </>
+                            )}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+
+              {/* Module PDF Download */}
+              <div className="mt-6 p-4 bg-slate-800/30 border border-slate-700/50 rounded-xl">
+                <a
+                  className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg font-semibold text-white border border-slate-600 hover:bg-blue-500/10 hover:border-blue-500/50 transition-all"
+                  href={courseData.find((m) => m.id === openModuleId)?.pdf}
+                  target="_blank"
+                  rel="noopener"
+                >
+                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                    <polyline points="14 2 14 8 20 8" />
+                    <line x1="16" y1="13" x2="8" y2="13" />
+                    <line x1="16" y1="17" x2="8" y2="17" />
+                    <line x1="10" y1="9" x2="8" y2="9" />
+                  </svg>
+                  Baixar PDF do Módulo
+                </a>
+              </div>
+            </div>
+          </div>
         </section>
 
         <hr className="my-6 border-t border-slate-400/20" />
@@ -544,6 +903,17 @@ export default function CursoPage() {
         </section>
 
       </div>
-    </>
+
+      {activeLesson && (
+        <LessonModal
+          unit={activeLesson}
+          onClose={() => {
+            setActiveLesson(null);
+            setActiveLessonId(null);
+          }}
+          onComplete={handleLessonComplete}
+        />
+      )}
+    </ProtectedRoute>
   );
 }
