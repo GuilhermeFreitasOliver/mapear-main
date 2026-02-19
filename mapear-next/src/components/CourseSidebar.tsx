@@ -77,7 +77,7 @@ export default function CourseSidebar({
   const totalLessons = modules.reduce((total, module) => total + module.lessons.length, 0);
 
   return (
-    <aside className="w-full lg:w-80 bg-[#1C1F2E] border border-slate-700/50 rounded-xl p-4 lg:sticky lg:top-24 lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-transparent">
+    <aside className="w-full lg:w-80 bg-[#1C1F2E] border border-slate-700/50 rounded-xl p-3 sm:p-4 lg:sticky lg:top-24 lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-transparent">
       {/* Module List */}
       <nav className="space-y-2">
         {modules.map((module) => {
@@ -92,9 +92,8 @@ export default function CourseSidebar({
                   toggleModule(module.id);
                   onModuleClick(module.id);
                 }}
-                className={`w-full px-3 py-3 flex items-start gap-2 hover:bg-slate-700/30 transition-colors ${
-                  isActive ? 'bg-slate-700/50' : ''
-                }`}
+                className={`w-full px-3 py-3 flex items-start gap-2 hover:bg-slate-700/30 transition-colors ${isActive ? 'bg-slate-700/50' : ''
+                  }`}
               >
                 <span className="text-lg mt-0.5 flex-shrink-0">{isExpanded ? '▼' : '▶'}</span>
                 <div className="flex-1 min-w-0 text-left">
@@ -121,16 +120,14 @@ export default function CourseSidebar({
                         <button
                           onClick={() => onLessonClick(module.id, lesson.id)}
                           disabled={lesson.status === 'locked'}
-                          className={`w-full px-4 py-3 flex items-center gap-3 hover:bg-slate-700/30 transition-colors text-left disabled:cursor-not-allowed disabled:opacity-50 ${
-                            isActivLesson ? 'bg-blue-500/10 border-l-2 border-blue-400' : ''
-                          }`}
+                          className={`w-full px-4 py-3 flex items-center gap-3 hover:bg-slate-700/30 transition-colors text-left disabled:cursor-not-allowed disabled:opacity-50 ${isActivLesson ? 'bg-blue-500/10 border-l-2 border-blue-400' : ''
+                            }`}
                         >
                           {getStatusIcon(lesson.status)}
                           <div className="flex-1 min-w-0">
                             <p
-                              className={`text-sm font-medium truncate ${
-                                isActivLesson ? 'text-blue-300' : 'text-slate-200'
-                              }`}
+                              className={`text-sm font-medium truncate ${isActivLesson ? 'text-blue-300' : 'text-slate-200'
+                                }`}
                             >
                               {lesson.title}
                             </p>

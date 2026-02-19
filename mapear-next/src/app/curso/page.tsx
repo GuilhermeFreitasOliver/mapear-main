@@ -1997,7 +1997,7 @@ export default function CursoPage() {
                   return (
                     <div
                       key={lessonId}
-                      className="group bg-gradient-to-br from-slate-800/40 to-slate-900/40 border border-slate-700/50 rounded-xl p-5 hover:border-blue-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/10"
+                      className="group bg-gradient-to-br from-slate-800/40 to-slate-900/40 border border-slate-700/50 rounded-xl p-4 sm:p-5 hover:border-blue-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/10"
                     >
                       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                         {/* Left: Lesson Info */}
@@ -2067,7 +2067,7 @@ export default function CursoPage() {
                         <div className="flex-shrink-0">
                           <button
                             onClick={() => handleLessonClick(openModuleId, lessonId)}
-                            className="w-full lg:w-auto px-6 py-3 rounded-lg bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-bold shadow-lg shadow-blue-900/30 transition-all duration-300 hover:scale-105 active:scale-95 flex items-center justify-center gap-2"
+                            className="w-full lg:w-auto px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white text-sm sm:text-base font-bold shadow-lg shadow-blue-900/30 transition-all duration-300 hover:scale-105 active:scale-95 flex items-center justify-center gap-2"
                           >
                             {status === 'completed' ? (
                               <>

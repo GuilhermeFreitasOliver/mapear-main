@@ -48,7 +48,7 @@ export default function CourseProgressHeader({
         </div>
 
         {/* Right: Stats Cards */}
-        <div className="flex gap-3">
+        <div className="grid grid-cols-2 gap-3">
           <div className="bg-slate-800/50 border border-slate-700/50 rounded-lg p-4 min-w-[100px] text-center">
             <div className="text-2xl font-bold text-blue-400">{completedLessons}</div>
             <div className="text-xs text-slate-400 mt-1">Concluídas</div>

@@ -133,7 +133,7 @@ export default function AuthModal() {
 
   return (
     <div className="fixed inset-0 z-[10000] overflow-auto bg-black/75 backdrop-blur-sm" role="dialog" aria-modal="true" onClick={() => setIsOpen(false)}>
-      <div className="relative mx-auto my-[10%] w-[90%] max-w-[420px] rounded-2xl border border-slate-500/30 bg-[#0f1729] shadow-[0_8px_40px_rgba(0,0,0,0.5),0_0_80px_rgba(34,197,94,0.08)] p-6" onClick={(e) => e.stopPropagation()}>
+      <div className="relative mx-auto my-4 sm:my-[10%] w-[90%] max-w-[420px] max-h-[90vh] overflow-y-auto rounded-2xl border border-slate-500/30 bg-[#0f1729] shadow-[0_8px_40px_rgba(0,0,0,0.5),0_0_80px_rgba(34,197,94,0.08)] p-4 sm:p-6" onClick={(e) => e.stopPropagation()}>
         <button
           type="button"
           aria-label="Fechar"

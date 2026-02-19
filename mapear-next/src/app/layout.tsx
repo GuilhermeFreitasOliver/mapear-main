@@ -30,7 +30,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} min-h-screen antialiased text-gray-200 pt-[100px] bg-[radial-gradient(1200px_800px_at_70%_-10%,rgba(124,156,255,.2),transparent_60%),radial-gradient(800px_600px_at_10%_110%,rgba(34,197,94,.12),transparent_60%),#0b1020]`}
+        className={`${geistSans.variable} ${geistMono.variable} min-h-screen antialiased text-gray-200 pt-16 sm:pt-[100px] bg-[radial-gradient(1200px_800px_at_70%_-10%,rgba(124,156,255,.2),transparent_60%),radial-gradient(800px_600px_at_10%_110%,rgba(34,197,94,.12),transparent_60%),#0b1020]`}
       >
         <AuthProvider>
           <StorageProvider>
