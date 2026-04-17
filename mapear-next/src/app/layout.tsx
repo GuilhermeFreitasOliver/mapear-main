@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
@@ -17,9 +17,14 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Arcabouço Pedagógico MAPEAR",
+  title: "Arcabouco Pedagogico MAPEAR",
   description:
-    "Arcabouço Pedagógico MAPEAR — Aprendizagem ativa, reflexiva e colaborativa",
+    "Arcabouco Pedagogico MAPEAR - Aprendizagem ativa, reflexiva e colaborativa",
+  icons: {
+    icon: "/MAPEARFavicon.png",
+    shortcut: "/MAPEARFavicon.png",
+    apple: "/MAPEARFavicon.png",
+  },
 };
 
 export default function RootLayout({
@@ -34,14 +39,14 @@ export default function RootLayout({
       >
         <AuthProvider>
           <StorageProvider>
-            {/* Modal de autenticação fica montado no topo do app */}
+            {/* Modal de autenticacao fica montado no topo do app */}
             <AuthModal />
             <AppHeader />
 
             <main className="max-w-[1000px] mx-auto my-6 px-4 pb-20">{children}</main>
 
             <footer className="text-gray-400 text-sm text-center py-6">
-              Arcabouço Pedagógico MAPEAR — Aprendizagem ativa, reflexiva e colaborativa
+              Arcabouco Pedagogico MAPEAR - Aprendizagem ativa, reflexiva e colaborativa
             </footer>
           </StorageProvider>
         </AuthProvider>

@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @next/next/no-img-element */
 import { useState, useEffect } from "react";
 import DeckCarousel from "../../components/DeckCarousel";
 import { deckData } from "./deckData";
@@ -1707,6 +1708,7 @@ function DetailList({ sections }: { sections: CourseSection[] }) {
   );
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function ModuleAccordion({
   module,
   isOpen,
@@ -1983,7 +1985,6 @@ export default function CursoPage() {
               activeLessonId={activeLessonId}
               onModuleClick={setOpenModuleId}
               onLessonClick={handleLessonClick}
-              overallProgress={overallProgress}
             />
 
             {/* Main Content Area */}

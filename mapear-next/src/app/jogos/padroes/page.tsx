@@ -79,7 +79,12 @@ type MinigameStepPayload = { key: Pillar; step: number; correct?: boolean };
 function computeInitialStep(state: GameState | undefined, gameKey: Pillar, totalPhases: number) {
   const events: GameEvent[] = state?.events || [];
   const last = events
-    .filter((e: GameEvent) => e.type === 'minigame_step' && (e.payload as MinigameStepPayload)?.key === gameKey)
+    .filter(
+      (e: GameEvent) =>
+        e.type === 'minigame_step' &&
+        (e.payload as MinigameStepPayload)?.key === gameKey &&
+        (e.payload as MinigameStepPayload)?.correct === true
+    )
     .sort((a: GameEvent, b: GameEvent) => ((b.payload as MinigameStepPayload)?.step || 0) - ((a.payload as MinigameStepPayload)?.step || 0))[0];
 
   const lastStep = last ? ((last.payload as MinigameStepPayload)?.step ?? 0) : 0;
@@ -104,7 +109,7 @@ export default function PadroesPage() {
   const [currentPhaseData, setCurrentPhaseData] = useState<CurrentPhaseData | null>(null);
   const [tipText, setTipText] = useState('');
   const [tipLevel, setTipLevel] = useState<TipLevel>('Hint');
-  const [reflection, setReflection] = useState('');
+  const [reflection] = useState('');
   const [feedbackVariant, setFeedbackVariant] = useState<'default' | 'success' | 'error'>('default');
 
   useEffect(() => {

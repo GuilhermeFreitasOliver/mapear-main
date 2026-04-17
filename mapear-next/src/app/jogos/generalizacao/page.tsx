@@ -70,8 +70,9 @@ export default function GeneralizacaoPage() {
     { situacao: 'Você aprendeu a calcular o volume de um cubo.', pergunta: 'Como generalizar para o volume de um paralelepípedo retângulo?', opcoes: ['Somar as arestas', 'Comprimento × largura × altura', 'Área do cubo × 2', 'Usar πr²h'], resposta: 'Comprimento × largura × altura', dica: 'Substitua a medida igual por três dimensões independentes.' }
   ];
 
-  const [step, setStep] = useState<number>(() => computeInitialStep(storage.state, gameKey, phases.length));
-  useEffect(() => { setStep(() => computeInitialStep(storage.state, gameKey, phases.length)); }, [storage.state?.events, storage.state?.progress?.[gameKey]?.completed]);
+  const totalPhases = phases.length;
+  const [step, setStep] = useState<number>(() => computeInitialStep(storage.state, gameKey, totalPhases));
+  useEffect(() => { setStep(() => computeInitialStep(storage.state, gameKey, totalPhases)); }, [storage.state, gameKey, totalPhases]);
   const [attempts, setAttempts] = useState(0)
   const [corrects, setCorrects] = useState(0)
   const [selection, setSelection] = useState<Set<string|number>>(new Set());
@@ -82,7 +83,7 @@ export default function GeneralizacaoPage() {
   const [tipText, setTipText] = useState('')
   const [tipLevel, setTipLevel] = useState<TipLevel>('Hint')
   const current = phases[step - 1];
-  const values = useMemo(() => isScenario(current) ? shuffle([...current.opcoes]) : shuffle(current.set.map(v => v)), [step]);
+  const values = useMemo(() => isScenario(current) ? shuffle([...current.opcoes]) : shuffle(current.set.map(v => v)), [current]);
 
   const toggle = (v: string|number) => {
     setSelection(prev => {

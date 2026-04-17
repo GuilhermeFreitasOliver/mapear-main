@@ -25,7 +25,6 @@ interface CourseSidebarProps {
   activeLessonId: string | null;
   onModuleClick: (moduleId: string) => void;
   onLessonClick: (moduleId: string, lessonId: string) => void;
-  overallProgress: number;
 }
 
 export default function CourseSidebar({
@@ -34,7 +33,6 @@ export default function CourseSidebar({
   activeLessonId,
   onModuleClick,
   onLessonClick,
-  overallProgress,
 }: CourseSidebarProps) {
   const [expandedModules, setExpandedModules] = useState<Set<string>>(new Set([activeModuleId]));
 
@@ -69,12 +67,6 @@ export default function CourseSidebar({
         );
     }
   };
-
-  const completedLessons = modules.reduce(
-    (total, module) => total + module.lessons.filter((l) => l.status === 'completed').length,
-    0
-  );
-  const totalLessons = modules.reduce((total, module) => total + module.lessons.length, 0);
 
   return (
     <aside className="w-full lg:w-80 bg-[#1C1F2E] border border-slate-700/50 rounded-xl p-3 sm:p-4 lg:sticky lg:top-24 lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-transparent">

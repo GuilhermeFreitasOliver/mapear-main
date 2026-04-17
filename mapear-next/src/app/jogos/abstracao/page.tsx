@@ -4,6 +4,7 @@ import { useMemo, useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useStorage } from '@/context/StorageContext'
 import { mountTip, TipLevel } from '@/lib/tipEngine'
+import { computeNextStepFromEvents, isExactRelevantSelection } from '@/lib/minigameProgress'
 
 interface Item {
   id: string
@@ -321,42 +322,36 @@ export default function AbstracaoPage() {
   const [finished, setFinished] = useState(false)
   const [tipText, setTipText] = useState('')
   const [tipLevel, setTipLevel] = useState<TipLevel>('Hint')
+  const [processing, setProcessing] = useState(false)
 
   // Alinha com mapear.html: recuperar passo inicial do estado salvo
   useEffect(() => {
     try {
-      const state = storage.getCurrentState()
-      if (state && state.events) {
-        const lastEvent = [...state.events]
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          .filter((e: any) => e.type === 'minigame_step' && e.payload?.key === gameKey)
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          .sort((a: any, b: any) => (b.payload?.step || 0) - (a.payload?.step || 0))[0]
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        let initialStep = lastEvent ? ((lastEvent.payload as any)?.step || 0) + 1 : 1
-        if (state.progress?.[gameKey]?.completed) {
-          initialStep = 1
-        }
-        if (initialStep < 1) initialStep = 1
-        if (initialStep > phases.length) initialStep = phases.length
-        setStep(initialStep)
-      }
-    } catch (err) {
+      const state = storage.state
+      if (!state) return
+      const completed = !!state.progress?.[gameKey]?.completed
+      const nextStep = computeNextStepFromEvents({
+        events: state.events,
+        gameKey,
+        totalPhases: phases.length,
+        completed,
+      })
+      setStep(nextStep)
+      setFinished(completed)
+    } catch {
       // Se algo falhar, permanece no passo 1
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [storage.state, gameKey, phases.length])
 
   // Monta dica inicial a cada fase, como em mapear.html
   useEffect(() => {
     const t = mountTip({ pillar: gameKey, level: 'Hint' })
     setTipLevel(t.level)
     setTipText(t.tip)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [step])
+  }, [step, gameKey])
 
   const current = phases[step - 1]
-  const shuffledItems = useMemo(() => shuffle(current.items), [step])
+  const shuffledItems = useMemo(() => shuffle(current.items), [current.items])
 
   const handleToggle = (id: string) => {
     setSelected((prev) => ({ ...prev, [id]: !prev[id] }))
@@ -369,11 +364,12 @@ export default function AbstracaoPage() {
   }
 
   const handleCheck = async () => {
+    if (processing || finished) return
+    setProcessing(true)
     const current = phases[step - 1]
     const isLast = step === phases.length
-    const essentialIds = new Set(current.items.filter((i) => i.relevant).map((i) => i.id))
     const selectedIds = Object.keys(selected).filter((id) => selected[id])
-    const ok = selectedIds.length && selectedIds.every((id) => essentialIds.has(id))
+    const ok = isExactRelevantSelection(current.items, selectedIds)
     setAttempts((a) => a + 1)
     await storage.attempt(gameKey)
 
@@ -384,10 +380,10 @@ export default function AbstracaoPage() {
       setFeedbackKind('success')
       if (!isLast) {
         setTimeout(() => {
-          setStep((s) => s + 1)
           setSelected({})
           setFeedback('')
           setFeedbackKind('neutral')
+          setProcessing(false)
         }, 1200)
       } else {
         const finalState = storage.getCurrentState()
@@ -400,6 +396,7 @@ export default function AbstracaoPage() {
         setFeedback('Concluído! Você selecionou as informações essenciais.')
         setFeedbackKind('success')
         setFinished(true)
+        setProcessing(false)
       }
     } else {
       await storage.record('minigame_try', { key: gameKey, step, selection: selectedIds })
@@ -408,6 +405,7 @@ export default function AbstracaoPage() {
       const t = mountTip({ pillar: gameKey, level: 'Scaffold' })
       setTipLevel(t.level)
       setTipText(t.tip)
+      setProcessing(false)
     }
   }
 
@@ -438,6 +436,7 @@ export default function AbstracaoPage() {
         <button
           className="inline-flex items-center justify-center rounded-lg px-3 sm:px-4 py-2.5 sm:py-2 min-h-[44px] text-sm font-semibold text-white border border-white/20 hover:bg-blue-500/10"
           onClick={handleCheck}
+          disabled={processing || finished}
         >
           Verificar
         </button>
