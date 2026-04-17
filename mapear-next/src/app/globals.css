@@ -1,23 +1,81 @@
-@import "tailwindcss";
+﻿@import "tailwindcss";
 
-/* Fallback global para fundo escuro do app (caso classes Tailwind não apliquem) */
 :root {
-  --app-bg: radial-gradient(1200px 800px at 70% -10%, rgba(124,156,255,.2), transparent 60%),
-             radial-gradient(800px 600px at 10% 110%, rgba(34,197,94,.12), transparent 60%),
-             #0b1020;
+  --bg: #071119;
+  --surface: rgba(8, 25, 39, 0.72);
+  --surface-strong: rgba(9, 32, 49, 0.9);
+  --text: #e8f0f5;
+  --muted: #9db1be;
+  --accent: #0fbf8f;
+  --accent-soft: rgba(15, 191, 143, 0.18);
+  --stroke: rgba(186, 226, 241, 0.2);
+  --app-bg:
+    radial-gradient(1100px 700px at 88% -6%, rgba(13, 198, 147, 0.2), transparent 62%),
+    radial-gradient(900px 650px at -10% 110%, rgba(43, 119, 180, 0.16), transparent 68%),
+    linear-gradient(180deg, #071119 0%, #081723 56%, #07131d 100%);
 }
 
-html, body {
+html,
+body {
   min-height: 100%;
   background: var(--app-bg);
 }
 
-/* Harmonização de texto para contraste no fundo escuro */
 body {
-  color: rgb(229 231 235); /* equivalente ao text-gray-200 */
+  color: var(--text);
+  font-family: var(--font-body), sans-serif;
 }
 
-/* Utilitário para truncar texto em múltiplas linhas */
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display), sans-serif;
+  letter-spacing: -0.01em;
+}
+
+.app-theme {
+  background: var(--app-bg);
+  color: var(--text);
+}
+
+.glass-panel {
+  border: 1px solid var(--stroke);
+  background: linear-gradient(180deg, rgba(9, 31, 47, 0.75), rgba(8, 23, 35, 0.74));
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
+}
+
+.section-divider {
+  height: 1px;
+  width: 100%;
+  background: linear-gradient(90deg, transparent 0%, rgba(159, 213, 231, 0.35) 35%, transparent 100%);
+}
+
+.lift-on-hover {
+  transition: transform 180ms ease, box-shadow 220ms ease, border-color 220ms ease, background-color 220ms ease;
+}
+
+.lift-on-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.26);
+}
+
+.fade-up {
+  animation: fade-up 550ms ease both;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .line-clamp-2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;

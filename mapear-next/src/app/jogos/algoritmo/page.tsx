@@ -59,7 +59,7 @@ export default function AlgoritmoPage() {
 
   const phases: Phase[] = useMemo(
     () => [
-      // Labirintos com blocos disponÃ­veis
+      // Labirintos com blocos disponíveis
       {
         expected: ['Andar 2', 'Virar direita', 'Andar 1'],
         availableBlocks: ['Andar 1', 'Andar 2', 'Virar direita', 'Virar esquerda'],
@@ -68,7 +68,7 @@ export default function AlgoritmoPage() {
       {
         expected: ['Andar 2', 'Virar esquerda', 'Andar 2', 'Virar direita', 'Andar 1'],
         availableBlocks: ['Andar 1', 'Andar 2', 'Andar 3', 'Virar direita', 'Virar esquerda'],
-        note: 'Inclui mudanÃ§as de direÃ§Ã£o mais de uma vez.',
+        note: 'Inclui mudanças de direção mais de uma vez.',
       },
       {
         expected: ['Andar 1', 'Virar esquerda', 'Andar 2', 'Virar direita', 'Andar 2'],
@@ -78,12 +78,12 @@ export default function AlgoritmoPage() {
       {
         expected: ['Andar 1', 'Virar direita', 'Andar 2', 'Virar esquerda', 'Andar 1', 'Virar direita', 'Andar 1'],
         availableBlocks: ['Andar 1', 'Andar 2', 'Virar direita', 'Virar esquerda'],
-        note: 'Percurso com mudanÃ§as de direÃ§Ã£o.',
+        note: 'Percurso com mudanças de direção.',
       },
       {
         expected: ['Andar 3', 'Virar direita', 'Andar 3'],
         availableBlocks: ['Andar 1', 'Andar 3', 'Virar direita', 'Virar esquerda'],
-        note: 'Caminho com alternÃ¢ncia de curvas e trechos longos.',
+        note: 'Caminho com alternância de curvas e trechos longos.',
       },
       {
         expected: ['Andar 2', 'Virar direita', 'Andar 3', 'Virar esquerda', 'Andar 1', 'Virar direita', 'Andar 1'],
@@ -93,17 +93,17 @@ export default function AlgoritmoPage() {
       {
         expected: ['Andar 1', 'Virar direita', 'Andar 2', 'Virar esquerda', 'Andar 2', 'Virar direita', 'Andar 2'],
         availableBlocks: ['Andar 1', 'Andar 2', 'Andar 4', 'Virar direita', 'Virar esquerda'],
-        note: 'SequÃªncia longa que exige atenÃ§Ã£o Ã  ordem.',
+        note: 'Sequência longa que exige atenção à ordem.',
       },
       {
         expected: ['Andar 3', 'Virar esquerda', 'Andar 3', 'Virar direita', 'Andar 1'],
         availableBlocks: ['Andar 1', 'Andar 2', 'Andar 3', 'Virar direita', 'Virar esquerda'],
-        note: 'Contornando obstÃ¡culos',
+        note: 'Contornando obstáculos',
       },
       {
         expected: ['Andar 2', 'Virar esquerda', 'Andar 3', 'Virar direita', 'Andar 2'],
         availableBlocks: ['Andar 1', 'Andar 2', 'Andar 3', 'Virar direita', 'Virar esquerda'],
-        note: 'Caminho com obstÃ¡culos e trechos longos.',
+        note: 'Caminho com obstáculos e trechos longos.',
       },
       {
         expected: ['Andar 1', 'Virar esquerda', 'Andar 2', 'Virar direita', 'Andar 3', 'Virar esquerda', 'Andar 1'],
@@ -111,16 +111,16 @@ export default function AlgoritmoPage() {
         note: 'Percurso com zigue-zague e trechos longos.',
       },
 
-      // Fases 11-14 com blocos de cenÃ¡rios
+      // Fases 11-14 com blocos de cenários
       {
-        expected: ['Ferver Ã¡gua', 'Colocar Ã¡gua fervida na xÃ­cara', 'Colocar saquinho de chÃ¡', 'Servir'],
-        availableBlocks: ['Ferver Ã¡gua', 'Colocar saquinho de chÃ¡', 'Servir', 'Colocar Ã¡gua fervida na xÃ­cara', 'AdoÃ§ar'],
-        note: 'ChÃ¡: ordem correta Ã© ferver antes de preparar.',
+        expected: ['Ferver água', 'Colocar água fervida na xícara', 'Colocar saquinho de chá', 'Servir'],
+        availableBlocks: ['Ferver água', 'Colocar saquinho de chá', 'Servir', 'Colocar água fervida na xícara', 'Adoçar'],
+        note: 'Chá: ordem correta é ferver antes de preparar.',
       },
       {
-        expected: ['PrÃ©-aquecer forno', 'Bater massa', 'Colocar a massa no forno', 'Esperar 30min', 'Servir'],
-        availableBlocks: ['Bater massa', 'Servir', 'PrÃ©-aquecer forno', 'Colocar a massa no forno', 'Esperar 30min'],
-        note: 'PrÃ©-aquecer antes de assar.',
+        expected: ['Pré-aquecer forno', 'Bater massa', 'Colocar a massa no forno', 'Esperar 30min', 'Servir'],
+        availableBlocks: ['Bater massa', 'Servir', 'Pré-aquecer forno', 'Colocar a massa no forno', 'Esperar 30min'],
+        note: 'Pré-aquecer antes de assar.',
       },
       {
         expected: ['Digitar login', 'Digitar senha', 'Clicar em validar'],
@@ -130,26 +130,26 @@ export default function AlgoritmoPage() {
       {
         expected: ['Varredura linha 1', 'Varredura linha 2', 'Varredura linha 3'],
         availableBlocks: ['Varredura linha 3', 'Varredura linha 1', 'Varredura linha 2'],
-        note: 'Varre linha a linha (3Ã—3).',
+        note: 'Varre linha a linha (3×3).',
       },
 
-      // SituaÃ§Ãµes de mÃºltipla escolha
-      { situacao: 'VocÃª precisa ensinar um colega a ligar o projetor da sala.', pergunta: 'Marque o algoritmo que representa melhor as aÃ§Ãµes para solucionar o problema a seguir:', opcoes: ['Pressionar botÃ£o â†’ Ligar na tomada â†’ selecionar entrada', 'Ligar na tomada â†’ apertar botÃ£o â†’ selecionar entrada', 'Esperar aula comeÃ§ar  â†’ apertar botÃ£o â†’ selecionar entrada', 'Chamar tÃ©cnico â†’ apertar botÃ£o â†’ selecionar entrada'], resposta: 'Ligar na tomada â†’ apertar botÃ£o â†’ selecionar entrada', dica: 'Pense em passos claros e ordenados.' },
-      { situacao: 'VocÃª quer fazer um cafÃ© usando uma cafeteira elÃ©trica.', pergunta: 'Qual sequÃªncia de passos representa um algoritmo?', opcoes: ['Colocar Ã¡gua e ligar cafeteira â†’ colocar cafÃ© â†’ esperar', 'Colocar Ã¡gua e ligar cafeteira â†’ esperar', 'Beber Ã¡gua fria â†’ Colocar Ã¡gua quente e ligar cafeteira â†’ colocar cafÃ© â†’ esperar', 'Escolher xÃ­cara â†’ colocar cafÃ© â†’ esperar'], resposta: 'Colocar Ã¡gua e ligar cafeteira â†’ colocar cafÃ© â†’ esperar', dica: 'Um algoritmo Ã© uma sequÃªncia de aÃ§Ãµes que leva a um resultado.' },
-      { situacao: 'VocÃª precisa organizar os arquivos do computador por data.', pergunta: 'Qual algoritmo representa melhor a tarefa?', opcoes: ['Abrir pastas aleatoriamente â†’ verificar data â†’ mover arquivos â†’ salvar', 'Abrir cada pasta â†’ verificar data â†’ mover arquivos â†’ salvar', 'Abrir cada pasta â†’ verificar data â†’ mover arquivos â†’ Apagar tudo', 'Abrir cada pasta â†’ renomear pastas â†’ mover arquivos â†’ salvar'], resposta: 'Abrir cada pasta â†’ verificar data â†’ mover arquivos â†’ salvar', dica: 'Defina a sequÃªncia lÃ³gica das aÃ§Ãµes.' },
-      { situacao: 'VocÃª vai cozinhar arroz no fogÃ£o.', pergunta: 'Qual algoritmo descreve corretamente o processo?', opcoes: ['Colocar arroz â†’ ligar fogo â†’ lava arroz', 'Lavar arroz â†’ colocar Ã¡gua â†’ ligar fogo â†’ esperar cozinhar', 'Beber Ã¡gua â†’ colocar Ã¡gua â†’ ligar fogo â†’ esperar cozinhar', 'ligar fogo â†’ colocar Ã¡gua e cafÃ© â†’ esperar cozinhar'], resposta: 'Lavar arroz â†’ colocar Ã¡gua â†’ ligar fogo â†’ esperar cozinhar', dica: 'Ordem dos passos Ã© essencial em algoritmos.' },
-      { situacao: 'VocÃª precisa escovar os dentes.', pergunta: 'Qual sequÃªncia representa um algoritmo correto?', opcoes: ['Passar pasta â†’ escovar â†’ enxaguar', 'Escovar sem pasta â†’ escovar â†’ lavar â†’ enxaguar â†’ secar', 'Enxaguar â†’ escovar â†’ colocar pasta', 'Passar pasta â†’ lavar escova â†’ enxaguar'], resposta: 'Passar pasta â†’ escovar â†’ enxaguar', dica: 'Algoritmos descrevem processos claros e ordenados.' },
-      { situacao: 'VocÃª vai programar um robÃ´ para se mover em linha reta atÃ© uma parede.', pergunta: 'Qual algoritmo descreve melhor o movimento?', opcoes: ['Andar â†’ fazer curva â†’ parar', 'Girar â†’ detectar parede â†’ girar', 'Andar â†’ detectar parede â†’ parar', 'Parar â†’ detectar parede â†’ andar em frente'], resposta: 'Andar â†’ detectar parede â†’ parar', dica: 'Defina entradas, aÃ§Ãµes e saÃ­das.' },
-      { situacao: 'VocÃª precisa organizar a mochila para a escola.', pergunta: 'Qual algoritmo representa melhor essa tarefa?', opcoes: ['Colocar roupas â†’ cadernos â†’ estojo â†’ chapÃ©u', 'Colocar sorvete â†’ carros â†’ bonecas â†’ lanche', 'Colocar lanche â†’ sapato â†’ toalha', 'Colocar livros â†’ cadernos â†’ estojo â†’ lanche'], resposta: 'Colocar livros â†’ cadernos â†’ estojo â†’ lanche', dica: 'Siga uma sequÃªncia lÃ³gica para completar a tarefa.' },
-      { situacao: 'VocÃª quer trocar uma lÃ¢mpada queimada.', pergunta: 'Qual algoritmo descreve o processo correto?', opcoes: ['Retirar lÃ¢mpada â†’ colocar nova â†’ ligar energia', 'Desligar energia â†’ retirar lÃ¢mpada â†’ colocar nova â†’ ligar energia', 'Desligar Ã¡gua â†’ retirar lÃ¢mpada â†’ colocar nova bateria â†’ ligar energia', 'Apenas ligar a lÃ¢mpada queimada'], resposta: 'Desligar energia â†’ retirar lÃ¢mpada â†’ colocar nova â†’ ligar energia', dica: 'SeguranÃ§a Ã© parte do algoritmo.' },
-      { situacao: 'VocÃª precisa preparar um sanduÃ­che.', pergunta: 'Qual algoritmo representa corretamente a tarefa?', opcoes: ['PÃ£o â†’ queijo â†’ presunto â†’ pÃ£o', 'PÃ£o â†’ queijo â†’ biscoito â†’ pÃ£o', 'PÃ£o â†’ carro â†’ queijo â†’ presunto â†’ pÃ£o', 'Cuscuz â†’ manteiga'], resposta: 'PÃ£o â†’ queijo â†’ presunto â†’ pÃ£o', dica: 'Siga uma sequÃªncia lÃ³gica para atingir o objetivo.' },
-      { situacao: 'VocÃª quer programar o despertador para tocar todos os dias Ã s 7h.', pergunta: 'Qual algoritmo descreve essa programaÃ§Ã£o?', opcoes: ['Configurar hora â†’ repetir diariamente â†’ ativar', 'Ativar alarme â†’ repetir diariamente â†’ desativar', 'Configurar data, hora e alarme â†’ repetir diariamente â†’ ativar', 'Configurar hora â†’ repetir diariamente â†’ desativar'], resposta: 'Configurar hora â†’ repetir diariamente â†’ ativar', dica: 'Algoritmos incluem decisÃµes e repetiÃ§Ãµes quando necessÃ¡rio.' },
-      { situacao: 'VocÃª precisa enviar um e-mail com anexos importantes.', pergunta: 'Qual algoritmo representa melhor a aÃ§Ã£o?', opcoes: ['Abrir e-mail â†’ escrever mensagem â†’ anexar arquivos â†’ enviar', 'Abrir e-mail â†’ escrever mensagem â†’ enviar', 'Abrir e-mail â†’ escrever mensagem â†’ anexar arquivos', 'Abrir e-mail â†’ escrever mensagem â†’ anexar arquivos â†’ enviar'], resposta: 'Abrir e-mail â†’ escrever mensagem â†’ anexar arquivos â†’ enviar', dica: 'Cada passo deve ser claro e ordenado.' },
-      { situacao: 'VocÃª vai plantar uma Ã¡rvore no quintal.', pergunta: 'Qual algoritmo descreve melhor o processo?', opcoes: ['Cavar buraco â†’ plantar muda â†’ cobrir com terra â†’ regar', 'Plantar muda â†’ cobrir com terra â†’ regar', 'Cavar buraco â†’ cobrir com terra â†’ regar', 'Cavar buraco â†’ plantar muda â†’ cobrir com terra â†’ regar'], resposta: 'Cavar buraco â†’ plantar muda â†’ cobrir com terra â†’ regar', dica: 'Siga a sequÃªncia lÃ³gica de aÃ§Ãµes para garantir o resultado.' },
-      { situacao: 'VocÃª precisa preparar um suco de frutas.', pergunta: 'Qual algoritmo representa corretamente a preparaÃ§Ã£o?', opcoes: ['Cortar frutas â†’ liquidificar â†’ servir', 'Lavar verduras â†’ cortar â†’ liquidificar â†’ servir', 'Lavar frutas â†’ cortar â†’ liquidificar â†’ jogar fora', 'Lavar frutas â†’ cortar â†’ liquidificar â†’ servir'], resposta: 'Lavar frutas â†’ cortar â†’ liquidificar â†’ servir', dica: 'SequÃªncia de aÃ§Ãµes garante o resultado esperado.' },
-      { situacao: 'VocÃª precisa organizar um armÃ¡rio bagunÃ§ado.', pergunta: 'Qual algoritmo descreve melhor a organizaÃ§Ã£o?', opcoes: ['Retirar tudo â†’ separar por categoria â†’ guardar novamente', 'Retirar tudo â†’ misturar por categoria â†’ guardar novamente', 'Retirar tudo â†’ separar por nome â†’ guardar novamente', 'Retirar tudo â†’ separar por sorte â†’ guardar novamente'], resposta: 'Retirar tudo â†’ separar por categoria â†’ guardar novamente', dica: 'Algoritmos ajudam a estruturar tarefas complexas.' },
-      { situacao: 'VocÃª quer programar um robÃ´ para seguir uma linha preta no chÃ£o.', pergunta: 'Qual algoritmo representa melhor essa aÃ§Ã£o?', opcoes: ['Detectar linha â†’ mover para frente â†’ repetir', 'Detectar linha â†’ ajustar direÃ§Ã£o â†’ mover para frente â†’ repetir', 'Detectar linha â†’ dar rÃ© â†’ mover para frente â†’ repetir', 'Detectar linha â†’ ajustar direÃ§Ã£o â†’ mover para frente â†’ repetir'], resposta: 'Detectar linha â†’ ajustar direÃ§Ã£o â†’ mover para frente â†’ repetir', dica: 'Algoritmos podem incluir repetiÃ§Ã£o (loops) para atingir objetivos.' },
-      { situacao: 'VocÃª precisa lavar roupa em uma lavadora.', pergunta: 'Qual sequÃªncia correta?', opcoes: ['Colocar roupas â†’ adicionar sabÃ£o â†’ selecionar ciclo â†’ iniciar', 'Adicionar sabÃ£o â†’ iniciar â†’ colocar roupas', 'Colocar roupas â†’ iniciar â†’ adicionar sabÃ£o', 'Selecionar ciclo â†’ adicionar sabÃ£o â†’ iniciar â†’ colocar roupas'], resposta: 'Colocar roupas â†’ adicionar sabÃ£o â†’ selecionar ciclo â†’ iniciar', dica: 'A ordem correta garante o resultado.' },
+      // Situações de múltipla escolha
+      { situacao: 'Você precisa ensinar um colega a ligar o projetor da sala.', pergunta: 'Marque o algoritmo que representa melhor as ações para solucionar o problema a seguir:', opcoes: ['Pressionar botão → Ligar na tomada → selecionar entrada', 'Ligar na tomada → apertar botão → selecionar entrada', 'Esperar aula começar  → apertar botão → selecionar entrada', 'Chamar técnico → apertar botão → selecionar entrada'], resposta: 'Ligar na tomada → apertar botão → selecionar entrada', dica: 'Pense em passos claros e ordenados.' },
+      { situacao: 'Você quer fazer um café usando uma cafeteira elétrica.', pergunta: 'Qual sequência de passos representa um algoritmo?', opcoes: ['Colocar água e ligar cafeteira → colocar café → esperar', 'Colocar água e ligar cafeteira → esperar', 'Beber água fria → Colocar água quente e ligar cafeteira → colocar café → esperar', 'Escolher xícara → colocar café → esperar'], resposta: 'Colocar água e ligar cafeteira → colocar café → esperar', dica: 'Um algoritmo é uma sequência de ações que leva a um resultado.' },
+      { situacao: 'Você precisa organizar os arquivos do computador por data.', pergunta: 'Qual algoritmo representa melhor a tarefa?', opcoes: ['Abrir pastas aleatoriamente → verificar data → mover arquivos → salvar', 'Abrir cada pasta → verificar data → mover arquivos → salvar', 'Abrir cada pasta → verificar data → mover arquivos → Apagar tudo', 'Abrir cada pasta → renomear pastas → mover arquivos → salvar'], resposta: 'Abrir cada pasta → verificar data → mover arquivos → salvar', dica: 'Defina a sequência lógica das ações.' },
+      { situacao: 'Você vai cozinhar arroz no fogão.', pergunta: 'Qual algoritmo descreve corretamente o processo?', opcoes: ['Colocar arroz → ligar fogo → lava arroz', 'Lavar arroz → colocar água → ligar fogo → esperar cozinhar', 'Beber água → colocar água → ligar fogo → esperar cozinhar', 'ligar fogo → colocar água e café → esperar cozinhar'], resposta: 'Lavar arroz → colocar água → ligar fogo → esperar cozinhar', dica: 'Ordem dos passos é essencial em algoritmos.' },
+      { situacao: 'Você precisa escovar os dentes.', pergunta: 'Qual sequência representa um algoritmo correto?', opcoes: ['Passar pasta → escovar → enxaguar', 'Escovar sem pasta → escovar → lavar → enxaguar → secar', 'Enxaguar → escovar → colocar pasta', 'Passar pasta → lavar escova → enxaguar'], resposta: 'Passar pasta → escovar → enxaguar', dica: 'Algoritmos descrevem processos claros e ordenados.' },
+      { situacao: 'Você vai programar um robô para se mover em linha reta até uma parede.', pergunta: 'Qual algoritmo descreve melhor o movimento?', opcoes: ['Andar → fazer curva → parar', 'Girar → detectar parede → girar', 'Andar → detectar parede → parar', 'Parar → detectar parede → andar em frente'], resposta: 'Andar → detectar parede → parar', dica: 'Defina entradas, ações e saídas.' },
+      { situacao: 'Você precisa organizar a mochila para a escola.', pergunta: 'Qual algoritmo representa melhor essa tarefa?', opcoes: ['Colocar roupas → cadernos → estojo → chapéu', 'Colocar sorvete → carros → bonecas → lanche', 'Colocar lanche → sapato → toalha', 'Colocar livros → cadernos → estojo → lanche'], resposta: 'Colocar livros → cadernos → estojo → lanche', dica: 'Siga uma sequência lógica para completar a tarefa.' },
+      { situacao: 'Você quer trocar uma lâmpada queimada.', pergunta: 'Qual algoritmo descreve o processo correto?', opcoes: ['Retirar lâmpada → colocar nova → ligar energia', 'Desligar energia → retirar lâmpada → colocar nova → ligar energia', 'Desligar água → retirar lâmpada → colocar nova bateria → ligar energia', 'Apenas ligar a lâmpada queimada'], resposta: 'Desligar energia → retirar lâmpada → colocar nova → ligar energia', dica: 'Segurança é parte do algoritmo.' },
+      { situacao: 'Você precisa preparar um sanduíche.', pergunta: 'Qual algoritmo representa corretamente a tarefa?', opcoes: ['Pão → queijo → presunto → pão', 'Pão → queijo → biscoito → pão', 'Pão → carro → queijo → presunto → pão', 'Cuscuz → manteiga'], resposta: 'Pão → queijo → presunto → pão', dica: 'Siga uma sequência lógica para atingir o objetivo.' },
+      { situacao: 'Você quer programar o despertador para tocar todos os dias às 7h.', pergunta: 'Qual algoritmo descreve essa programação?', opcoes: ['Configurar hora → repetir diariamente → ativar', 'Ativar alarme → repetir diariamente → desativar', 'Configurar data, hora e alarme → repetir diariamente → ativar', 'Configurar hora → repetir diariamente → desativar'], resposta: 'Configurar hora → repetir diariamente → ativar', dica: 'Algoritmos incluem decisões e repetições quando necessário.' },
+      { situacao: 'Você precisa enviar um e-mail com anexos importantes.', pergunta: 'Qual algoritmo representa melhor a ação?', opcoes: ['Abrir e-mail → escrever mensagem → anexar arquivos → enviar', 'Abrir e-mail → escrever mensagem → enviar', 'Abrir e-mail → escrever mensagem → anexar arquivos', 'Abrir e-mail → escrever mensagem → anexar arquivos → enviar'], resposta: 'Abrir e-mail → escrever mensagem → anexar arquivos → enviar', dica: 'Cada passo deve ser claro e ordenado.' },
+      { situacao: 'Você vai plantar uma árvore no quintal.', pergunta: 'Qual algoritmo descreve melhor o processo?', opcoes: ['Cavar buraco → plantar muda → cobrir com terra → regar', 'Plantar muda → cobrir com terra → regar', 'Cavar buraco → cobrir com terra → regar', 'Cavar buraco → plantar muda → cobrir com terra → regar'], resposta: 'Cavar buraco → plantar muda → cobrir com terra → regar', dica: 'Siga a sequência lógica de ações para garantir o resultado.' },
+      { situacao: 'Você precisa preparar um suco de frutas.', pergunta: 'Qual algoritmo representa corretamente a preparação?', opcoes: ['Cortar frutas → liquidificar → servir', 'Lavar verduras → cortar → liquidificar → servir', 'Lavar frutas → cortar → liquidificar → jogar fora', 'Lavar frutas → cortar → liquidificar → servir'], resposta: 'Lavar frutas → cortar → liquidificar → servir', dica: 'Sequência de ações garante o resultado esperado.' },
+      { situacao: 'Você precisa organizar um armário bagunçado.', pergunta: 'Qual algoritmo descreve melhor a organização?', opcoes: ['Retirar tudo → separar por categoria → guardar novamente', 'Retirar tudo → misturar por categoria → guardar novamente', 'Retirar tudo → separar por nome → guardar novamente', 'Retirar tudo → separar por sorte → guardar novamente'], resposta: 'Retirar tudo → separar por categoria → guardar novamente', dica: 'Algoritmos ajudam a estruturar tarefas complexas.' },
+      { situacao: 'Você quer programar um robô para seguir uma linha preta no chão.', pergunta: 'Qual algoritmo representa melhor essa ação?', opcoes: ['Detectar linha → mover para frente → repetir', 'Detectar linha → ajustar direção → mover para frente → repetir', 'Detectar linha → dar ré → mover para frente → repetir', 'Detectar linha → ajustar direção → mover para frente → repetir'], resposta: 'Detectar linha → ajustar direção → mover para frente → repetir', dica: 'Algoritmos podem incluir repetição (loops) para atingir objetivos.' },
+      { situacao: 'Você precisa lavar roupa em uma lavadora.', pergunta: 'Qual sequência correta?', opcoes: ['Colocar roupas → adicionar sabão → selecionar ciclo → iniciar', 'Adicionar sabão → iniciar → colocar roupas', 'Colocar roupas → iniciar → adicionar sabão', 'Selecionar ciclo → adicionar sabão → iniciar → colocar roupas'], resposta: 'Colocar roupas → adicionar sabão → selecionar ciclo → iniciar', dica: 'A ordem correta garante o resultado.' },
     ],
     []
   );
@@ -231,7 +231,7 @@ export default function AlgoritmoPage() {
     let ok = false;
     if (isScenario) {
       if (!scenarioChoice) {
-        setFeedback('Selecione uma opÃ§Ã£o.');
+        setFeedback('Selecione uma opção.');
         setFeedbackType('error');
         return;
       }
@@ -243,18 +243,18 @@ export default function AlgoritmoPage() {
 
     if (ok) {
       if (step < phases.length) {
-        setFeedback('Correto! PrÃ³xima fase...');
+        setFeedback('Correto! Próxima fase...');
         setFeedbackType('success');
         setTimeout(async () => {
           setPlan([]);
           setScenarioChoice(null);
           setFeedback('');
           setFeedbackType('');
-          // Registra o avanÃ§o de fase apÃ³s o delay para evitar avanÃ§o duplo
+          // Registra o avanço de fase após o delay para evitar avanço duplo
           await record('minigame_step', { key: gameKey, step, correct: true });
         }, 1500);
       } else {
-        // Ãšltima fase: registrar e finalizar
+        // Última fase: registrar e finalizar
         await record('minigame_step', { key: gameKey, step, correct: true });
         const final = getCurrentState();
         const totalAttempts = final.progress[gameKey].attempts;
@@ -264,15 +264,15 @@ export default function AlgoritmoPage() {
         );
         await score(gameKey, computedScore);
         await complete(gameKey);
-        await achieve('Planejou sequÃªncias claras em mÃºltiplas fases');
-        setFeedback('Sucesso! VocÃª completou todas as fases.');
+        await achieve('Planejou sequências claras em múltiplas fases');
+        setFeedback('Sucesso! Você completou todas as fases.');
         setFeedbackType('success');
         setFinished(true);
       }
     } else {
       setFeedback(
-        `NÃ£o funcionou. ${
-          isScenario ? 'Reveja a situaÃ§Ã£o.' : 'Teste passo a passo: onde seu plano falha?'
+        `Não funcionou. ${
+          isScenario ? 'Reveja a situação.' : 'Teste passo a passo: onde seu plano falha?'
         }`
       );
       setFeedbackType('error');
@@ -304,7 +304,7 @@ export default function AlgoritmoPage() {
           {imgSrc && (
             <Image
               src={imgSrc}
-              alt="RepresentaÃ§Ã£o do desafio"
+              alt="Representação do desafio"
               width={420}
               height={420}
               className="max-w-[420px] w-full h-auto rounded-lg border border-slate-400/25"
@@ -342,7 +342,7 @@ export default function AlgoritmoPage() {
       {!isScenario && (
         <div id="alg-plan-card" className="mt-3 rounded-lg border border-slate-400/15 bg-gray-800/30 p-3 text-white">
           <h3 className="text-lg font-semibold">Seu plano</h3>
-          <div id="alg-plan" className="text-gray-400">{plan.length ? plan.join(' â†’ ') : '(vazio)'}</div>
+          <div id="alg-plan" className="text-gray-400">{plan.length ? plan.join(' → ') : '(vazio)'}</div>
         </div>
       )}
 
@@ -376,12 +376,12 @@ export default function AlgoritmoPage() {
       </div>
 
       <div className="mt-4">
-        <label htmlFor="alg-reflexao">ReflexÃ£o (MAPEAR):</label>
+        <label htmlFor="alg-reflexao">Reflexão (MAPEAR):</label>
         <textarea
           id="alg-reflexao"
           className="mt-2 w-full rounded-md border border-white/20 bg-gray-900/40 px-3 py-2 text-white placeholder-gray-400"
           rows={3}
-          placeholder="Sua sequÃªncia funcionaria para qualquer pessoa?"
+          placeholder="Sua sequência funcionaria para qualquer pessoa?"
           value={reflection}
           onChange={(e) => setReflection(e.target.value)}
         />
@@ -392,21 +392,22 @@ export default function AlgoritmoPage() {
             disabled={!finished}
             onClick={() => {
               reflect(gameKey, reflection.trim());
-              setFeedback('ReflexÃ£o salva.');
+              setFeedback('Reflexão salva.');
               setFeedbackType('success');
             }}
           >
-            Salvar reflexÃ£o
+            Salvar reflexão
           </button>
           <Link
             id="alg-prosseguir"
             href="/jogos/generalizacao"
             className={`inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-semibold text-white shadow-md bg-[linear-gradient(135deg,#16a34a,#22c55e_50%,#10b981)] hover:brightness-110 ${finished ? '' : 'hidden'}`}
           >
-            PrÃ³ximo: Generalize+
+            Próximo: Generalize+
           </Link>
         </div>
       </div>
     </section>
   );
 }
+

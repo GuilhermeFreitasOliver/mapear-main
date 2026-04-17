@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useMemo, useState, useEffect } from 'react'
 import Link from 'next/link'
@@ -416,13 +416,13 @@ export default function AbstracaoPage() {
   }
 
   return (
-    <section className="rounded-xl border border-slate-400/15 bg-[linear-gradient(180deg,rgba(30,41,59,0.5),rgba(2,6,23,0.6))] p-4 sm:p-6 text-white shadow-md">
-      <h1 className="text-2xl font-bold">Abstração</h1>
-      <div className="text-gray-400">Fase {step} de {phases.length}</div>
+    <section className="rounded-2xl border border-white/10 bg-[linear-gradient(150deg,rgba(8,28,44,0.76),rgba(8,20,33,0.82))] p-5 sm:p-7 text-white shadow-[0_18px_34px_rgba(0,0,0,0.24)] fade-up">
+      <h1 className="text-3xl font-bold">Abstração</h1>
+      <div className="mt-1 text-slate-300">Fase {step} de {phases.length}</div>
       <p dangerouslySetInnerHTML={{ __html: current.prompt }} />
-      <div className="mt-2 flex flex-col gap-2">
+      <div className="mt-4 flex flex-col gap-2">
         {shuffledItems.map((item) => (
-          <label key={item.id} className="flex items-start gap-2">
+          <label key={item.id} className="flex items-start gap-2 rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2">
             <input
               type="checkbox"
               checked={!!selected[item.id]}
@@ -434,14 +434,14 @@ export default function AbstracaoPage() {
       </div>
       <div className="mt-3 flex gap-3">
         <button
-          className="inline-flex items-center justify-center rounded-lg px-3 sm:px-4 py-2.5 sm:py-2 min-h-[44px] text-sm font-semibold text-white border border-white/20 hover:bg-blue-500/10"
+          className="inline-flex min-h-[44px] items-center justify-center rounded-lg border border-emerald-200/30 bg-emerald-400/20 px-3 py-2.5 text-sm font-semibold text-white hover:bg-emerald-400/30 sm:px-4 sm:py-2"
           onClick={handleCheck}
           disabled={processing || finished}
         >
           Verificar
         </button>
         <button
-          className="inline-flex items-center justify-center rounded-lg px-3 sm:px-4 py-2.5 sm:py-2 min-h-[44px] text-sm font-semibold text-white border border-white/20 hover:bg-slate-500/10"
+          className="inline-flex min-h-[44px] items-center justify-center rounded-lg border border-white/20 bg-white/[0.03] px-3 py-2.5 text-sm font-semibold text-white hover:bg-white/10 sm:px-4 sm:py-2"
           onClick={handleClear}
         >
           Limpar
@@ -452,8 +452,8 @@ export default function AbstracaoPage() {
       >
         {feedback}
       </div>
-      <div className="mt-3 flex items-start gap-2 rounded-lg border-l-4 border-blue-500/60 bg-blue-500/10 p-3">
-        <span className="inline-block rounded bg-blue-600 px-2 py-0.5 text-xs font-semibold text-white">{tipLevel}</span>
+      <div className="mt-3 flex items-start gap-2 rounded-lg border border-sky-300/30 bg-sky-500/10 p-3">
+        <span className="inline-block rounded bg-sky-600 px-2 py-0.5 text-xs font-semibold text-white">{tipLevel}</span>
         <span>{tipText}</span>
       </div>
       <div className="mt-4">
@@ -468,7 +468,7 @@ export default function AbstracaoPage() {
         />
         <div className="mt-3 flex gap-3">
           <button
-            className="inline-flex items-center justify-center rounded-lg px-3 py-2 text-sm font-semibold text-white border border-white/20 hover:bg-blue-500/10 disabled:opacity-60 disabled:cursor-not-allowed"
+            className="inline-flex items-center justify-center rounded-lg border border-white/20 bg-white/[0.03] px-3 py-2 text-sm font-semibold text-white hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-60"
             onClick={handleSaveReflection}
             disabled={!finished}
           >
@@ -487,3 +487,5 @@ export default function AbstracaoPage() {
     </section>
   )
 }
+
+

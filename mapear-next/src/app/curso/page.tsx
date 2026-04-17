@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 /* eslint-disable @next/next/no-img-element */
 import { useState, useEffect } from "react";
 import DeckCarousel from "../../components/DeckCarousel";
@@ -327,7 +327,7 @@ const courseData: CourseModule[] = [
               "Desenvolvimento de algoritmos em linguagem natural para tarefas simples.",
             ]
           },
-          { label: "RE", content: "Matriz 2×2: impacto x esforço de adaptações." },
+          { label: "RE", content: "Matriz 2x2: impacto x esforço de adaptações." },
           { label: "Avaliação", content: "Plano de ação individual com metas SMART." },
         ],
       },
@@ -679,7 +679,7 @@ const courseData: CourseModule[] = [
             <h3 className="text-2xl font-bold text-white mt-8 mb-4">Atividade</h3>
             <div className="bg-emerald-900/20 border border-emerald-500/30 p-6 rounded-xl">
               <h4 className="flex items-center gap-2 text-emerald-300 font-bold text-lg mb-2">
-                <span>🗺️</span> Construção de Trilha Digital
+                <span>🛠️</span> Construção de Trilha Digital
               </h4>
               <p className="text-slate-300">Construção de uma trilha digital inicial de Pensamento Computacional usando uma das plataformas apresentadas. Inclui objetivos, etapas, recursos e critérios de acompanhamento.</p>
             </div>
@@ -784,7 +784,7 @@ const courseData: CourseModule[] = [
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="bg-emerald-900/20 border border-emerald-500/30 p-6 rounded-xl">
                 <h4 className="flex items-center gap-2 text-emerald-300 font-bold text-lg mb-2">
-                  <span>🗂️</span> Canvas de Projeto
+                  <span>🛠️</span> Canvas de Projeto
                 </h4>
                 <p className="text-slate-300">Construção de um Canvas de Projeto respondendo às etapas do MAPEAR — do problema-motriz ao produto público.</p>
               </div>
@@ -1110,12 +1110,12 @@ const courseData: CourseModule[] = [
               </div>
               <div className="bg-amber-900/20 border border-amber-500/30 p-4 rounded-xl text-center">
                 <span className="text-2xl block mb-2">🌿</span>
-                <strong className="text-amber-300 text-sm block">Básico</strong>
+                <strong className="text-amber-300 text-sm block">Basico</strong>
                 <p className="text-slate-400 text-xs mt-1">Aplica com apoio</p>
               </div>
               <div className="bg-blue-900/20 border border-blue-500/30 p-4 rounded-xl text-center">
                 <span className="text-2xl block mb-2">🌳</span>
-                <strong className="text-blue-300 text-sm block">Intermediário</strong>
+                <strong className="text-blue-300 text-sm block">Intermediario</strong>
                 <p className="text-slate-400 text-xs mt-1">Aplica com autonomia</p>
               </div>
               <div className="bg-green-900/20 border border-green-500/30 p-4 rounded-xl text-center">
@@ -1413,7 +1413,7 @@ const courseData: CourseModule[] = [
               </div>
               <div className="bg-amber-900/20 border border-amber-500/30 p-5 rounded-xl">
                 <h4 className="flex items-center gap-2 text-amber-300 font-bold mb-2">
-                  <span>✅</span> Autoavaliação Prática
+                  <span>📝</span> Autoavaliação Prática
                 </h4>
                 <p className="text-slate-300 text-sm">Exercícios de autoavaliação usando checklists e rubricas desenvolvidas na unidade anterior.</p>
               </div>
@@ -1497,7 +1497,7 @@ const courseData: CourseModule[] = [
               <div className="bg-purple-900/20 border border-purple-500/30 p-5 rounded-xl text-center">
                 <span className="text-3xl block mb-2">🎤</span>
                 <strong className="text-purple-300 block mb-1">PechaKucha</strong>
-                <p className="text-slate-400 text-xs">20 imagens × 20 segundos = 6min40s de apresentação dinâmica e envolvente.</p>
+                <p className="text-slate-400 text-xs">20 imagens x 20 segundos = 6min40s de apresentação dinâmica e envolvente.</p>
               </div>
               <div className="bg-blue-900/20 border border-blue-500/30 p-5 rounded-xl text-center">
                 <span className="text-3xl block mb-2">🖼️</span>
@@ -1844,8 +1844,8 @@ export default function CursoPage() {
       title: "Decomposição",
       levels: {
         Iniciante: "Reconhece tarefas grandes.",
-        Básico: "Separa em 2–3 partes simples.",
-        Intermediário: "Estrutura etapas com dependências.",
+        Basico: "Separa em 2-3 partes simples.",
+        Intermediario: "Estrutura etapas com dependências.",
         Proficiente: "Refatora e otimiza o plano.",
       },
     },
@@ -1853,8 +1853,8 @@ export default function CursoPage() {
       title: "Padrões",
       levels: {
         Iniciante: "Identifica semelhanças simples.",
-        Básico: "Classifica exemplos recorrentes.",
-        Intermediário: "Generaliza para novas situações.",
+        Basico: "Classifica exemplos recorrentes.",
+        Intermediario: "Generaliza para novas situações.",
         Proficiente: "Cria modelos reutilizáveis.",
       },
     },
@@ -1862,8 +1862,8 @@ export default function CursoPage() {
       title: "Abstração",
       levels: {
         Iniciante: "Diferencia dados essenciais e supérfluos.",
-        Básico: "Cria representações básicas (tabela/diagrama).",
-        Intermediário: "Escolhe abstrações adequadas ao público.",
+        Basico: "Cria representações básicas (tabela/diagrama).",
+        Intermediario: "Escolhe abstrações adequadas ao público.",
         Proficiente: "Transita entre níveis de abstração.",
       },
     },
@@ -1871,8 +1871,8 @@ export default function CursoPage() {
       title: "Algoritmos",
       levels: {
         Iniciante: "Segue sequências simples.",
-        Básico: "Escreve instruções claras.",
-        Intermediário: "Usa estruturas condicionais/repetição.",
+        Basico: "Escreve instruções claras.",
+        Intermediario: "Usa estruturas condicionais/repetição.",
         Proficiente: "Refina com testes e depuração.",
       },
     },
@@ -1880,8 +1880,8 @@ export default function CursoPage() {
       title: "Generalização",
       levels: {
         Iniciante: "Aplica solução apenas no exemplo visto.",
-        Básico: "Adapta regra simples a casos parecidos com apoio.",
-        Intermediário: "Identifica variáveis e limites; transfere a novos contextos com pequenas adaptações.",
+        Basico: "Adapta regra simples a casos parecidos com apoio.",
+        Intermediario: "Identifica variáveis e limites; transfere a novos contextos com pequenas adaptações.",
         Proficiente: "Formula princípios e modelos reutilizáveis que cobrem variações e exceções.",
       },
     },
@@ -1889,8 +1889,8 @@ export default function CursoPage() {
       title: "Robótica",
       levels: {
         Iniciante: "Reconhece sensores/atuadores; monta kit seguindo guia; cumpre regras de segurança.",
-        Básico: "Programa reações simples (if/else) com um sensor/atuador; calibra limiares.",
-        Intermediário: "Integra múltiplos sensores; usa PWM e funções; depura via monitor serial; melhora chassi.",
+        Basico: "Programa reações simples (if/else) com um sensor/atuador; calibra limiares.",
+        Intermediario: "Integra múltiplos sensores; usa PWM e funções; depura via monitor serial; melhora chassi.",
         Proficiente: "Projeta sistema completo com feedback (PID simples), gestão de energia, testes e documentação.",
       },
     },
@@ -1898,34 +1898,34 @@ export default function CursoPage() {
 
   return (
     <ProtectedRoute>
-      <div id="topo" className="space-y-6">
+      <div id="topo" className="space-y-7">
         {/* Cabeçalho do Curso */}
         <section
-          className="rounded-xl border border-slate-400/15 bg-[linear-gradient(180deg,rgba(16,24,39,0.8),rgba(16,24,39,0.6))] shadow-md p-4 sm:p-6 text-white"
+          className="rounded-3xl border border-white/10 bg-[linear-gradient(120deg,rgba(8,35,54,0.88),rgba(7,20,33,0.92))] p-6 sm:p-8 text-white shadow-[0_20px_45px_rgba(0,0,0,0.24)] fade-up"
           aria-labelledby="titulo"
         >
-          <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-blue-500/15 text-blue-200 border border-blue-400/25">
+          <span className="inline-flex items-center rounded-full border border-emerald-300/30 bg-emerald-400/15 px-2 py-1 text-xs font-semibold text-emerald-100">
             Formação Docente • MAPEAR
           </span>
-          <h1 id="titulo" className="mt-2 text-xl sm:text-5xl font-bold tracking-tight">
+          <h1 id="titulo" className="mt-3 text-2xl sm:text-5xl font-bold tracking-tight">
             Curso de Formação MAPEAR
           </h1>
-          <h3 className="mt-2 text-lg text-slate-200">
+          <h3 className="mt-3 text-base leading-relaxed text-slate-200 sm:text-lg">
             Presencial, híbrido ou EAD. Um percurso formativo para implementar o
             <strong className="text-green-400"> Pensamento Computacional (PC)</strong> na Educação Básica com
             mediação ativa e <strong className="text-green-400"> Robótica Educacional (RE)</strong>, combinando
             ferramentas digitais e atividades desplugadas, avaliação por competências
             e um banco colaborativo de práticas.
           </h3>
-          <div className="mt-4 flex flex-wrap items-center gap-2" role="group" aria-label="Ações da página">
+          <div className="mt-5 flex flex-wrap items-center gap-2" role="group" aria-label="Ações da página">
             <button
-              className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-semibold text-white border border-white/20 hover:bg-blue-500/10"
+              className="lift-on-hover inline-flex min-h-[44px] items-center justify-center gap-2 rounded-lg border border-emerald-200/30 bg-emerald-400/20 px-4 py-2 font-semibold text-emerald-100"
               onClick={handlePrint}
             >
               Imprimir/Salvar em PDF
             </button>
             <a
-              className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-semibold text-white border border-white/20 hover:bg-blue-500/10"
+              className="lift-on-hover inline-flex min-h-[44px] items-center justify-center gap-2 rounded-lg border border-white/20 bg-white/[0.04] px-4 py-2 font-semibold text-white"
               href="/Artefatos.zip"
               download
             >
@@ -1937,20 +1937,20 @@ export default function CursoPage() {
         {/* Visão geral (KPIs + Objetivos) */}
         <section aria-label="Visão geral" className="space-y-3">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <div className="rounded-lg border border-slate-400/15 bg-white/5 p-4 text-white">
+            <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4 text-white">
               <strong>Carga horária</strong>
               <span className="mt-2 block w-fit items-center px-2 py-1 text-xs rounded-full border border-white/10 bg-white/10 text-green-400/80">30h • Sugerido</span>
             </div>
-            <div className="rounded-lg border border-slate-400/15 bg-white/5 p-4 text-white">
+            <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4 text-white">
               <strong>Público-alvo</strong>
               <span className="mt-2 block w-fit items-center px-2 py-1 text-xs rounded-full border border-white/10 bg-white/10 text-green-400/80">Professores em Formação Inicial ou Continuada</span>
             </div>
-            <div className="rounded-lg border border-slate-400/15 bg-white/5 p-4 text-white">
+            <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4 text-white">
               <strong>Modalidades</strong>
               <span className="mt-2 block w-fit items-center px-2 py-1 text-xs rounded-full border border-white/10 bg-white/10 text-green-400/80">Presencial • Híbrido • EAD</span>
             </div>
           </div>
-          <div className="rounded-xl border border-slate-400/15 bg-[linear-gradient(180deg,rgba(16,24,39,0.8),rgba(16,24,39,0.6))] shadow-md p-4 sm:p-6 text-white">
+          <div className="rounded-2xl border border-white/10 bg-[linear-gradient(180deg,rgba(10,30,46,0.74),rgba(7,22,33,0.78))] p-5 sm:p-7 text-white shadow-[0_14px_30px_rgba(0,0,0,0.22)]">
             <h2 className="text-xl sm:text-3xl font-semibold">Objetivos</h2>
             <ul className="mt-2 list-disc pl-5 space-y-1 text-slate-200">
               <li>Compreender fundamentos do PC e seus pilares (decomposição, padrões, abstração, algoritmos).</li>
@@ -1962,7 +1962,7 @@ export default function CursoPage() {
           </div>
         </section>
 
-        <hr className="my-6 border-t border-slate-400/20" />
+        <hr className="my-6 section-divider border-0" />
 
         {/* Programa detalhado (Estilo Alura) */}
         <section id="programa" aria-labelledby="programa-t">
@@ -2118,7 +2118,7 @@ export default function CursoPage() {
           </div>
         </section>
 
-        <hr className="my-6 border-t border-slate-400/20" />
+        <hr className="my-6 section-divider border-0" />
 
         {/* Avaliação: Matriz de competências (Tabela moderna) */}
         <section id="avaliacao" aria-labelledby="av-t">
@@ -2133,8 +2133,8 @@ export default function CursoPage() {
                   <tr>
                     <th className="px-4 py-3 text-xs font-semibold text-white/80 uppercase tracking-wider text-left">Competência</th>
                     <th className="px-4 py-3 text-xs font-semibold text-white/80 uppercase tracking-wider text-left">Iniciante</th>
-                    <th className="px-4 py-3 text-xs font-semibold text-white/80 uppercase tracking-wider text-left">Básico</th>
-                    <th className="px-4 py-3 text-xs font-semibold text-white/80 uppercase tracking-wider text-left">Intermediário</th>
+                    <th className="px-4 py-3 text-xs font-semibold text-white/80 uppercase tracking-wider text-left">Basico</th>
+                    <th className="px-4 py-3 text-xs font-semibold text-white/80 uppercase tracking-wider text-left">Intermediario</th>
                     <th className="px-4 py-3 text-xs font-semibold text-white/80 uppercase tracking-wider text-left">Proficiente</th>
                   </tr>
                 </thead>
@@ -2143,8 +2143,8 @@ export default function CursoPage() {
                     <tr key={card.title} className="odd:bg-white/5 even:bg-transparent hover:bg-white/10 transition-colors align-top">
                       <td className="px-4 py-3 text-white font-semibold w-44">{card.title}</td>
                       <td className="px-4 py-3 text-white/90">{card.levels.Iniciante}</td>
-                      <td className="px-4 py-3 text-white/90">{card.levels.Básico}</td>
-                      <td className="px-4 py-3 text-white/90">{card.levels.Intermediário}</td>
+                      <td className="px-4 py-3 text-white/90">{card.levels.Basico}</td>
+                      <td className="px-4 py-3 text-white/90">{card.levels.Intermediario}</td>
                       <td className="px-4 py-3 text-white/90">{card.levels.Proficiente}</td>
                     </tr>
                   ))}
@@ -2154,12 +2154,12 @@ export default function CursoPage() {
           </div>
         </section>
 
-        <hr className="my-6 border-t border-slate-400/20" />
+        <hr className="my-6 section-divider border-0" />
 
         {/* Cronograma e rubrica resumida */}
         <section id="cronograma" aria-labelledby="crono-t">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="rounded-xl border border-slate-400/15 bg-[linear-gradient(180deg,rgba(16,24,39,0.8),rgba(16,24,39,0.6))] shadow-md p-4 sm:p-6 text-white">
+            <div className="rounded-2xl border border-white/10 bg-[linear-gradient(180deg,rgba(10,30,46,0.74),rgba(7,22,33,0.78))] p-5 sm:p-7 text-white shadow-[0_14px_30px_rgba(0,0,0,0.22)]">
               <h3 className="text-xl sm:text-2xl font-semibold text-green-400/80">Cronograma sugerido (30h)</h3>
               <ol className="mt-2 list-decimal pl-5 space-y-1 text-white/90">
                 <li><strong>Encontro 1 (4h):</strong> Módulo 1.1 e 1.2</li>
@@ -2172,7 +2172,7 @@ export default function CursoPage() {
                 <li><strong>Encontro 8 (4h):</strong> Módulo 4.1, 4.2 e 4.3 + Showcase (Módulo 5)</li>
               </ol>
             </div>
-            <div className="rounded-xl border border-slate-400/15 bg-[linear-gradient(180deg,rgba(16,24,39,0.8),rgba(16,24,39,0.6))] shadow-md p-4 sm:p-6 text-white">
+            <div className="rounded-2xl border border-white/10 bg-[linear-gradient(180deg,rgba(10,30,46,0.74),rgba(7,22,33,0.78))] p-5 sm:p-7 text-white shadow-[0_14px_30px_rgba(0,0,0,0.22)]">
               <h3 className="text-xl sm:text-2xl font-semibold text-green-400/80">Rubrica para projetos MAPEAR (resumo)</h3>
               <ul className="mt-2 list-disc pl-5 space-y-1 text-white/90">
                 <li><strong>Clareza do problema-motriz</strong>: relevante, contextualizado, interdisciplinar.</li>
@@ -2184,17 +2184,17 @@ export default function CursoPage() {
                 <li><strong>Feedback</strong>: ciclos e critérios transparentes.</li>
               </ul>
             </div>
-            <div className="rounded-xl border border-slate-400/15 bg-[linear-gradient(180deg,rgba(16,24,39,0.8),rgba(16,24,39,0.6))] shadow-md p-4 sm:p-6 text-white">
+            <div className="rounded-2xl border border-white/10 bg-[linear-gradient(180deg,rgba(10,30,46,0.74),rgba(7,22,33,0.78))] p-5 sm:p-7 text-white shadow-[0_14px_30px_rgba(0,0,0,0.22)]">
               <h3 className="text-xl sm:text-2xl font-semibold text-green-400/80">Adaptação Híbrida/EAD</h3>
               <ul className="mt-2 list-disc pl-5 space-y-1 text-white/90">
-                <li>Vídeos curtos assíncronos (10–15min) por unidade.</li>
+                <li>Vídeos curtos assíncronos (10-15min) por unidade.</li>
                 <li>Fóruns com protocolos de reflexão e feedback por pares.</li>
                 <li>Sessões síncronas focadas em prática e dúvidas.</li>
                 <li>Entregas modulares com rubricas transparentes.</li>
                 <li>Alternativas low-tech e desplugadas em todas as etapas.</li>
               </ul>
             </div>
-            <div className="rounded-xl border border-slate-400/15 bg-[linear-gradient(180deg,rgba(16,24,39,0.8),rgba(16,24,39,0.6))] shadow-md p-4 sm:p-6 text-white">
+            <div className="rounded-2xl border border-white/10 bg-[linear-gradient(180deg,rgba(10,30,46,0.74),rgba(7,22,33,0.78))] p-5 sm:p-7 text-white shadow-[0_14px_30px_rgba(0,0,0,0.22)]">
               <h3 className="text-xl sm:text-2xl font-semibold text-green-400/80">Infra mínima</h3>
               <ul className="mt-2 list-disc pl-5 space-y-1 text-white/90">
                 <li>Para presencial: sala com projeção e espaço para dinâmicas.</li>
@@ -2206,13 +2206,13 @@ export default function CursoPage() {
           </div>
         </section>
 
-        <hr className="my-6 border-t border-slate-400/20" />
+        <hr className="my-6 section-divider border-0" />
 
         {/* Recursos e modelos prontos */}
         <section id="recursos" aria-labelledby="recursos-t">
           <h2 id="recursos-t" className="text-xl sm:text-3xl font-semibold text-white">Recursos e modelos prontos</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
-            <div className="rounded-xl border border-slate-400/15 bg-[linear-gradient(180deg,rgba(16,24,39,0.8),rgba(16,24,39,0.6))] shadow-md p-4 sm:p-6 text-white">
+            <div className="rounded-2xl border border-white/10 bg-[linear-gradient(180deg,rgba(10,30,46,0.74),rgba(7,22,33,0.78))] p-5 sm:p-7 text-white shadow-[0_14px_30px_rgba(0,0,0,0.22)]">
               <h3 className="text-xl sm:text-2xl font-semibold text-green-400/80">Modelos editáveis</h3>
               <ul className="mt-2 list-disc pl-5 space-y-1 text-white/90">
                 <li>Canvas de projeto MAPEAR</li>
@@ -2221,10 +2221,10 @@ export default function CursoPage() {
                 <li>Checklist de acessibilidade didática</li>
               </ul>
             </div>
-            <div className="rounded-xl border border-slate-400/15 bg-[linear-gradient(180deg,rgba(16,24,39,0.8),rgba(16,24,39,0.6))] shadow-md p-4 sm:p-6 text-white">
+            <div className="rounded-2xl border border-white/10 bg-[linear-gradient(180deg,rgba(10,30,46,0.74),rgba(7,22,33,0.78))] p-5 sm:p-7 text-white shadow-[0_14px_30px_rgba(0,0,0,0.22)]">
               <h3 className="text-xl sm:text-2xl font-semibold text-green-400/80">Protocolos de mediação</h3>
               <ul className="mt-2 list-disc pl-5 space-y-1 text-white/90">
-                <li>Pense–Par–Compartilhe</li>
+                <li>Pense-Par-Compartilhe</li>
                 <li>Crítica amigável (Como um amigo)</li>
                 <li>Galeria com feedback pontual</li>
                 <li>Stand-up de aprendizagem (check-in de 2 minutos)</li>
@@ -2233,7 +2233,7 @@ export default function CursoPage() {
           </div>
         </section>
 
-        <hr className="my-6 border-t border-slate-400/20" />
+        <hr className="my-6 section-divider border-0" />
 
         {/* Baralho Pedagógico (cards) */}
         <section id="baralho" aria-labelledby="baralho-t">
@@ -2253,7 +2253,7 @@ export default function CursoPage() {
           </div>
         </section>
 
-        <hr className="my-6 border-t border-slate-400/20" />
+        <hr className="my-6 section-divider border-0" />
 
         {/* FAQ */}
         <section id="faq" aria-labelledby="faq-t">
@@ -2289,3 +2289,8 @@ export default function CursoPage() {
     </ProtectedRoute>
   );
 }
+
+
+
+
+
